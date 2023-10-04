@@ -8,20 +8,28 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  scroll-behavior: smooth;
+  scrollbar-color: #EAECEE;
+  scrollbar-width: 0.2rem;
+  scrollbar-track-color: #EAECEE;
+}
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: gray;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #FF595A;
+  border-radius: 5px;
+  /* #006D44; */
+}
+
+.piechart-style {
+  
 }

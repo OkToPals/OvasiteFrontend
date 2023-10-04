@@ -12,6 +12,23 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      colors: {
+        navy_blue: '#001333',
+        peach_primary: "#FF595A",
+        peach_secondary: "rgba(255, 89, 90, 0.26)",
+        ova_white: "#fff",
+        ova_black_: "#000",
+        ova_dark_primary: "#333",
+        ova_dark_secondary: "#4B4B4B",
+        ova_grey: "#EAECEE",
+        ova_grey_border: "#C3C3C3",
+        'mobile-bg': "#F3F3F3",
+        'mobile-card-bg':"#F7F8FA",
+        'card-span-text': "#979797",
+        'progress-bar': "#d9d9d9"
+      },screens: {
+        'mini': '500px',
+      }
     },
   },
   plugins: [],
