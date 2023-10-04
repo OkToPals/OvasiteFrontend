@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-export const ProjectCard = ({ id, title, description }) => {
+export const AuditCard = ({ id, action_by, type, affected_entity,  record_id,  old_values, new_values, time, affected_record }) => {
   const [isDropdown, setIsDropdown] = useState(false);
 
   return (
-    <article className="w-[100%] relative h-[13rem] shadow-sm p-4 bg-mobile-card-bg border-[#ddd] border rounded-lg mb-4">
+    <article className="w-[100%] relative h-[16rem] shadow-sm p-4 bg-mobile-card-bg border-[#ddd] border rounded-lg mb-4">
       <div className="relative">
         <button
           className="absolute right-0 top-0 font-bold p-2"
@@ -108,38 +108,31 @@ export const ProjectCard = ({ id, title, description }) => {
           </div>
         )}
       </div>
-      <h2 className="max-w-[80%] text-left mt-1 overflow-hidden whitespace-nowrap text-ellipsis font-bold my-[0.5rem] text-[0.75em]">
-        {id} <span className=" text-card-span-text">Project Name: </span> {title}
-      </h2>
       <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
-        <span className=" text-card-span-text">Description: </span>{description}
+        <span className=" text-card-span-text">Action by: </span>{action_by}
+      </p>
+      <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
+        <span className=" text-card-span-text">Type: </span>{type}
+      </p>
+      <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
+        <span className=" text-card-span-text">Affected entity: </span>{affected_entity}
+      </p>
+      <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
+        <span className=" text-card-span-text">Record id: </span>{record_id}
+      </p>
+      <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
+        <span className=" text-card-span-text">Old Values: </span>{old_values}
+      </p>
+      <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
+        <span className=" text-card-span-text">New values: </span>{new_values}
+      </p>
+      <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
+        <span className=" text-card-span-text">Time: </span>{time}
+      </p>
+      <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
+        <span className=" text-card-span-text">Affected record: </span>{affected_record}
       </p>
 
-      {/*  project status*/}
-      <div role="status" aria-label="Project Status" className="">
-        {/* date div */}
-        <div className="flex flex-col justify-between">
-          <p className="text-[0.75em] my-[0.5rem]"><span className=" text-card-span-text">Start Date: </span> 29/08/2023</p>
-          <p className="text-[0.75em] my-[0.5rem]"><span className=" text-card-span-text">Due Date: </span> 29/08/2024</p>
-        </div>
-        {/* progress */}
-        <div className="flex flex-col-reverse">
-          {/* progress bar */}
-          <div>
-             <span className=" text-card-span-text text-[0.75em] my-[0.5rem]">Status: </span> 
-            <progress
-              id="poject_progress_percentage"
-              value="32"
-              max="100"
-              className=" h-3 rounded-full text-[0.75em] bg-progress-bar" 
-            >
-              32%
-            </progress>
-          </div>
-          {/* progress status */}
-          {/* <p className="text-[12px]">Status: <span className="text-orange-600" >In Progress</span></p> */}
-        </div>
-      </div>
     </article>
   );
 };
