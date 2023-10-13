@@ -65,8 +65,6 @@ export default function Signin() {
                       className="absolute top-1/2 transform -translate-y-1/2 right-2 w-5 h-5 cursor-pointer"
                       onClick={togglePasswordVisibility}
                     />
-    
-
               </div>
 
               <div className="flex items-center justify-between">
@@ -75,9 +73,9 @@ export default function Signin() {
                     id="remember-me"
                     name="remember-me"
                     type="checkbox"
-                    className="h-4 w-4 rounded border-[#001233] text-[#001233] focus:ring-indigo-600"
-                  />
-                  <label htmlFor="remember-me" className="ml-3 block text-sm leading-6 text-[#001233]">
+                    className="h-4 w-4 rounded border-[#FF595A] text-transparent focus:ring-[#FF595A] appearance checked:bg-[#FF595A] checked:ring-[#FF595A] checked:rounded"
+                    />
+                  <label htmlFor="remember-me" className="ml-3 block text-sm leading-6 text-[#001233] font-semibold">
                     Remember me
                   </label>
                 </div>
@@ -100,18 +98,12 @@ export default function Signin() {
                 </form>
               </div>
 
-              <div className="mt-10">
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                    <div className="w-full border-t border-gray-200" />
-                  </div>
-                </div>
-
+              <div className="mt-10">    
+              <div className="w-full border-t border-gray-200" />
                 <div className="mt-6 grid gap-4">
-
                 <p className="text-[#001233] text-sm mt-3 text-center">
                   Don't have an account?{' '} 
-                <Link href="/signin" className="font-bold text-[#FF595A] hover:text-[#001233]">
+                <Link href="/signup" className="font-bold text-[#FF595A] hover:text-[#001233]">
                   Sign Up.
                 </Link>
                 </p>

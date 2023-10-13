@@ -11,6 +11,12 @@ import '@/styles/styles.css';
 
 
 export default function Signup() {
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible((prev) => !prev);
+  };
+
   const [currentStep, setCurrentStep] = useState(1);
   const [previewImage, setPreviewImage] = useState(null);
 
@@ -96,7 +102,7 @@ export default function Signup() {
                 <form action="email" method="POST" className="space-y-6">
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium leading-6 text-[#001233]">
-                    <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
+                    <span className=" block text-sm font-medium text-slate-700">
                       Email address
                     </span> 
                       
@@ -114,25 +120,24 @@ export default function Signup() {
                     </div>
                   </div>
 
-                  <div>
-                    <label htmlFor="password" className="block text-sm font-medium leading-6 text-[#001233]">
-
-                    <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                      Password
-                    </span>  
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="password"
-                        name="password"
-                        type="{showPassword ? 'text' : 'password'}"
-                        autoComplete="current-password"
-                        required
-                        className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-[#001233] focus:ring-[#001233] block w-full rounded-md sm:text-sm focus:ring-1" placeholder="password"
-  
-                      />
-                    </div>
-                  </div>
+                  <div className="mt-2 relative">
+                    <input
+                      id="password"
+                      name="password"
+                      type={passwordVisible ? 'text' : 'password'}
+                      autoComplete="current-password"
+                      required
+                      className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none
+                       focus:border-[#001233] focus:ring-[#001233] block w-full rounded-md sm:text-sm focus:ring-1"
+                      placeholder="Password"
+                    />
+                    <img
+                      src={passwordVisible ? 'show.png' : 'hide.png'}
+                      alt={passwordVisible ? 'Show Password' : 'Hide Password'}
+                      className="absolute top-1/2 transform -translate-y-1/2 right-2 w-5 h-5 cursor-pointer"
+                      onClick={togglePasswordVisibility}
+                    />
+              </div>
 
                   <div>
                     <button
@@ -230,9 +235,9 @@ export default function Signup() {
                     </label>
                   </div>
                   <div className='mt-2'>
-                    <p className='mt-1 px-3 py-2 border-collapse placeholder-slate-400 focus:outline-none focus:border-[#001233] focus:ring-[#001233] block w-full rounded-sm sm:text-sm focus:ring-1'>
+                  <p class='mt-1 px-3 py-2 border-collapse placeholder-slate-400 focus:outline-none focus:border-[#001233] focus:ring-[#001233] block w-full sm:text-sm focus:ring-1 rounded-sm'>
                       <label
-                        class='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
+                        className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
                         for='grid-city'
                       >
                         Country
@@ -415,7 +420,7 @@ export default function Signup() {
                         type="{showPassword ? 'text' : 'text'}"
                         autoComplete="current-password"
                         required
-                        className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-[#001233] focus:ring-[#001233] block w-full rounded-md sm:text-sm focus:ring-1 "  placeholder="NGN"
+                        className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-[#001233] focus:ring-[#001233] block w-full rounded-md sm:text-sm focus:ring-1 "  placeholder="USD"
   
                       />
                     </div>
@@ -600,19 +605,19 @@ export default function Signup() {
             <div className="mt-10">
               <div>
               <form method="POST" className="space-y-6">
-  <Select 
-     options={options}
-     styles={{
-      option: (provided, state) => ({
-        ...provided,
-        backgroundColor: state.isFocused ? '#FF595A' : 'white',
-        '&:hover': {
-          backgroundColor: '#FF595A',
-        },
-      }),
-    }}
-  />
-</form>
+              <Select 
+                options={options}
+                styles={{
+                  option: (provided, state) => ({
+                    ...provided,
+                    backgroundColor: state.isFocused ? '#3AC1A1' : 'white',
+                    '&:hover': {
+                      backgroundColor: '#3AC1A1',
+                    },
+                  }),
+                }}
+              />
+            </form>
 
               </div>
 
