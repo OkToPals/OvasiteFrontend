@@ -8,7 +8,7 @@ import Link from 'next/link';
 const Uses = () => {
   return (
     <section id='sect'>
- <div style={{textAlign:"left",width:'40%',margin:'30px'}}>
+ <div style={{textAlign:"left",}}>
 <h1 style={{fontSize:'18px',lineHeight:'60px',fontWeight:'700'}}>Team Collaboration</h1>
 <p style={{fontSize:'16px',lineHeight:'36px',fontWeight:'400'}}>Our platform is designed to enhance teamwork by offering a suite of powerful collaboration features that enable you to work seamlessly with your colleagues, share valuable insights, and collectively arrive at smart solutions. </p>
 <Link href="/features">

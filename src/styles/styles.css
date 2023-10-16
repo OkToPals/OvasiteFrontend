@@ -240,6 +240,9 @@ ul li{
   line-height: 80px;
   padding-top: 10%;
 }
+#width{
+  width: 800px;
+}
 #features{
   text-align: center;
   margin-top: 5%;
@@ -270,12 +273,13 @@ ul li{
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  margin-left: 11%;
-  margin-top: 5%;
+  justify-content: center;
+ 
 }
 #frame> div{
-  margin: 10px;
+  margin: 20px;
 }
+
 #frame2{
   display: flex;
   flex-direction: row;
@@ -290,6 +294,7 @@ ul li{
   flex-direction: row;
   align-items: center;
   margin: 80px;
+  text-align: right;
 }
 #frame22> div{
   margin-right: 50px;
@@ -315,6 +320,9 @@ ul li{
   }
   #frame22{
 flex-direction: column-reverse;
+width: 100%;margin: 20px;
+padding: 20px;
+text-align: left !important;
   }
   #frame2>div{
     width: auto;
@@ -359,6 +367,10 @@ width: 100%;
   background-size: cover;
   margin: -1%;
   padding: 40px;
+}
+#sect >div{
+  width: 40%;
+  margin: 30px;
 }
 #aboutImage{
   background-image: url(/Vector64.jpg);
@@ -424,6 +436,7 @@ margin-right: 50px;
   display: inline-block;
 }
 
+
 .file-input {
   font-size: 100px;
   position: absolute;
@@ -455,4 +468,101 @@ margin-right: 10px;
 .input-box {
   display: flex;
   align-items: center;
+}
+#about{
+  height: 1100px;
+}
+#smart{
+padding-left:5%;
+width:600px;
+}
+@media (max-width: 1200px) { 
+  #about{
+    height: 1400px;
+  }
+}
+
+@media (max-width: 900px) { 
+  #smart{
+    padding:20px;
+    width:100%;
+    }
+  #second{
+    display: flex;
+    flex-direction: column !important;
+    margin: 2% !important;
+    
+  }
+  #second> div{
+    width:100% !important;
+  }
+
+  .under{
+    display: flex;
+    flex-direction: column;
+    padding-top: 15% ;
+    text-align: center;
+  
+  }
+  .under > div{
+    width: 100%;
+  margin-right: 0px;
+  }
+  #image{
+    width:100%;
+  }
+  #about{
+    height: 1700px;
+  }
+  #circle{
+    margin-top: 19% !important;
+  }
+  #circle > div{
+    margin-left: 0px !important;
+  }
+  #account{
+    display: flex;
+    flex-direction: column;
+  
+  }
+  #account > div{
+    width: 100%;
+    padding: 10px;
+    overflow-x: hidden;
+  }
+  #account > div >img {
+   display: none;
+  }
+  #sect >div{
+    width: 100%;
+    margin: 0;
+  }
+  #frame{
+    margin: 5%;
+  }
+  #width{
+    width: auto;
+  }
+  #heroUP{
+    text-align: center;
+    font-size: 30px;
+    font-weight: 900;
+    line-height: 50px;
+    padding-top: 20%;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+}
+@media (max-width: 600px) { 
+  .under{
+    padding-top: 30% !important;
+    
+  }
+  #hero{
+    height: 100%;
+    background-size:cover;
+    background-repeat: no-repeat;
+    margin: -1%;
+  }
 }

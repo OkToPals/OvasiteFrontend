@@ -191,7 +191,7 @@ export default function Signup() {
 <img src='Logo.jpg' width={70} style={{marginLeft:'20%',marginTop:'10px'}}/>
 </Link>  
 
-<img src='/Frame756.jpg' width={400} style={{marginLeft:'20%',marginTop:'40px'}}/>
+<img src='/Frame756.jpg' width={320} style={{marginLeft:'20%',marginTop:'40px'}}/>
         <div className="flex flex-1 flex-col justify-center px-4 py-2 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
@@ -277,7 +277,7 @@ export default function Signup() {
 <Link href='/home'>
 <img src='Logo.jpg' width={70} style={{marginLeft:'20%',marginTop:'10px'}}/>
 </Link>  
-<img src='/Frame7562.jpg' width={400} style={{marginLeft:'20%',marginTop:'40px'}}/>
+<img src='/Frame7562.jpg' width={320} style={{marginLeft:'20%',marginTop:'40px'}}/>
         <div className="flex flex-1 flex-col justify-center px-4 py-2 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
@@ -396,7 +396,7 @@ export default function Signup() {
 <Link href='/home'>
 <img src='Logo.jpg' width={70} style={{marginLeft:'20%',marginTop:'10px'}}/>
 </Link>  
-<img src='/Frame7563.jpg' width={400} style={{marginLeft:'20%',marginTop:'40px'}}/>
+<img src='/Frame7563.jpg' width={320} style={{marginLeft:'20%',marginTop:'40px'}}/>
         <div className="flex flex-1 flex-col justify-center px-4 py-2 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
@@ -450,7 +450,7 @@ export default function Signup() {
 <Link href='/home'>
 <img src='Logo.jpg' width={70} style={{marginLeft:'20%',marginTop:'10px'}}/>
 </Link>  
-<img src='/Frame7564.jpg' width={400} style={{marginLeft:'20%',marginTop:'40px'}}/>
+<img src='/Frame7564.jpg' width={320} style={{marginLeft:'20%',marginTop:'40px'}}/>
         <div className="flex flex-1 flex-col justify-center px-4 py-2 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
@@ -530,7 +530,7 @@ export default function Signup() {
 <Link href='/home'>
 <img src='Logo.jpg' width={70} style={{marginLeft:'20%',marginTop:'10px'}}/>
 </Link>  
-<img src='/Frame7567.jpg' width={400} style={{marginLeft:'20%',marginTop:'40px'}}/>
+<img src='/Frame7567.jpg' width={320} style={{marginLeft:'20%',marginTop:'40px'}}/>
 
 <h1 className="title-font font-bold text-xl text-[#001233] mb-4 mt-10" style={{marginLeft:'20%'}}>Business Logo</h1>
 <div style={{ display: 'flex', flexDirection: 'row', marginTop: '40px', marginLeft: '20%' }}>
@@ -590,7 +590,7 @@ export default function Signup() {
 <Link href='/home'>
 <img src='Logo.jpg' width={70} style={{marginLeft:'20%',marginTop:'10px'}}/>
 </Link>  
-<img src='/Frame7568.jpg' width={400} style={{marginLeft:'20%',marginTop:'40px'}}/>
+<img src='/Frame7568.jpg' width={320} style={{marginLeft:'20%',marginTop:'40px'}}/>
         <div className="flex flex-1 flex-col justify-center px-4 py-2 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
