@@ -34,22 +34,25 @@ const Header = () => {
   return (
 <header className=" body-font fixed w-full z-50">
   <div  className="custom-container">
-<div class="text-[#1F1F1F] body-font" style={{backgroundColor:'white'}}>
-  <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-    <a class="flex title-font font-bold items-center mb-4 md:mb-0 " style={{color:'rgb(256, 89, 90)',marginLeft:'50px'}}>
+<div className="text-[#1F1F1F] body-font" style={{backgroundColor:'white'}}>
+  <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+    <a className="flex title-font font-bold items-center mb-4 md:mb-0 " style={{color:'rgb(256, 89, 90)',marginLeft:'50px'}}>
       <img src='/Logo.jpg' width={60} />
     </a>
-    <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center gap-4">
-      <Link class="mr-5 hover:text-gray-900" href='/home'>Home</Link>
-      <Link class="mr-5 hover:text-gray-900" href='/About'>About</Link>
-      <Link class="mr-5 hover:text-gray-900" href='/features'>Features</Link>
-      <Link class="mr-5 hover:text-gray-900" href='/pricing'>Pricing</Link>
+    <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center gap-4">
+      <Link className="mr-5 hover:text-[#4CAF50]" href='/home'>Home</Link>
+      <Link className="mr-5 hover:text-[#4CAF50]" href='/About'>About</Link>
+      <Link className="mr-5 hover:text-[#4CAF50]" href='/features'>Features</Link>
+      <Link className="mr-5 hover:text-[#4CAF50]" href='/pricing'>Pricing</Link>
     </nav>
     <Link href="/signin"> <button class="inline-flex items-centerborder-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"  style={{marginRight:'10px'}}>Sign in
      </button></Link>
    
-     <Link href="/signup"> <button class="inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0" style={{backgroundColor:'rgb(255, 89, 90)',color:'white'}}>Get Started
-    </button></Link>
+     <Link href="/signup"> 
+     <button className="inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-[#fe5000]
+     rounded text-base mt-4 md:mt-0" style={{backgroundColor:'rgb(255, 89, 90)',color:'white'}}>Get Started
+    </button>
+    </Link>
   </div>
 </div></div>
 
