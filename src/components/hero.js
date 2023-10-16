@@ -22,7 +22,7 @@ export const Hero = () => {
   </Link>
   <Link href="/features">
   <button style={{marginRight:'30px',border:'1px solid #001233'}} className="items-center  border-0 py-2 px-6 focus:outline-none 
-   rounded text-[#001233] font-medium "  >Learn More
+   rounded text-[#001233] font-medium hover:bg-gray-300" >Learn More
   </button>
   </Link>
 </div>

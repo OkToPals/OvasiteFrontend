@@ -45,7 +45,7 @@ const Header = () => {
       <Link className="mr-5 hover:text-[#4CAF50]" href='/features'>Features</Link>
       <Link className="mr-5 hover:text-[#4CAF50]" href='/pricing'>Pricing</Link>
     </nav>
-    <Link href="/signin"> <button class="inline-flex items-centerborder-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"  style={{marginRight:'10px'}}>Sign in
+    <Link href="/signin"> <button class="inline-flex items-centerborder-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"  style={{marginRight:'10px'}}>Sign In
      </button></Link>
    
      <Link href="/signup"> 
@@ -60,8 +60,8 @@ const Header = () => {
  <div style={linkStyles} id='divs'>
  <span className=" text-[#FF595A] text-2xl font-bold cursor-pointer" style={{marginRight:'70px'}}>OvaSite</span>
  
-  <div><Link className="hover:text-[#fe5000] cursor-pointer text-[#1F1F1F]" href='/signin'  onClick={closeMenu}>Sign In</Link>
-</div>
+  {/* <div><Link className="hover:text-[#fe5000] cursor-pointer text-[#1F1F1F]" href='/signin'  onClick={closeMenu}>Sign In</Link>
+</div> */}
 <div><Link href="/signup">
   <button style={{marginRight:'30px'}} className="items-center bg-[#FF595A] border-0 py-2 px-6 focus:outline-none 
     hover:bg-[#fe5000] rounded text-[#001233]  font-bold"  onClick={closeMenu}>Get Started
