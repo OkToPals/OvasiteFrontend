@@ -46,7 +46,7 @@ export const EditEmployeeModal = ({handleCancelBtn, handleSendInviteBtn, isInvit
         <div className="bg-white border w-[96%] md:w-[50%] pb-8 mx-auto my-8 flex flex-col h-fit overflow-y-scroll ">
             {/* header */}
             <div className="fixed flex flex-row justify-between px-[0.5rem] bg-ova_white h-16 w-[96%] md:w-[50%] border-b">
-                <p className="text-center my-4 font-semibold text-[1.5em]" >Edit: Invite details</p>
+                <p className="text-center my-4 font-semibold text-[1.5em]" >Edit: User details</p>
                 <button className="" onClick={handleCancelBtn}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path d="M1 17L17 1M1 1L17 17" stroke="red" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -57,10 +57,10 @@ export const EditEmployeeModal = ({handleCancelBtn, handleSendInviteBtn, isInvit
             <div className="flex flex-col px-[2rem] mt-20">
                     {/* invitee email */}
                 <div className="flex flex-col">
-                    <label htmlFor="userEmail" className="text-[1.25rem]">Email <span className="text-red-500">*</span></label>
-                    <input type="email" placeholder="email"  id="userEmail"
+                    <label htmlFor="userFullname" className="text-[1.25rem]">Fullname <span className="text-red-500">*</span></label>
+                    <input type="text" placeholder="Full name"  id="userFullname"
                         className="border-[1px] border-ova_grey_border p-[1rem] rounded-md"
-                        onChange={(e) => setinviteEmail(e.target.value)}
+                        onChange={(e) => setFullname(e.target.value)}
                     />
                 </div>
 
@@ -69,7 +69,7 @@ export const EditEmployeeModal = ({handleCancelBtn, handleSendInviteBtn, isInvit
                     <label htmlFor="sector" className="text-[1.25rem]">Role <span className="text-red-500">*</span></label>
                     <select name="sector" id="sector" 
                         className="border-[1px] border-ova_grey_border p-[1rem] rounded-md"
-                        onChange={(e) => setInviteRole(e.target.value)}
+                        onChange={(e) => setRole(e.target.value)}
                         >
                         <option value="">-Select Role-</option>
                         <option value="admin">ADMIN</option>
