@@ -9,6 +9,11 @@ import { useForm } from "react-hook-form";
 
 function PageOne() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible((prev) => !prev);
+  };
   
 
   const {
@@ -117,7 +122,15 @@ function PageOne() {
                             className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-[#001233] focus:ring-[#001233] block w-full rounded-md sm:text-sm focus:ring-1"
                             placeholder="password"
                             {...register("password")}
+                            
                           />
+                          <img
+                            src={passwordVisible ? 'show.png' : 'hide.png'}
+                            alt={passwordVisible ? 'Show Password' : 'Hide Password'}
+                            className="absolute top-1/2 transform -translate-y-1/2 right-2 w-5 h-5 cursor-pointer"
+                            onClick={togglePasswordVisibility}
+                          />
+    
                         </div>
                       </div>
 

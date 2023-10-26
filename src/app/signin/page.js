@@ -99,15 +99,12 @@ export default function Signin() {
                             {...register("password")}
                           />
                           <img
-                            src={passwordVisible ? "show.png" : "hide.png"}
-                            alt={
-                              passwordVisible
-                                ? "Show Password"
-                                : "Hide Password"
-                            }
+                            src={passwordVisible ? 'show.png' : 'hide.png'}
+                            alt={passwordVisible ? 'Show Password' : 'Hide Password'}
                             className="absolute top-1/2 transform -translate-y-1/2 right-2 w-5 h-5 cursor-pointer"
                             onClick={togglePasswordVisibility}
                           />
+    
                         </div>
 
                         <div className="flex items-center justify-between">
