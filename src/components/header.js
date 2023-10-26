@@ -40,10 +40,10 @@ const Header = () => {
       <img src='/Logo.jpg' width={60} />
     </a>
     <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center gap-4">
-      <Link class="mr-5 hover:text-gray-900" href='/home'>Home</Link>
-      <Link class="mr-5 hover:text-gray-900" href='/About'>About</Link>
-      <Link class="mr-5 hover:text-gray-900" href='/features'>Features</Link>
-      <Link class="mr-5 hover:text-gray-900" href='/pricing'>Pricing</Link>
+      <Link class="mr-5 hover:text-[#FF595A]" href='/home'>Home</Link>
+      <Link class="mr-5 hover:text-[#FF595A]" href='/About'>About</Link>
+      <Link class="mr-5 hover:text-[#FF595A]" href='/features'>Features</Link>
+      <Link class="mr-5 hover:text-[#FF595A]" href='/pricing'>Pricing</Link>
     </nav>
     <Link href="/signin"> <button class="inline-flex items-centerborder-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"  style={{marginRight:'10px'}}>Sign in
      </button></Link>

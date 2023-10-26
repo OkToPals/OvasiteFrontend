@@ -116,7 +116,7 @@ function PageTwo() {
                           border: "1px solid #E0E0E0",
                         }}
                         className=" border-0 py-2 px-6 focus:outline-none 
-                rounded text-[#001233] font-medium "
+                        rounded text-[#001233] font-medium "
                       >
                         {" "}
                         Back
@@ -126,7 +126,7 @@ function PageTwo() {
                         onClick={handleNext}
                         style={{}}
                         className=" bg-[#FF595A] border-0 py-2 px-6 focus:outline-none 
-                  hover:bg-[#fe5000] rounded text-[#001233]  font-bold "
+                      hover:bg-[#fe5000] rounded text-[#001233]  font-bold "
                       >
                         Next
                       </button>
