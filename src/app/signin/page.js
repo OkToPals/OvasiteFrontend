@@ -161,7 +161,7 @@ export default function Signin() {
                         <p className="text-[#001233] text-sm mt-3 text-center">
                           Don't have an account?{" "}
                           <Link
-                            href="/signin"
+                            href="/signup"
                             className="font-bold text-[#FF595A] hover:text-[#001233]"
                           >
                             Sign Up.
