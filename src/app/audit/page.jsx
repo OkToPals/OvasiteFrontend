@@ -4,6 +4,8 @@ import { SidebarNav } from "@/components/SidebarNav";
 import { useEffect, useState } from "react";
 import { audit_trail_dummy_data } from "./dummyData";
 import { AuditCard } from "@/components/AuditCard";
+import axios_instance from "@/axiosInstance";
+import { get_all_audits_url } from "@/api_utils";
 
 const Audit = () => {
 
@@ -31,8 +33,27 @@ const Audit = () => {
     // alert("menu clicked")
   }
 
+  const get_all_audits = async() => {
+    try {
+        const response = await axios_instance.get(get_all_audits_url, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("ovasite_jwt")}`
+          }
+        })
+        console.log(response);
+        
+    } catch (error) {
+
+        console.log(error);
+        
+    }
+}
+
   useEffect(() => {
+    get_all_audits()
     setData(audit_trail_dummy_data)
+    const jwt = localStorage.getItem("ovasite_jwt")
+    console.log(jwt);
   }, []);
 
   // handle next button

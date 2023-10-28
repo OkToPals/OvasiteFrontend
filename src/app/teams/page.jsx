@@ -1,13 +1,12 @@
 'use client'
 
+import { EditEmployeeModal } from "@/components/EditEmployeeModal";
 import { SendInviteModal } from "@/components/SendInviteModal";
 import { SidebarNav } from "@/components/SidebarNav";
 import TeamCard from "@/components/TeamCard";
 import { useEffect, useState } from "react";
 
 const TeamsDashboard = () => {
-
-    const [showInviteModal, setShowInviteModal] = useState(false)
 
   // pagination variables
   const [data, setData] = useState([]);
@@ -21,7 +20,10 @@ const TeamsDashboard = () => {
   const [page_no_limit, set_page_no_limit] = useState(3);
   const [max_page_no_limit, set_max_page_no_limit] = useState(3);
   const [min_page_no_limit, set_min_page_no_limit] = useState(0);
+
   const [togglemenu, setToggleMenu] = useState(false)
+  const [showInviteModal, setShowInviteModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
 
   const array_of_pages = [...Array(total_page_no).keys()].map((i) => i + 1);
 
@@ -35,6 +37,11 @@ const TeamsDashboard = () => {
   const ToggleInviteModal = () => {
     setShowInviteModal(!showInviteModal)
     // alert("menu clicked")
+  }
+
+  const ToggleEditModal = () => {
+    // alert("edit modal")
+    setShowEditModal(!showEditModal)
   }
 
   useEffect(() => {
@@ -206,7 +213,8 @@ const TeamsDashboard = () => {
                     name={item.name} 
                     phone={item.phone} 
                     email={item.email}
-                    id={index}
+                    id={item.id ? item.id : index}
+                    toggleEditModal={ToggleEditModal}
                 />)
             }
           </div>
@@ -277,6 +285,16 @@ const TeamsDashboard = () => {
         handleCreateBtn={() => null} 
         /> : null
       }
+
+      {
+        showEditModal ? <EditEmployeeModal 
+        handleCancelBtn={ToggleEditModal} 
+        isEditModalActive={true} 
+        handleCreateBtn={() => null} 
+        /> : null
+      }
+
+     
     </main>
   );
 };

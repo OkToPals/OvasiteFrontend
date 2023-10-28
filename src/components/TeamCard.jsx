@@ -1,23 +1,31 @@
 'use client'
 
-import { delete_an_employee_url } from "@/api_utils"
-import Image from "next/image"
+import { delete_employee_url } from "@/api_utils"
+import { EditEmployeeModal } from "./EditEmployeeModal"
+import { useState } from "react"
 
-const TeamCard = ({profileImage, name, phone, email, id }) => {  
+const TeamCard = ({profileImage, name, phone, email, id, toggleEditModal }) => { 
 
-    const employee_id = 1
+    const [loading, setLoading] = useState(false)
+
 
     const handleDeleteEmployee = () => {
-        fetch(delete_an_employee_url + employee_id, {
+        fetch(delete_employee_url + id, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
             }
-        }).then(prom => prom.json()).then(res => console.log(res)).catch(err => console.log(err))
+        }).then(prom => prom.json()).then(res => {
+            console.log(res)
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
+
   return (
-    // <article className=" w-1/4 relative h-[27.7rem] p-4 border-[#ddd] border rounded-lg bg-ova_white">
+    <>
+    {/* <article className=" w-1/4 relative h-[27.7rem] p-4 border-[#ddd] border rounded-lg bg-ova_white"> */}
     <article className="w-[100%] mini:w-[48%] md:w-[48%] lg:w-[32%] h-[27.7rem] shadow-sm p-4 border-[#ddd] bg-white border rounded-lg">
         {/* profile pics */}
         <div role="img" aria-label="Profile picture of Jane Doe" 
@@ -45,31 +53,33 @@ const TeamCard = ({profileImage, name, phone, email, id }) => {
         <div className="flex flex-row justify-around mt-[1rem]">
             {/* edit button */}
             <button
-            aria-label="Edit button"
-            className="flex flex-row items-center outline-none  border-none"
-            >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="33"
-                height="32"
-                viewBox="0 0 33 32"
-                fill="none"
-            >
-                <path
-                d="M14.6739 6.66666H8.00724C7.3 6.66666 6.62172 6.94761 6.12162 7.44771C5.62153 7.9478 5.34058 8.62608 5.34058 9.33333V24C5.34058 24.7072 5.62153 25.3855 6.12162 25.8856C6.62172 26.3857 7.3 26.6667 8.00724 26.6667H22.6739C23.3812 26.6667 24.0594 26.3857 24.5595 25.8856C25.0596 25.3855 25.3406 24.7072 25.3406 24V17.3333M23.4552 4.78133C23.7012 4.52663 23.9955 4.32348 24.3208 4.18372C24.6462 4.04396 24.9961 3.9704 25.3502 3.96732C25.7043 3.96425 26.0554 4.03172 26.3831 4.1658C26.7108 4.29988 27.0086 4.49789 27.259 4.74827C27.5093 4.99865 27.7074 5.29639 27.8414 5.62412C27.9755 5.95184 28.043 6.30298 28.0399 6.65706C28.0368 7.01114 27.9633 7.36106 27.8235 7.6864C27.6838 8.01175 27.4806 8.306 27.2259 8.55199L15.7779 20H12.0072V16.2293L23.4552 4.78133Z"
-                stroke="black"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                />
-            </svg>
-            <span className=" text-ova_grey">Edit</span>
+                aria-label="Edit button"
+                className="flex flex-row items-center outline-none  border-none"
+                onClick={toggleEditModal}
+                >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="33"
+                    height="32"
+                    viewBox="0 0 33 32"
+                    fill="none"
+                >
+                    <path
+                    d="M14.6739 6.66666H8.00724C7.3 6.66666 6.62172 6.94761 6.12162 7.44771C5.62153 7.9478 5.34058 8.62608 5.34058 9.33333V24C5.34058 24.7072 5.62153 25.3855 6.12162 25.8856C6.62172 26.3857 7.3 26.6667 8.00724 26.6667H22.6739C23.3812 26.6667 24.0594 26.3857 24.5595 25.8856C25.0596 25.3855 25.3406 24.7072 25.3406 24V17.3333M23.4552 4.78133C23.7012 4.52663 23.9955 4.32348 24.3208 4.18372C24.6462 4.04396 24.9961 3.9704 25.3502 3.96732C25.7043 3.96425 26.0554 4.03172 26.3831 4.1658C26.7108 4.29988 27.0086 4.49789 27.259 4.74827C27.5093 4.99865 27.7074 5.29639 27.8414 5.62412C27.9755 5.95184 28.043 6.30298 28.0399 6.65706C28.0368 7.01114 27.9633 7.36106 27.8235 7.6864C27.6838 8.01175 27.4806 8.306 27.2259 8.55199L15.7779 20H12.0072V16.2293L23.4552 4.78133Z"
+                    stroke="black"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    />
+                </svg>
+                <span className=" text-ova_grey">Edit</span>
             </button>
 
         {/* delete button */}
             <button
-            aria-label="Delete button "
+            aria-label="Delete button"
             className="flex flex-row items-center outline-none  border-none"
+            onClick={handleDeleteEmployee}
             >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -95,11 +105,12 @@ const TeamCard = ({profileImage, name, phone, email, id }) => {
                 </clipPath>
                 </defs>
             </svg>
-            <span className=" text-ova_grey"> Delete</span>
+            <span className=" text-ova_grey" onClick={handleDeleteEmployee}>Delete</span>
             </button>
         </div>
 
     </article>
+      </>
   )
 }
 

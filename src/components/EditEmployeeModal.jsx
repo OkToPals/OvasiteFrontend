@@ -1,47 +1,60 @@
+import { update_employee_url } from "@/api_utils"
 import { useState } from "react"
 
-export const EditEmployeeModal = ({handleCancelBtn, handleSendInviteBtn, isInviteModalActive}) => {
+export const EditEmployeeModal = ({handleCancelBtn, isEditModalActive, id}) => {
 
     const [fullname, setFullname] = useState('')
-    const [role, setRole] = useState('')
+    const [role, setRole] = useState('')    
+    const [loading, setLoading] = useState(false)
 
     const handleEndPoint = (url, method, body) => {
+        setLoading(true)
         fetch(url, {
             method: method,
             headers: {
                 "Content-Type": "application/json"
             },
             body: body ? JSON.stringify(body) : null
-        }).then(prom => prom.json()).then(res => console.log(res)).catch(err => console.log(err))
+        }).then(prom => prom.json()).then(res => {
+            console.log(res)
+            setLoading(false)
+        }).catch(err => {
+            console.log(err)
+            setLoading(false)
+        })
     }
 
     const handleUpdateEmployeeButton = () => {
 
         if (fullname) {
-            const url = update_an_employee_url
+            
+            const url = update_employee_url + id
             const method = "PATCH"
             const body = {
                 fullName: fullname
             }
             handleEndPoint(url, method, body)
-        }
-
-        if (role) {
-            const url = change_an_employee_role_url
+        } else if (role) {
+            const url = update_employee_role_in_org_url + id
             const method = "PATCH"
             const body = {
                 role: role
             }
             handleEndPoint(url, method, body)
+        } else {
+            alert("No action selected")
+            setLoading(false)
         }
 
     }
+
+    
 
     return (
       <div role="modal" aria-label="Create project" 
         className={`fixed inset-0 top-0 bottom-0 left-0 right-0 rounded-md max-h-screen z-50 
         transition-all duration-500 ease-in-out bg-ova_grey
-        ${isInviteModalActive ? 'opacity-100' : 'opacity-0'}
+        ${isEditModalActive ? 'opacity-100' : 'opacity-0'}
         `}>
         <div className="bg-white border w-[96%] md:w-[50%] pb-8 mx-auto my-8 flex flex-col h-fit overflow-y-scroll ">
             {/* header */}
@@ -80,7 +93,7 @@ export const EditEmployeeModal = ({handleCancelBtn, handleSendInviteBtn, isInvit
                 <div className="flex flex-row justify-end">
                     <button 
                         className="w-[96%] md:w-[30%] px-4 py-2 my-8 bg-peach_primary rounded-md text-white" 
-                        onClick={handleUpdateEmployeeButton}>Update
+                        onClick={handleUpdateEmployeeButton}>{loading ? "Loading..." : "Update"}
                     </button>
                 </div>
 
