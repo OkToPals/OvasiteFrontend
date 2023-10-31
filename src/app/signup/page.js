@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client'
 
 import React from 'react';
@@ -649,4 +650,18 @@ export default function Signup() {
 </div>
     </>
   )
+=======
+import React from "react";
+
+import "@/styles/styles.css";
+import PagesController from "@/components/signup/PagesController";
+
+export default function Signup() {
+
+  return (
+    <>
+      <PagesController />
+    </>
+  );
+>>>>>>> origin/axios-integration
 }

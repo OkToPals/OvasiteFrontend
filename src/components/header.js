@@ -40,15 +40,26 @@ const Header = () => {
       <img src='/Logo.jpg' width={60} />
     </a>
     <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center gap-4">
+<<<<<<< HEAD
       <Link class="mr-5 hover:text-gray-900" href='/home'>Home</Link>
       <Link class="mr-5 hover:text-gray-900" href='/About'>About</Link>
       <Link class="mr-5 hover:text-gray-900" href='/features'>Features</Link>
       <Link class="mr-5 hover:text-gray-900" href='/pricing'>Pricing</Link>
+=======
+      <Link class="mr-5 hover:text-[#FF595A]" href='/home'>Home</Link>
+      <Link class="mr-5 hover:text-[#FF595A]" href='/About'>About</Link>
+      <Link class="mr-5 hover:text-[#FF595A]" href='/features'>Features</Link>
+      <Link class="mr-5 hover:text-[#FF595A]" href='/pricing'>Pricing</Link>
+>>>>>>> origin/axios-integration
     </nav>
     <Link href="/signin"> <button class="inline-flex items-centerborder-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"  style={{marginRight:'10px'}}>Sign in
      </button></Link>
    
+<<<<<<< HEAD
      <Link href="/signup"> <button class="inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0" style={{backgroundColor:'rgb(255, 89, 90)',color:'white'}}>Get Started
+=======
+     <Link href="/signup"> <button class="inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-[#fe5000] rounded text-base mt-4 md:mt-0" style={{backgroundColor:'rgb(255, 89, 90)',color:'white'}}>Get Started
+>>>>>>> origin/axios-integration
     </button></Link>
   </div>
 </div></div>

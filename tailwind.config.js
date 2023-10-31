@@ -22,6 +22,7 @@ module.exports = {
         'bubble-gum': '#ff77e9',
         'bermuda': '#78dcca',
       },
+<<<<<<< HEAD
       colors: {
         navy_blue: '#001333',
         peach_primary: "#FF595A",
@@ -39,6 +40,8 @@ module.exports = {
       },screens: {
         'mini': '500px',
       }
+=======
+>>>>>>> origin/axios-integration
     },
   },
   plugins: [],
