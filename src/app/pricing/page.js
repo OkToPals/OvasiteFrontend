@@ -178,7 +178,7 @@ export default function pricing() {
           <button class="flex items-center mt-auto text-[#FF595A] bg-[#FFDEDE] border-0 py-2 px-4 w-full focus:outline-none hover:bg-[#fe5000] hover:text-white rounded">Subsribe
            
           </button>
-          <p class="text-xs text-gray-500 mt-3">Literally you probably have not heard of them jean shorts.</p>
+          <p class="text-xs text-[#1F1F1F] mt-3">Literally you probably have not heard of them jean shorts.</p>
         </div>
       </div>
     </div>

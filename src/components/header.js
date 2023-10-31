@@ -45,7 +45,7 @@ const Header = () => {
       <Link class="mr-5 hover:text-[#FF595A]" href='/features'>Features</Link>
       <Link class="mr-5 hover:text-[#FF595A]" href='/pricing'>Pricing</Link>
     </nav>
-    <Link href="/signin"> <button class="inline-flex items-centerborder-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"  style={{marginRight:'10px'}}>Sign in
+    <Link href="/signin"> <button class="inline-flex items-centerborder-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"  style={{marginRight:'10px'}}>Sign In
      </button></Link>
    
      <Link href="/signup"> <button class="inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-[#fe5000] rounded text-base mt-4 md:mt-0 bg-[#FF595A] text-[white]" >Get Started
