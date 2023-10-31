@@ -23,13 +23,6 @@ const Uses = () => {
 
 export default Uses;
 
-// Uses.PropTypes = {
-//     imageSrc: PropTypes.string.isRequired,
-//     title: PropTypes.string.isRequired,
-//     description: PropTypes.string.isRequired,
-//     buttonText1: PropTypes.string.isRequired,
-//     buttonText2: PropTypes.string.isRequired,
 
-// };
  
 

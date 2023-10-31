@@ -14,7 +14,7 @@ export const About = () => {
   <div id='aboutImage'>
     <div className='under'>
     <div id='smart'>
-      <h1 style={{fontSize:'35px',lineHeight:'50px',fontWeight:900}}>Your Partner in Smart Decision  Making</h1>  
+      <h1 style={{fontSize:'35px',lineHeight:'50px',fontWeight:900}}>Your Partner in <span className='text-[#FF595A]'>Smart Decision Making</span></h1>  
   <p style={{fontSize:'19px',lineHeight:'30px',fontWeight:'400',paddingTop:'30px'}}>Welcome to OvaSite! We are here to help you make smart decisions using the power of information. Our goal is to make it easy for you to collect, store, and understand data, so you can make choices that lead to success</p>
   <Link href="/signup">
   <button style={{marginRight:'30px',marginTop:'30px'}} className="items-center bg-[#FF595A] border-0 py-2 px-6 focus:outline-none 
