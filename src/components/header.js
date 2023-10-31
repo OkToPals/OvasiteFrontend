@@ -48,7 +48,7 @@ const Header = () => {
     <Link href="/signin"> <button class="inline-flex items-centerborder-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"  style={{marginRight:'10px'}}>Sign in
      </button></Link>
    
-     <Link href="/signup"> <button class="inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0" style={{backgroundColor:'rgb(255, 89, 90)',color:'white'}}>Get Started
+     <Link href="/signup"> <button class="inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-[#fe5000] rounded text-base mt-4 md:mt-0" style={{backgroundColor:'rgb(255, 89, 90)',color:'white'}}>Get Started
     </button></Link>
   </div>
 </div></div>

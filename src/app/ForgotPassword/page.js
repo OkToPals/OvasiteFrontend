@@ -27,11 +27,13 @@ export default function ForgotPassword() {
   return (
     <>
       <div>
+        <Link href='/home'>
         <img
           src="Logo.jpg"
           width={70}
           style={{ marginLeft: "10%", marginTop: "10px", paddingRight: "10px" }}
         />
+        </Link>
 
         <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-md mt-6">

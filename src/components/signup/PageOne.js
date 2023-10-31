@@ -29,12 +29,13 @@ function PageOne() {
 
     axiosInstance
       .post("auth/register", data)
-      .then((response) => console.log(response))
+      .then((response) => {
+        console.log(response)
+        handleNext()
+      })
       .catch((e) => console.log(e));
 
-    // localStorage.setItem('email', data.email);
-    // localStorage.setItem('password', data.password);
-    handleNext()
+    
   };
 
   // ================================================================================
@@ -43,9 +44,9 @@ function PageOne() {
     setCurrentStep(currentStep + 1);
   };
 
-  const handleBack = () => {
-    setCurrentStep(currentStep - 1);
-  };
+  // const handleBack = () => {
+  //   setCurrentStep(currentStep - 1);
+  // };
   //! ================================================================================
 
   const options = [
