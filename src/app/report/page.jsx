@@ -68,7 +68,7 @@ function page() {
             rows="10"
             value={input4}
             onChange={(e) => setInput4(e.target.value)}
-            className=" w-full p-2 bg-white border-gray-300 rounded-md"
+            className=" w-full p-2 bg-white rounded-md border-2 border-gray-300 "
           ></textarea>
         </div>
 
@@ -123,8 +123,13 @@ function page() {
           ></textarea>
         </div>
         <div className="flex justify-end gap-4">
-          <button className="outline-black p-2 bg-red-500 text-xs rounded-md text-white">Generate Report</button>
-          <button onClick={handleDownload} className="bg-[#FF595A] text-white p-2 rounded-md text-xs">
+          <button className="outline-black p-2 bg-red-500 text-xs rounded-md text-white">
+            Generate Report
+          </button>
+          <button
+            onClick={handleDownload}
+            className="bg-[#FF595A] text-white p-2 rounded-md text-xs"
+          >
             Download Report
           </button>
         </div>

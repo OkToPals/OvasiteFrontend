@@ -1,13 +1,13 @@
 'use client'
-import { CreateProject } from "@/components/CreateProject";
-import { ProjectCard } from "@/components/ProjectCard";
+
+import { SendInviteModal } from "@/components/SendInviteModal";
 import { SidebarNav } from "@/components/SidebarNav";
 import TeamCard from "@/components/TeamCard";
 import { useEffect, useState } from "react";
 
 const TeamsDashboard = () => {
 
-    const [showCreateProjectModal, setShowCreateProjectModal] = useState(false)
+    const [showInviteModal, setShowInviteModal] = useState(false)
 
   // pagination variables
   const [data, setData] = useState([]);
@@ -30,6 +30,10 @@ const TeamsDashboard = () => {
 
   const ToggleMenu = () => {
     setToggleMenu(!togglemenu)
+    // alert("menu clicked")
+  }
+  const ToggleInviteModal = () => {
+    setShowInviteModal(!showInviteModal)
     // alert("menu clicked")
   }
 
@@ -172,7 +176,7 @@ const TeamsDashboard = () => {
                     Invite to your organisation your members by email
                 </h2>
                 <button
-                    onClick={() => setShowCreateProjectModal(true) }
+                    onClick={ToggleInviteModal }
                         aria-label="Create Project"
                         className=" w-[80%] mx-auto mt-[0.75rem] flex flex-row justify-center items-center bg-peach_primary py-[1rem] px-[1.25rem] rounded-[0.5rem]"
                     >
@@ -189,7 +193,7 @@ const TeamsDashboard = () => {
                         />
                         </svg>
                         <span className="text-ova_white ml-2">
-                        Create Project
+                        Invite New Users
                         </span>
                     </button>
                 
@@ -202,6 +206,7 @@ const TeamsDashboard = () => {
                     name={item.name} 
                     phone={item.phone} 
                     email={item.email}
+                    id={index}
                 />)
             }
           </div>
@@ -267,8 +272,8 @@ const TeamsDashboard = () => {
       </section>
 
       {
-        showCreateProjectModal ? <CreateProject 
-        handleCancelBtn={() => setShowCreateProjectModal(false)} isCreateProjectActive={true} 
+        showInviteModal ? <SendInviteModal 
+        handleCancelBtn={ToggleInviteModal} isInviteModalActive={true} 
         handleCreateBtn={() => null} 
         /> : null
       }
