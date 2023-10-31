@@ -25,7 +25,7 @@ function PageOne() {
 
   const onSubmit = (data, e) => {
     e.preventDefault();
-    console.log("form data", data);
+    // console.log("form data", data);
 
     axiosInstance
       .post("auth/register", data)
@@ -114,16 +114,16 @@ function PageOne() {
                             Password
                           </span>
                         </label>
-                        <div className="mt-2">
+                        <div className="mt-2 relative">
                           <input
                             id="password"
-                            type="password"
+                            name="password"
+                            type={passwordVisible ? "text" : "password"}
                             autoComplete="current-password"
                             required
                             className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-[#001233] focus:ring-[#001233] block w-full rounded-md sm:text-sm focus:ring-1"
-                            placeholder="password"
+                            placeholder="Password"
                             {...register("password")}
-                            
                           />
                           <img
                             src={passwordVisible ? 'show.png' : 'hide.png'}
@@ -133,6 +133,7 @@ function PageOne() {
                           />
     
                         </div>
+
                       </div>
 
                       <div>
