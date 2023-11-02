@@ -1,12 +1,4 @@
-<<<<<<< HEAD
-'use client'
 
-import React from 'react';
-import { useState } from 'react';
-import Link from 'next/link';
-import '@/styles/styles.css';
-
-=======
 "use client";
 
 import React from "react";
@@ -15,7 +7,7 @@ import Link from "next/link";
 import "@/styles/styles.css";
 import { useForm } from "react-hook-form";
 import axiosInstance from "@/lib/axios";
->>>>>>> origin/axios-integration
+
 
 export default function Signin() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -24,7 +16,7 @@ export default function Signin() {
     setPasswordVisible((prev) => !prev);
   };
 
-<<<<<<< HEAD
+
 
   return (
     <>
@@ -140,7 +132,7 @@ export default function Signin() {
 </div>
     </>
   )
-=======
+
   // ================================================================
 
   const {
@@ -306,5 +298,5 @@ export default function Signin() {
       </div>
     </>
   );
->>>>>>> origin/axios-integration
+
 }

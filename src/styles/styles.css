@@ -1,7 +1,7 @@
 /* styles/reset.css */
 
 .span{
-<<<<<<< HEAD
+
     font-size:30px;cursor:pointer;
 }
 #header{
@@ -30,7 +30,7 @@
 #ul{
    background-color: #ffffff;
    text-align: center;padding: 5px;
-=======
+
   font-size:30px;cursor:pointer;
 }
 #header{
@@ -59,12 +59,12 @@ margin-right: 20px;
 #ul{
  background-color: #ffffff;
  text-align: center;padding: 5px;
->>>>>>> origin/axios-integration
+
 }
 
 
 
-<<<<<<< HEAD
+
   @media screen and (max-width: 800px) {
     #header {
       display: block;
@@ -173,9 +173,11 @@ ul li{
 #wider{
   display: none;
 }
+}
 #smaller{
   display: block;
-=======
+}
+
 @media screen and (max-width: 800px) {
   #header {
     display: block;
@@ -286,12 +288,12 @@ display: none;
 }
 #smaller{
 display: block;
->>>>>>> origin/axios-integration
+
 }
 }
 
 #footz{
-<<<<<<< HEAD
+
   background-image: url(/info.jpg);
   background-repeat: no-repeat;
   background-size: cover;
@@ -330,7 +332,7 @@ display: block;
 #background2{
   background-color: wheat;
  padding: 30px;
-=======
+
 background-image: url(/info.jpg);
 background-repeat: no-repeat;
 background-size: cover;
@@ -369,12 +371,12 @@ width: 50%;
 #background2{
 background-color: wheat;
 padding: 30px;
->>>>>>> origin/axios-integration
+
 }
 
 
 @media screen and (max-width: 800px) {
-<<<<<<< HEAD
+
   .abouts > div{
     width: 100%;
     border:1px solid rgb(255, 89, 90);
@@ -509,7 +511,7 @@ flex-direction: column-reverse;
   #frame22 > div{
 width: 100%;
   }
-=======
+
 .abouts > div{
   width: 100%;
   border:1px solid rgb(255, 89, 90);
@@ -652,12 +654,12 @@ text-align: left !important;
 #frame22 > div{
 width: 100%;
 }
->>>>>>> origin/axios-integration
+
 
 }
 
 @media (max-width: 600px) {
-<<<<<<< HEAD
+
   #frame2> div{
     margin-right: 0;
   }
@@ -679,7 +681,7 @@ width: 100%;
   #hero{
     margin: 0;
   }
-=======
+
 #frame2> div{
   margin-right: 0;
 }
@@ -701,13 +703,13 @@ width: 100%;
 #hero{
   margin: 0;
 }
->>>>>>> origin/axios-integration
+
 
 
 }
 
 #sect{
-<<<<<<< HEAD
+
   height: 500px;
   background-image: url(/Frame161.jpg);
   background-repeat: no-repeat;
@@ -719,7 +721,7 @@ width: 100%;
   background-image: url(/Vector64.jpg);
   height: 700px;
   background-repeat: no-repeat;
-=======
+
 height: 500px;
 background-image: url(/Frame161.jpg);
 background-repeat: no-repeat;
@@ -735,7 +737,7 @@ margin: 30px;
 background-image: url(/Vector64.jpg);
 height: 700px;
 background-repeat: no-repeat;
->>>>>>> origin/axios-integration
+
 background-size: cover;
 display: flex;
 flex-direction: column;
@@ -743,7 +745,7 @@ flex-direction: column;
 }
 
 .under{
-<<<<<<< HEAD
+
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -788,7 +790,7 @@ margin-right: 50px;
 }
 #account > div{
   width: 50%;
-=======
+
 display: flex;
 flex-direction: row;
 flex-wrap: wrap;
@@ -833,12 +835,11 @@ flex-direction: row;
 }
 #account > div{
 width: 50%;
->>>>>>> origin/axios-integration
 }
 
 /* input file */
 .file-input-wrapper {
-<<<<<<< HEAD
+
   position: relative;
   overflow: hidden;
   display: inline-block;
@@ -862,7 +863,7 @@ width: 50%;
   display: flex;
   flex-direction: row;
   margin-left:20%;
-=======
+
 position: relative;
 overflow: hidden;
 display: inline-block;
@@ -887,7 +888,7 @@ cursor: pointer;
 display: flex;
 flex-direction: row;
 margin-left:20%;
->>>>>>> origin/axios-integration
+
 }
 #avater > div{
 padding: 20px;
@@ -899,10 +900,10 @@ margin-right: 10px;
 }
 
 .input-box {
-<<<<<<< HEAD
+
   display: flex;
   align-items: center;
-=======
+
 display: flex;
 align-items: center;
 }
@@ -1034,5 +1035,5 @@ margin-left: 0.25rem;
 .invalid {
 color: red;
 margin-left: 0.25rem;
->>>>>>> origin/axios-integration
+
 }

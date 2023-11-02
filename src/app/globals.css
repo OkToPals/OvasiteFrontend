@@ -8,7 +8,7 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-<<<<<<< HEAD
+
 
 body {
   scroll-behavior: smooth;
@@ -31,10 +31,7 @@ body {
   /* #006D44; */
 }
 
-.piechart-style {
-  
-=======
-@media (prefers-color-scheme: dark) {
+.piechart-style { @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
@@ -49,6 +46,5 @@ body {
       transparent,
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));
->>>>>>> origin/axios-integration
+    rgb(var(--background-start-rgb));}
 }
