@@ -25,7 +25,7 @@ export const delete_organization_url =`${base_url}/orgs/${orgs_id}`
 export const get_all_employees_url  =  `${base_url}/orgs/${orgs_id}/employees/`
 export const get_a_single_employee_url =  `${base_url}/orgs/${orgs_id}/employees/${employee_id}`
 export const update_an_employee_url  =  `${base_url}/orgs/${orgs_id}/employees/${employee_id}`
-export const delete_an_employee_url =  `${base_url}/orgs/${orgs_id}/employees/${employee_id}`
+export const delete_an_employee_url =  `${base_url}/orgs/${orgs_id}/employees/`
 export const change_an_employee_role_url =  `${base_url}/orgs/${orgs_id}/employees/${employee_id}/change-role`
 export const search_for_an_employer_url =  `${base_url}/orgs/${orgs_id}/employees/search?query=dan@123.com`
 export const get_employee_by_mail =  `${base_url}/orgs/${orgs_id}/employees?query=dan@123.com`

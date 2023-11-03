@@ -1,8 +1,20 @@
 'use client'
 
+import { delete_an_employee_url } from "@/api_utils"
 import Image from "next/image"
 
-const TeamCard = ({profileImage, name, phone, email }) => {  
+const TeamCard = ({profileImage, name, phone, email, id }) => {  
+
+    const employee_id = 1
+
+    const handleDeleteEmployee = () => {
+        fetch(delete_an_employee_url + employee_id, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(prom => prom.json()).then(res => console.log(res)).catch(err => console.log(err))
+    }
 
   return (
     // <article className=" w-1/4 relative h-[27.7rem] p-4 border-[#ddd] border rounded-lg bg-ova_white">

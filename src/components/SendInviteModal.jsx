@@ -59,7 +59,7 @@ export const SendInviteModal = ({handleCancelBtn, handleSendInviteBtn, isInviteM
                         >
                         <option value="">-Select Role-</option>
                         <option value="admin">ADMIN</option>
-                        <option value="guest">Guest</option>
+                        <option value="guest">GUESTT</option>
                     </select>
                 </div>
                 {/* send invite button */}

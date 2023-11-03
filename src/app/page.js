@@ -15,6 +15,7 @@ export default function Home() {
   };
 
   return (
+
     <main style={mainStyles}>
       <Header/>
       <Hero />
@@ -24,4 +25,6 @@ export default function Home() {
       <Footer />
     </main>
   );
+
 }
+
