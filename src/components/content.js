@@ -14,19 +14,19 @@ export const Content = () => {
 
 <div id='frame'>
 <div>
-<img src='/Frame8.jpg' id="frames"/>
+<img src='/Frame 8.svg' id="frames"/>
 </div>
 
 <div>
-<img src='/Frame9.jpg' id="frames"/>
+<img src='/Frame 9.svg' id="frames"/>
 </div>
 
 <div>
-<img src='/Frame10.jpg' id="frames"/>
+<img src='/Frame 10.svg' id="frames"/>
 </div>
 
 <div>
-<img src='/Frame11.jpg' id="frames"/>
+<img src='/Frame 11.svg' id="frames"/>
 </div>
 </div>
 

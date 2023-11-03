@@ -27,7 +27,7 @@ export const Hero = () => {
   </Link>
 </div>
 <div style={{marginTop:"4%"}}>
-  <img src='/Frame6.png' width={'85%'} style={{paddingLeft:'15%'}}/>
+  <img src='/Frame 6.svg' width={'85%'} style={{paddingLeft:'15%'}}/>
 </div>
   </div>
   );

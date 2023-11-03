@@ -23,7 +23,7 @@ export const About = () => {
   </Link>
   </div>
   <div id='image'>
-<img src='/flex.png' />
+<img src='/flex.svg' />
   </div>
   </div>
 
@@ -37,13 +37,13 @@ We continuously strive to improve OvaSite based on the feedback of our users. Th
 
 <div  id='circle'>
 <div style={{display:'flex',flexDirection:'row'}} >
-<img src='Maskgroup1.png' id='circle1'  width={50}/>
-<img src='Maskgroup2.png'  width={50}/>
+<img src='Mask group (1).svg' id='circle1'  width={50}/>
+<img src='Mask group (2).svg'  width={50}/>
 </div>
 
 <div style={{display:'flex',flexDirection:'row', marginTop:'20px'}}>
-<img src='Maskgroup.png' id='circle2' width={50}/>
-<img src='Maskgroup3.png '  width={50}/>
+<img src='Mask group.svg' id='circle2' width={50}/>
+<img src='Mask group (3).svg'  width={50}/>
 </div>
 
 <div style={{fontSize:'15px',lineHeight:'30px',fontWeight:600, textAlign:'center',paddingLeft:'60px',paddingRight:'60px'}}>
