@@ -4,10 +4,17 @@ import Barchart from "@/components/BarCharts";
 import Piechart from "@/components/PieChart";
 import Ringchart from "@/components/RingChart";
 import { SidebarNav } from "@/components/SidebarNav";
+import { get_cookie } from "@/components/helperFunctions/Cookies";
 import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 
 const ProjectDetailsDashboard = () => {
+
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   const data = [
     {
@@ -41,6 +48,22 @@ const ProjectDetailsDashboard = () => {
         value: 6
     }
   ]
+  useEffect(() => {
+    const url = pathname
+      console.log(url)
+
+      let user_login_details  = get_cookie('ovasite_user')
+      if (!user_login_details && url =='/projects') {
+        router.replace('/')
+      } 
+
+      if (user_login_details) {
+        user_login_details = JSON.parse(user_login_details) ;
+        const jwt = user_login_details.jwt
+        console.log(jwt);
+        
+    }
+  },[router,  pathname, searchParams])
 
   return (
     <main className="flex flex-col md:flex-row">

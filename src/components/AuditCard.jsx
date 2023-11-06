@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const AuditCard = ({ id, action_by, type, affected_entity,  record_id,  old_values, new_values, time, affected_record }) => {
+export const AuditCard = ({ id, userEmail, ip_address, org_id, type, table_name, date, old_values, new_values, row_id, deleteAudit }) => {
   const [isDropdown, setIsDropdown] = useState(false);
 
   return (
@@ -25,36 +25,12 @@ export const AuditCard = ({ id, action_by, type, affected_entity,  record_id,  o
           duration-300 ease-in shadow right-0 top-4 list-none"
             role="menu"
           >
-            {/* edit button */}
-            <li className="py-1">
-              <button
-                aria-label="Edit button"
-                className="flex flex-row items-center outline-none  border-none"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="33"
-                  height="32"
-                  viewBox="0 0 33 32"
-                  fill="none"
-                >
-                  <path
-                    d="M14.6739 6.66666H8.00724C7.3 6.66666 6.62172 6.94761 6.12162 7.44771C5.62153 7.9478 5.34058 8.62608 5.34058 9.33333V24C5.34058 24.7072 5.62153 25.3855 6.12162 25.8856C6.62172 26.3857 7.3 26.6667 8.00724 26.6667H22.6739C23.3812 26.6667 24.0594 26.3857 24.5595 25.8856C25.0596 25.3855 25.3406 24.7072 25.3406 24V17.3333M23.4552 4.78133C23.7012 4.52663 23.9955 4.32348 24.3208 4.18372C24.6462 4.04396 24.9961 3.9704 25.3502 3.96732C25.7043 3.96425 26.0554 4.03172 26.3831 4.1658C26.7108 4.29988 27.0086 4.49789 27.259 4.74827C27.5093 4.99865 27.7074 5.29639 27.8414 5.62412C27.9755 5.95184 28.043 6.30298 28.0399 6.65706C28.0368 7.01114 27.9633 7.36106 27.8235 7.6864C27.6838 8.01175 27.4806 8.306 27.2259 8.55199L15.7779 20H12.0072V16.2293L23.4552 4.78133Z"
-                    stroke="black"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <span>Edit</span>
-              </button>
-            </li>
-
             {/* delete button */}
             <li className="py-1">
               <button
                 aria-label="Delete button "
                 className="flex flex-row items-center outline-none  border-none"
+                onClick={deleteAudit}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -83,42 +59,27 @@ export const AuditCard = ({ id, action_by, type, affected_entity,  record_id,  o
                 <span> Delete</span>
               </button>
             </li>
-
-            {/* share button*/}
-            <li className="py-1">
-            <button
-              aria-label="Share button"
-              className="flex flex-row items-center outline-none border-none"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="33"
-                height="32"
-                viewBox="0 0 33 32"
-                fill="none"
-              >
-                <path
-                  d="M18.674 6.66666V12C9.34066 13.3333 5.34066 20 4.00732 26.6667C7.34066 22 12.0073 19.8667 18.674 19.8667V25.3333L28.0073 16L18.674 6.66666ZM21.3407 13.1067L24.234 16L21.3407 18.8933V17.2H18.674C15.914 17.2 13.434 17.7067 11.1273 18.4667C12.994 16.6133 15.394 15.16 19.0473 14.6667L21.3407 14.3067V13.1067Z"
-                  fill="#2626F1"
-                />
-              </svg>
-              <span>Share</span> 
-            </button>
-            </li>
           </div>
         )}
       </div>
+      id, userEmail, ip_address, org_id, type, table_name, date, old_values, new_values, row_id
       <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
-        <span className=" text-card-span-text">Action by: </span>{action_by}
+        <span className=" text-card-span-text">Action by: </span>{userEmail}
       </p>
       <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
-        <span className=" text-card-span-text">Type: </span>{type}
+        <span className=" text-card-span-text">Type: </span>{ip_address}
       </p>
       <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
-        <span className=" text-card-span-text">Affected entity: </span>{affected_entity}
+        <span className=" text-card-span-text">Affected entity: </span>{org_id}
       </p>
       <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
-        <span className=" text-card-span-text">Record id: </span>{record_id}
+        <span className=" text-card-span-text">Record id: </span>{type}
+      </p>
+      <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
+        <span className=" text-card-span-text">Record id: </span>{table_name}
+      </p>
+      <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
+        <span className=" text-card-span-text">Record id: </span>{date}
       </p>
       <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
         <span className=" text-card-span-text">Old Values: </span>{old_values}
@@ -127,10 +88,7 @@ export const AuditCard = ({ id, action_by, type, affected_entity,  record_id,  o
         <span className=" text-card-span-text">New values: </span>{new_values}
       </p>
       <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
-        <span className=" text-card-span-text">Time: </span>{time}
-      </p>
-      <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
-        <span className=" text-card-span-text">Affected record: </span>{affected_record}
+        <span className=" text-card-span-text">Affected record: </span>{row_id}
       </p>
 
     </article>

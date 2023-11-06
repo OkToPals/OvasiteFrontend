@@ -1,7 +1,7 @@
 import { update_employee_url } from "@/api_utils"
 import { useState } from "react"
 
-export const EditEmployeeModal = ({handleCancelBtn, isEditEmployeeModalActive, id}) => {
+export const EditProjectModal = ({handleCancelBtn, isEditProjectModalActive, id}) => {
 
     const [fullname, setFullname] = useState('')
     const [role, setRole] = useState('')    
@@ -47,13 +47,14 @@ export const EditEmployeeModal = ({handleCancelBtn, isEditEmployeeModalActive, i
         }
 
     }
+
     
 
     return (
       <div role="modal" aria-label="Create project" 
         className={`fixed inset-0 top-0 bottom-0 left-0 right-0 rounded-md max-h-screen z-50 
         transition-all duration-500 ease-in-out bg-ova_grey
-        ${isEditEmployeeModalActive ? 'opacity-100' : 'opacity-0'}
+        ${isEditProjectModalActive ? 'opacity-100' : 'opacity-0'}
         `}>
         <div className="bg-white border w-[96%] md:w-[50%] pb-8 mx-auto my-8 flex flex-col h-fit overflow-y-scroll ">
             {/* header */}

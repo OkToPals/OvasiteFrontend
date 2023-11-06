@@ -14,6 +14,7 @@ const TestSignup = () => {
     const RegisterUser = async() => {
         setLoading(true)
         try {
+            console.log(email, password);
             const response = await axios_instance.post(register_url, {
             email: email,
             password: password,

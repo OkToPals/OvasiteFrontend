@@ -1,24 +1,48 @@
 import Link from "next/link";
 import { useState } from "react";
+import { EditOrganizationModal } from "./EditOrganizationModal";
+import { ConfirmActionModal } from "./ConfirmActionModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 
-const navItem = () => {
+const DeleteOrganization = () => {
     
 } 
-
 
 export const SidebarNav = ({activeLink}) => {
 
     const [togglemenu, setToggleMenu] = useState(false)
+    const [toggleDelete, setToggleDelete] = useState(false)
+    const [toggleEdit, setToggleEdit] = useState(false)
+    const [loadingDeleteOrganization, setLoadingDeleteOrganization] = useState(false)
+
     const th_style = "p-2 border-b text-[1.125rem] text-ova_dark_secondary";
     const td_style = "p-2 border-b text-[1rem] text-ova_black align-top";
     const activeLinkStyle = "md:bg-peach_secondary rounded-md"
+
 
     const ToggleMenu = () => {
         setToggleMenu(!togglemenu)
         // alert("menu clicked")
     }
-    return (
 
+        // handles edit organization modal
+    const ToggleEditOrganization = () => {
+        setToggleEdit(!toggleEdit)
+    }
+
+    // handles delete organization modal
+    const ToggleDeleteOrganization =  () => {
+        setToggleDelete(!toggleDelete)
+    }
+
+    // handle delete organization
+    const handleDeleteOrganization = () => {
+
+    } 
+
+    return (
+        <>
         <nav className="fixed md:w-[25vw] h-screen md:bg-navy_blue z-50 ">
 
             {/* nav header */}
@@ -98,6 +122,50 @@ export const SidebarNav = ({activeLink}) => {
                 </h4>
                 </Link>
             </li>
+            <li className={`${activeLink == 'employees' ? activeLinkStyle : null} px-[1.2rem] py-[0.8rem] mt-[2rem]"`}>
+                <Link href="/employees" className="flex flex-row items-center">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="48"
+                        height="48"
+                        viewBox="0 0 48 48"
+                        fill="none"
+                    >
+                        <path
+                        d="M34 40H44V36C43.9999 34.7531 43.6113 33.5371 42.8883 32.5213C42.1652 31.5054 41.1436 30.74 39.9655 30.3315C38.7874 29.923 37.5112 29.8918 36.3145 30.242C35.1178 30.5923 34.0599 31.3067 33.288 32.286M34 40H14M34 40V36C34 34.688 33.748 33.434 33.288 32.286M33.288 32.286C32.5453 30.4299 31.2635 28.8389 29.608 27.7182C27.9525 26.5976 25.9992 25.9986 24 25.9986C22.0008 25.9986 20.0475 26.5976 18.392 27.7182C16.7365 28.8389 15.4547 30.4299 14.712 32.286M14 40H4V36C4.00009 34.7531 4.38867 33.5371 5.11172 32.5213C5.83477 31.5054 6.85637 30.74 8.0345 30.3315C9.21263 29.923 10.4888 29.8918 11.6855 30.242C12.8822 30.5923 13.9401 31.3067 14.712 32.286M14 40V36C14 34.688 14.252 33.434 14.712 32.286M30 14C30 15.5913 29.3679 17.1174 28.2426 18.2426C27.1174 19.3679 25.5913 20 24 20C22.4087 20 20.8826 19.3679 19.7574 18.2426C18.6321 17.1174 18 15.5913 18 14C18 12.4087 18.6321 10.8826 19.7574 9.75736C20.8826 8.63214 22.4087 8 24 8C25.5913 8 27.1174 8.63214 28.2426 9.75736C29.3679 10.8826 30 12.4087 30 14ZM42 20C42 21.0609 41.5786 22.0783 40.8284 22.8284C40.0783 23.5786 39.0609 24 38 24C36.9391 24 35.9217 23.5786 35.1716 22.8284C34.4214 22.0783 34 21.0609 34 20C34 18.9391 34.4214 17.9217 35.1716 17.1716C35.9217 16.4214 36.9391 16 38 16C39.0609 16 40.0783 16.4214 40.8284 17.1716C41.5786 17.9217 42 18.9391 42 20ZM14 20C14 21.0609 13.5786 22.0783 12.8284 22.8284C12.0783 23.5786 11.0609 24 10 24C8.93913 24 7.92172 23.5786 7.17157 22.8284C6.42143 22.0783 6 21.0609 6 20C6 18.9391 6.42143 17.9217 7.17157 17.1716C7.92172 16.4214 8.93913 16 10 16C11.0609 16 12.0783 16.4214 12.8284 17.1716C13.5786 17.9217 14 18.9391 14 20Z"
+                        stroke={`${activeLink == 'employees' ? '#FF595A' : "white"}`}
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        />
+                    </svg>
+                    <h4 className={`${activeLink == "employees" ? 'text-[#FF595A] font-semibold' : "text-ova_white"} ml-[1rem] font-normal  text-[1.5em] `}>
+                        Employees
+                    </h4>
+                </Link>
+            </li>
+            <li className={`${activeLink == 'organizations' ? activeLinkStyle : null} px-[1.2rem] py-[0.8rem] mt-[2rem]"`}>
+                <Link href="/organizations" className="flex flex-row items-center">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="48"
+                        height="48"
+                        viewBox="0 0 48 48"
+                        fill="none"
+                    >
+                        <path
+                        d="M34 40H44V36C43.9999 34.7531 43.6113 33.5371 42.8883 32.5213C42.1652 31.5054 41.1436 30.74 39.9655 30.3315C38.7874 29.923 37.5112 29.8918 36.3145 30.242C35.1178 30.5923 34.0599 31.3067 33.288 32.286M34 40H14M34 40V36C34 34.688 33.748 33.434 33.288 32.286M33.288 32.286C32.5453 30.4299 31.2635 28.8389 29.608 27.7182C27.9525 26.5976 25.9992 25.9986 24 25.9986C22.0008 25.9986 20.0475 26.5976 18.392 27.7182C16.7365 28.8389 15.4547 30.4299 14.712 32.286M14 40H4V36C4.00009 34.7531 4.38867 33.5371 5.11172 32.5213C5.83477 31.5054 6.85637 30.74 8.0345 30.3315C9.21263 29.923 10.4888 29.8918 11.6855 30.242C12.8822 30.5923 13.9401 31.3067 14.712 32.286M14 40V36C14 34.688 14.252 33.434 14.712 32.286M30 14C30 15.5913 29.3679 17.1174 28.2426 18.2426C27.1174 19.3679 25.5913 20 24 20C22.4087 20 20.8826 19.3679 19.7574 18.2426C18.6321 17.1174 18 15.5913 18 14C18 12.4087 18.6321 10.8826 19.7574 9.75736C20.8826 8.63214 22.4087 8 24 8C25.5913 8 27.1174 8.63214 28.2426 9.75736C29.3679 10.8826 30 12.4087 30 14ZM42 20C42 21.0609 41.5786 22.0783 40.8284 22.8284C40.0783 23.5786 39.0609 24 38 24C36.9391 24 35.9217 23.5786 35.1716 22.8284C34.4214 22.0783 34 21.0609 34 20C34 18.9391 34.4214 17.9217 35.1716 17.1716C35.9217 16.4214 36.9391 16 38 16C39.0609 16 40.0783 16.4214 40.8284 17.1716C41.5786 17.9217 42 18.9391 42 20ZM14 20C14 21.0609 13.5786 22.0783 12.8284 22.8284C12.0783 23.5786 11.0609 24 10 24C8.93913 24 7.92172 23.5786 7.17157 22.8284C6.42143 22.0783 6 21.0609 6 20C6 18.9391 6.42143 17.9217 7.17157 17.1716C7.92172 16.4214 8.93913 16 10 16C11.0609 16 12.0783 16.4214 12.8284 17.1716C13.5786 17.9217 14 18.9391 14 20Z"
+                        stroke={`${activeLink == 'organizations' ? '#FF595A' : "white"}`}
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        />
+                    </svg>
+                    <h4 className={`${activeLink == "organizations" ? 'text-[#FF595A] font-semibold' : "text-ova_white"} ml-[1rem] font-normal  text-[1.5em] `}>
+                        Employees
+                    </h4>
+                </Link>
+            </li>
             <li className={`${activeLink == 'teams' ? activeLinkStyle : null} px-[1.2rem] py-[0.8rem] mt-[2rem]"`}>
                 <Link href="/teams" className="flex flex-row items-center">
                 <svg
@@ -163,46 +231,110 @@ export const SidebarNav = ({activeLink}) => {
             </li>
             <li className={`${activeLink == 'support' ? activeLinkStyle : null} px-[1.2rem] py-[0.8rem] mt-[10rem]`}>
                 <Link href="/support" className="flex flex-row items-center">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="32"
-                    height="32"
-                    viewBox="0 0 32 32"
-                    fill="none"
-                >
-                    <path
-                    d="M14.6667 7.84267V25.6533C14.6663 26.206 14.4709 26.7407 14.1149 27.1634C13.7589 27.5861 13.2651 27.8695 12.7206 27.9639C12.1761 28.0582 11.6158 27.9574 11.1383 27.6791C10.6609 27.4008 10.297 26.9629 10.1107 26.4427L7.24804 18.2427M7.24804 18.2427C6.11633 17.7615 5.18562 16.9054 4.61341 15.8169C4.0412 14.7284 3.86265 13.4756 4.10795 12.2705C4.35326 11.0655 5.00736 9.9822 5.95957 9.204C6.91178 8.4258 8.10361 8.00047 9.33337 8H11.776C17.2427 8 21.9427 6.35467 24 4V22.6667C21.9427 20.312 17.244 18.6667 11.776 18.6667H9.33337C8.61688 18.6677 7.90757 18.5226 7.24804 18.2427ZM24 17.3333C25.0609 17.3333 26.0783 16.9119 26.8285 16.1618C27.5786 15.4116 28 14.3942 28 13.3333C28 12.2725 27.5786 11.2551 26.8285 10.5049C26.0783 9.75476 25.0609 9.33333 24 9.33333"
-                    stroke={`${activeLink == 'support' ? '#FF595A' : "white"}`}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    />
-                </svg>
-                <h4 className={`${activeLink == "support" ? 'text-[#FF595A] font-semibold' : "text-ova_white"} ml-[1rem] font-normal  text-[1.5em] `}>
-                    Customer Support
-                </h4>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 32 32"
+                        fill="none"
+                    >
+                        <path
+                        d="M14.6667 7.84267V25.6533C14.6663 26.206 14.4709 26.7407 14.1149 27.1634C13.7589 27.5861 13.2651 27.8695 12.7206 27.9639C12.1761 28.0582 11.6158 27.9574 11.1383 27.6791C10.6609 27.4008 10.297 26.9629 10.1107 26.4427L7.24804 18.2427M7.24804 18.2427C6.11633 17.7615 5.18562 16.9054 4.61341 15.8169C4.0412 14.7284 3.86265 13.4756 4.10795 12.2705C4.35326 11.0655 5.00736 9.9822 5.95957 9.204C6.91178 8.4258 8.10361 8.00047 9.33337 8H11.776C17.2427 8 21.9427 6.35467 24 4V22.6667C21.9427 20.312 17.244 18.6667 11.776 18.6667H9.33337C8.61688 18.6677 7.90757 18.5226 7.24804 18.2427ZM24 17.3333C25.0609 17.3333 26.0783 16.9119 26.8285 16.1618C27.5786 15.4116 28 14.3942 28 13.3333C28 12.2725 27.5786 11.2551 26.8285 10.5049C26.0783 9.75476 25.0609 9.33333 24 9.33333"
+                        stroke={`${activeLink == 'support' ? '#FF595A' : "white"}`}
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        />
+                    </svg>
+                    <h4 className={`${activeLink == "support" ? 'text-[#FF595A] font-semibold' : "text-ova_white"} ml-[1rem] font-normal  text-[1.5em] `}>
+                        Customer Support
+                    </h4>
                 </Link>
             </li>
-            <li className=" px-[1.2rem] py-[0.8rem] mb-[5rem]">
-                <Link href="" className="flex flex-row items-center">
+
+            {/* edit button */}
+            <li>
+                {/* edit button */}
+                <button
+                    aria-label="Edit button"
+                    className="flex flex-row items-center outline-none  border-none"
+                    onClick={ToggleDeleteOrganization}
+                    >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="33"
+                        height="32"
+                        viewBox="0 0 33 32"
+                        fill="none"
+                    >
+                        <path
+                        d="M14.6739 6.66666H8.00724C7.3 6.66666 6.62172 6.94761 6.12162 7.44771C5.62153 7.9478 5.34058 8.62608 5.34058 9.33333V24C5.34058 24.7072 5.62153 25.3855 6.12162 25.8856C6.62172 26.3857 7.3 26.6667 8.00724 26.6667H22.6739C23.3812 26.6667 24.0594 26.3857 24.5595 25.8856C25.0596 25.3855 25.3406 24.7072 25.3406 24V17.3333M23.4552 4.78133C23.7012 4.52663 23.9955 4.32348 24.3208 4.18372C24.6462 4.04396 24.9961 3.9704 25.3502 3.96732C25.7043 3.96425 26.0554 4.03172 26.3831 4.1658C26.7108 4.29988 27.0086 4.49789 27.259 4.74827C27.5093 4.99865 27.7074 5.29639 27.8414 5.62412C27.9755 5.95184 28.043 6.30298 28.0399 6.65706C28.0368 7.01114 27.9633 7.36106 27.8235 7.6864C27.6838 8.01175 27.4806 8.306 27.2259 8.55199L15.7779 20H12.0072V16.2293L23.4552 4.78133Z"
+                        stroke="black"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        />
+                    </svg>
+                    <span className=" text-ova_grey">Edit</span>
+                </button>
+            </li>
+
+            {/* delete button */}
+            <li>
+                {/* delete button */}
+                <button
+                aria-label="Delete button"
+                className="flex flex-row items-center outline-none  border-none"
+                onClick={ToggleDeleteOrganization}
+                >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="32"
+                    width="33"
                     height="32"
-                    viewBox="0 0 32 32"
+                    viewBox="0 0 33 32"
                     fill="none"
                 >
+                    <g clipPath="url(#clip0_124_9141)">
                     <path
-                    d="M14.6667 21.3334L9.33333 16M9.33333 16L14.6667 10.6667M9.33333 16H28M21.3333 21.3334V22.6667C21.3333 23.7276 20.9119 24.745 20.1618 25.4951C19.4116 26.2453 18.3942 26.6667 17.3333 26.6667H8C6.93913 26.6667 5.92172 26.2453 5.17157 25.4951C4.42143 24.745 4 23.7276 4 22.6667V9.33337C4 8.27251 4.42143 7.25509 5.17157 6.50495C5.92172 5.7548 6.93913 5.33337 8 5.33337H17.3333C18.3942 5.33337 19.4116 5.7548 20.1618 6.50495C20.9119 7.25509 21.3333 8.27251 21.3333 9.33337V10.6667"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                        d="M26.674 6.66666C27.0276 6.66666 27.3668 6.80713 27.6168 7.05718C27.8668 7.30723 28.0073 7.64637 28.0073 7.99999C28.0073 8.35361 27.8668 8.69275 27.6168 8.9428C27.3668 9.19285 27.0276 9.33332 26.674 9.33332H25.3407L25.3367 9.42799L24.0927 26.856C24.0448 27.5288 23.7437 28.1584 23.2501 28.6181C22.7566 29.0778 22.1071 29.3333 21.4327 29.3333H10.5807C9.90618 29.3333 9.25675 29.0778 8.76317 28.6181C8.2696 28.1584 7.96855 27.5288 7.92066 26.856L6.67666 9.42932C6.67464 9.39736 6.67375 9.36534 6.67399 9.33332H5.34066C4.98704 9.33332 4.6479 9.19285 4.39785 8.9428C4.1478 8.69275 4.00732 8.35361 4.00732 7.99999C4.00732 7.64637 4.1478 7.30723 4.39785 7.05718C4.6479 6.80713 4.98704 6.66666 5.34066 6.66666H26.674ZM22.67 9.33332H9.34466L10.582 26.6667H21.4327L22.67 9.33332ZM18.674 2.66666C19.0276 2.66666 19.3668 2.80713 19.6168 3.05718C19.8668 3.30723 20.0073 3.64637 20.0073 3.99999C20.0073 4.35361 19.8668 4.69275 19.6168 4.9428C19.3668 5.19285 19.0276 5.33332 18.674 5.33332H13.3407C12.987 5.33332 12.6479 5.19285 12.3978 4.9428C12.1478 4.69275 12.0073 4.35361 12.0073 3.99999C12.0073 3.64637 12.1478 3.30723 12.3978 3.05718C12.6479 2.80713 12.987 2.66666 13.3407 2.66666H18.674Z"
+                        fill="#FF595A"
                     />
+                    </g>
+                    <defs>
+                    <clipPath id="clip0_124_9141">
+                        <rect
+                        width="32"
+                        height="32"
+                        fill="white"
+                        transform="translate(0.00732422)"
+                        />
+                    </clipPath>
+                    </defs>
                 </svg>
-                <h4 className="ml-[1rem] font-normal  text-[1.25em] text-ova_white">
-                    LogOut
-                </h4>
+                <span className=" text-ova_grey">Delete</span>
+                </button>
+            </li>
+
+            <li className=" px-[1.2rem] py-[0.8rem] mb-[5rem]">
+                <Link href="" className="flex flex-row items-center">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 32 32"
+                        fill="none"
+                    >
+                        <path
+                        d="M14.6667 21.3334L9.33333 16M9.33333 16L14.6667 10.6667M9.33333 16H28M21.3333 21.3334V22.6667C21.3333 23.7276 20.9119 24.745 20.1618 25.4951C19.4116 26.2453 18.3942 26.6667 17.3333 26.6667H8C6.93913 26.6667 5.92172 26.2453 5.17157 25.4951C4.42143 24.745 4 23.7276 4 22.6667V9.33337C4 8.27251 4.42143 7.25509 5.17157 6.50495C5.92172 5.7548 6.93913 5.33337 8 5.33337H17.3333C18.3942 5.33337 19.4116 5.7548 20.1618 6.50495C20.9119 7.25509 21.3333 8.27251 21.3333 9.33337V10.6667"
+                        stroke="white"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        />
+                    </svg>
+                    <h4 className="ml-[1rem] font-normal  text-[1.25em] text-ova_white">
+                        LogOut
+                    </h4>
                 </Link>
             </li>
             </ul>
@@ -230,6 +362,60 @@ export const SidebarNav = ({activeLink}) => {
                     </svg>
                     <h4 className={`${activeLink == "projects" ? 'text-[#FF595A] font-semibold' : "text-ova_white"} ml-[1rem]  text-[1.25em] `}>
                         Projects
+                    </h4>
+                    </Link>
+                </li>
+                <li className={`${activeLink == 'employees' ? activeLinkStyle : null} px-[1.2rem] py-[0.8rem] mt-[2rem]"`}>
+                    <Link href="/employees" className="flex flex-row items-center">
+
+                    <FontAwesomeIcon icon={faUser} 
+                        style={{color:`${activeLink == 'employees' ? '#FF595A' : "white"}`, width:"40px", height:"40px", strokeWidth:1}}
+                        
+                    />
+                    {/* <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="48"
+                        height="48"
+                        viewBox="0 0 48 48"
+                        fill="none"
+                    >
+                        <path
+                        d="M34 40H44V36C43.9999 34.7531 43.6113 33.5371 42.8883 32.5213C42.1652 31.5054 41.1436 30.74 39.9655 30.3315C38.7874 29.923 37.5112 29.8918 36.3145 30.242C35.1178 30.5923 34.0599 31.3067 33.288 32.286M34 40H14M34 40V36C34 34.688 33.748 33.434 33.288 32.286M33.288 32.286C32.5453 30.4299 31.2635 28.8389 29.608 27.7182C27.9525 26.5976 25.9992 25.9986 24 25.9986C22.0008 25.9986 20.0475 26.5976 18.392 27.7182C16.7365 28.8389 15.4547 30.4299 14.712 32.286M14 40H4V36C4.00009 34.7531 4.38867 33.5371 5.11172 32.5213C5.83477 31.5054 6.85637 30.74 8.0345 30.3315C9.21263 29.923 10.4888 29.8918 11.6855 30.242C12.8822 30.5923 13.9401 31.3067 14.712 32.286M14 40V36C14 34.688 14.252 33.434 14.712 32.286M30 14C30 15.5913 29.3679 17.1174 28.2426 18.2426C27.1174 19.3679 25.5913 20 24 20C22.4087 20 20.8826 19.3679 19.7574 18.2426C18.6321 17.1174 18 15.5913 18 14C18 12.4087 18.6321 10.8826 19.7574 9.75736C20.8826 8.63214 22.4087 8 24 8C25.5913 8 27.1174 8.63214 28.2426 9.75736C29.3679 10.8826 30 12.4087 30 14ZM42 20C42 21.0609 41.5786 22.0783 40.8284 22.8284C40.0783 23.5786 39.0609 24 38 24C36.9391 24 35.9217 23.5786 35.1716 22.8284C34.4214 22.0783 34 21.0609 34 20C34 18.9391 34.4214 17.9217 35.1716 17.1716C35.9217 16.4214 36.9391 16 38 16C39.0609 16 40.0783 16.4214 40.8284 17.1716C41.5786 17.9217 42 18.9391 42 20ZM14 20C14 21.0609 13.5786 22.0783 12.8284 22.8284C12.0783 23.5786 11.0609 24 10 24C8.93913 24 7.92172 23.5786 7.17157 22.8284C6.42143 22.0783 6 21.0609 6 20C6 18.9391 6.42143 17.9217 7.17157 17.1716C7.92172 16.4214 8.93913 16 10 16C11.0609 16 12.0783 16.4214 12.8284 17.1716C13.5786 17.9217 14 18.9391 14 20Z"
+                        stroke={`${activeLink == 'employees' ? '#FF595A' : "white"}`}
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        />
+                    </svg> */}
+                    <h4 className={`${activeLink == "employees" ? 'text-[#FF595A] font-semibold' : "text-ova_white"} ml-[1rem] font-normal  text-[1.5em] `}>
+                        Employees
+                    </h4>
+                    </Link>
+                </li>
+                <li className={`${activeLink == 'organizations' ? activeLinkStyle : null} px-[1.2rem] py-[0.8rem] mt-[2rem]"`}>
+                    <Link href="/organizations" className="flex flex-row items-center">
+
+                    <FontAwesomeIcon icon={faUser} 
+                        style={{color:`${activeLink == 'organizations' ? '#FF595A' : "white"}`, width:"40px", height:"40px", strokeWidth:1}}
+                        
+                    />
+                    {/* <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="48"
+                        height="48"
+                        viewBox="0 0 48 48"
+                        fill="none"
+                    >
+                        <path
+                        d="M34 40H44V36C43.9999 34.7531 43.6113 33.5371 42.8883 32.5213C42.1652 31.5054 41.1436 30.74 39.9655 30.3315C38.7874 29.923 37.5112 29.8918 36.3145 30.242C35.1178 30.5923 34.0599 31.3067 33.288 32.286M34 40H14M34 40V36C34 34.688 33.748 33.434 33.288 32.286M33.288 32.286C32.5453 30.4299 31.2635 28.8389 29.608 27.7182C27.9525 26.5976 25.9992 25.9986 24 25.9986C22.0008 25.9986 20.0475 26.5976 18.392 27.7182C16.7365 28.8389 15.4547 30.4299 14.712 32.286M14 40H4V36C4.00009 34.7531 4.38867 33.5371 5.11172 32.5213C5.83477 31.5054 6.85637 30.74 8.0345 30.3315C9.21263 29.923 10.4888 29.8918 11.6855 30.242C12.8822 30.5923 13.9401 31.3067 14.712 32.286M14 40V36C14 34.688 14.252 33.434 14.712 32.286M30 14C30 15.5913 29.3679 17.1174 28.2426 18.2426C27.1174 19.3679 25.5913 20 24 20C22.4087 20 20.8826 19.3679 19.7574 18.2426C18.6321 17.1174 18 15.5913 18 14C18 12.4087 18.6321 10.8826 19.7574 9.75736C20.8826 8.63214 22.4087 8 24 8C25.5913 8 27.1174 8.63214 28.2426 9.75736C29.3679 10.8826 30 12.4087 30 14ZM42 20C42 21.0609 41.5786 22.0783 40.8284 22.8284C40.0783 23.5786 39.0609 24 38 24C36.9391 24 35.9217 23.5786 35.1716 22.8284C34.4214 22.0783 34 21.0609 34 20C34 18.9391 34.4214 17.9217 35.1716 17.1716C35.9217 16.4214 36.9391 16 38 16C39.0609 16 40.0783 16.4214 40.8284 17.1716C41.5786 17.9217 42 18.9391 42 20ZM14 20C14 21.0609 13.5786 22.0783 12.8284 22.8284C12.0783 23.5786 11.0609 24 10 24C8.93913 24 7.92172 23.5786 7.17157 22.8284C6.42143 22.0783 6 21.0609 6 20C6 18.9391 6.42143 17.9217 7.17157 17.1716C7.92172 16.4214 8.93913 16 10 16C11.0609 16 12.0783 16.4214 12.8284 17.1716C13.5786 17.9217 14 18.9391 14 20Z"
+                        stroke={`${activeLink == 'organizations' ? '#FF595A' : "white"}`}
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round
+                        />
+                    </svg> */}
+                    <h4 className={`${activeLink == "organizations" ? 'text-[#FF595A] font-semibold' : "text-ova_white"} ml-[1rem] font-normal  text-[1.5em] `}>
+                        Organizations
                     </h4>
                     </Link>
                 </li>
@@ -318,6 +504,68 @@ export const SidebarNav = ({activeLink}) => {
                         </h4>
                     </Link>
                 </li>
+                {/* edit button */}
+                <li className="px-[1.2rem] py-[0.8rem]">
+                    {/* edit button */}
+                    <button
+                        aria-label="Edit button"
+                        className="flex flex-row items-center outline-none  border-none"
+                        onClick={ToggleEditOrganization}
+                        >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="33"
+                            height="32"
+                            viewBox="0 0 33 32"
+                            fill="none"
+                        >
+                            <path
+                            d="M14.6739 6.66666H8.00724C7.3 6.66666 6.62172 6.94761 6.12162 7.44771C5.62153 7.9478 5.34058 8.62608 5.34058 9.33333V24C5.34058 24.7072 5.62153 25.3855 6.12162 25.8856C6.62172 26.3857 7.3 26.6667 8.00724 26.6667H22.6739C23.3812 26.6667 24.0594 26.3857 24.5595 25.8856C25.0596 25.3855 25.3406 24.7072 25.3406 24V17.3333M23.4552 4.78133C23.7012 4.52663 23.9955 4.32348 24.3208 4.18372C24.6462 4.04396 24.9961 3.9704 25.3502 3.96732C25.7043 3.96425 26.0554 4.03172 26.3831 4.1658C26.7108 4.29988 27.0086 4.49789 27.259 4.74827C27.5093 4.99865 27.7074 5.29639 27.8414 5.62412C27.9755 5.95184 28.043 6.30298 28.0399 6.65706C28.0368 7.01114 27.9633 7.36106 27.8235 7.6864C27.6838 8.01175 27.4806 8.306 27.2259 8.55199L15.7779 20H12.0072V16.2293L23.4552 4.78133Z"
+                            stroke="orange"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            />
+                        </svg>
+                        <h4 className=" ml-[1rem] font-normal text-[1.25em] text-ova_white">Edit Org.</h4>
+                    </button>
+                </li>
+                {/* delete button */}
+                <li className="px-[1.2rem] py-[0.8rem]">
+                    {/* delete button */}
+                    <button
+                    aria-label="Delete button"
+                    className="flex flex-row items-center outline-none  border-none"
+                    onClick={ToggleDeleteOrganization}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="33"
+                            height="32"
+                            viewBox="0 0 33 32"
+                            fill="none"
+                        >
+                            <g clipPath="url(#clip0_124_9141)">
+                            <path
+                                d="M26.674 6.66666C27.0276 6.66666 27.3668 6.80713 27.6168 7.05718C27.8668 7.30723 28.0073 7.64637 28.0073 7.99999C28.0073 8.35361 27.8668 8.69275 27.6168 8.9428C27.3668 9.19285 27.0276 9.33332 26.674 9.33332H25.3407L25.3367 9.42799L24.0927 26.856C24.0448 27.5288 23.7437 28.1584 23.2501 28.6181C22.7566 29.0778 22.1071 29.3333 21.4327 29.3333H10.5807C9.90618 29.3333 9.25675 29.0778 8.76317 28.6181C8.2696 28.1584 7.96855 27.5288 7.92066 26.856L6.67666 9.42932C6.67464 9.39736 6.67375 9.36534 6.67399 9.33332H5.34066C4.98704 9.33332 4.6479 9.19285 4.39785 8.9428C4.1478 8.69275 4.00732 8.35361 4.00732 7.99999C4.00732 7.64637 4.1478 7.30723 4.39785 7.05718C4.6479 6.80713 4.98704 6.66666 5.34066 6.66666H26.674ZM22.67 9.33332H9.34466L10.582 26.6667H21.4327L22.67 9.33332ZM18.674 2.66666C19.0276 2.66666 19.3668 2.80713 19.6168 3.05718C19.8668 3.30723 20.0073 3.64637 20.0073 3.99999C20.0073 4.35361 19.8668 4.69275 19.6168 4.9428C19.3668 5.19285 19.0276 5.33332 18.674 5.33332H13.3407C12.987 5.33332 12.6479 5.19285 12.3978 4.9428C12.1478 4.69275 12.0073 4.35361 12.0073 3.99999C12.0073 3.64637 12.1478 3.30723 12.3978 3.05718C12.6479 2.80713 12.987 2.66666 13.3407 2.66666H18.674Z"
+                                fill="#FF595A"
+                            />
+                            </g>
+                            <defs>
+                            <clipPath id="clip0_124_9141">
+                                <rect
+                                width="32"
+                                height="32"
+                                fill="white"
+                                transform="translate(0.00732422)"
+                                />
+                            </clipPath>
+                            </defs>
+                        </svg>
+                        <h4 className="ml-[1rem] font-normal text-[1.25em] text-ova_white">Delete Org.
+                        </h4>
+                    </button>
+                </li>
                 <li className=" px-[1.2rem] py-[0.8rem] mb-[5rem] ">
                     <Link href="" className="flex flex-row items-center">
                         <svg
@@ -342,6 +590,29 @@ export const SidebarNav = ({activeLink}) => {
                 </li>
             </ul>
         </nav>
+
+        {
+            toggleEdit ? <EditOrganizationModal 
+            handleCancelBtn={ToggleEditOrganization} isEditOrganizationModalActive={true} 
+            handleCreateBtn={() => null} 
+            /> : null
+        }
+
+        
+        {toggleDelete ? 
+            <ConfirmActionModal 
+            title={'Are you sure you want to Delete?'}
+            description={'Once you choose to delete, the action is final and cannot be undone. Please take a moment to ensure that you truly wish to proceed with this irreversible step.'}
+            isConfirmModalActive ={true} 
+            url 
+            id={'id'} 
+            handleCancelBtn={ToggleDeleteOrganization}
+            handleConfirmBtn ={handleDeleteOrganization} 
+            loading={loadingDeleteOrganization}
+            /> 
+            : null
+        }
+        </>
     )
 
 

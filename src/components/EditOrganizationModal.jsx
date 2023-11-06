@@ -1,7 +1,8 @@
 import { update_employee_url } from "@/api_utils"
 import { useState } from "react"
+import { LoadingModal } from "./LoadingModal"
 
-export const EditEmployeeModal = ({handleCancelBtn, isEditEmployeeModalActive, id}) => {
+export const EditOrganizationModal = ({handleCancelBtn, isEditOrganizationModalActive, id}) => {
 
     const [fullname, setFullname] = useState('')
     const [role, setRole] = useState('')    
@@ -24,7 +25,7 @@ export const EditEmployeeModal = ({handleCancelBtn, isEditEmployeeModalActive, i
         })
     }
 
-    const handleUpdateEmployeeButton = () => {
+    const handleUpdateOrganization = () => {
 
         if (fullname) {
             
@@ -47,18 +48,19 @@ export const EditEmployeeModal = ({handleCancelBtn, isEditEmployeeModalActive, i
         }
 
     }
+
     
 
     return (
       <div role="modal" aria-label="Create project" 
         className={`fixed inset-0 top-0 bottom-0 left-0 right-0 rounded-md max-h-screen z-50 
         transition-all duration-500 ease-in-out bg-ova_grey
-        ${isEditEmployeeModalActive ? 'opacity-100' : 'opacity-0'}
+        ${isEditOrganizationModalActive ? 'opacity-100' : 'opacity-0'}
         `}>
         <div className="bg-white border w-[96%] md:w-[50%] pb-8 mx-auto my-8 flex flex-col h-fit overflow-y-scroll ">
             {/* header */}
             <div className="fixed flex flex-row justify-between px-[0.5rem] bg-ova_white h-16 w-[96%] md:w-[50%] border-b">
-                <p className="text-center my-4 font-semibold text-[1.5em]" >Edit: User details</p>
+                <p className="text-center my-4 font-semibold text-[1.5em]" >Edit: Organization details</p>
                 <button className="" onClick={handleCancelBtn}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path d="M1 17L17 1M1 1L17 17" stroke="red" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -92,12 +94,16 @@ export const EditEmployeeModal = ({handleCancelBtn, isEditEmployeeModalActive, i
                 <div className="flex flex-row justify-end">
                     <button 
                         className="w-[96%] md:w-[30%] px-4 py-2 my-8 bg-peach_primary rounded-md text-white" 
-                        onClick={handleUpdateEmployeeButton}>{loading ? "Loading..." : "Update"}
+                        onClick={handleUpdateOrganization}>{loading ? "Loading..." : "Update"}
                     </button>
                 </div>
 
             </div>
         </div>
+
+        {
+            loading ? <LoadingModal/> : null
+        }
   
       </div>
   

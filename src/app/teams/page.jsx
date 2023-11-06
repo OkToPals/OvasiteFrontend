@@ -1,12 +1,20 @@
 'use client'
 
+import { CreateTeamModal } from "@/components/CreateTeamModal";
 import { EditEmployeeModal } from "@/components/EditEmployeeModal";
 import { SendInviteModal } from "@/components/SendInviteModal";
 import { SidebarNav } from "@/components/SidebarNav";
 import TeamCard from "@/components/TeamCard";
 import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { get_cookie } from "@/components/helperFunctions/Cookies";
+import axios_instance from "@/axiosInstance";
+import { get_all_employees_url } from "@/api_utils";
 
 const TeamsDashboard = () => {
+
+  const router = useRouter()
+  const pathname = usePathname()
 
   // pagination variables
   const [data, setData] = useState([]);
@@ -24,6 +32,7 @@ const TeamsDashboard = () => {
   const [togglemenu, setToggleMenu] = useState(false)
   const [showInviteModal, setShowInviteModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
+  const [showTeamModal, setShowTeamModal] = useState(false)
 
   const array_of_pages = [...Array(total_page_no).keys()].map((i) => i + 1);
 
@@ -44,17 +53,58 @@ const TeamsDashboard = () => {
     setShowEditModal(!showEditModal)
   }
 
+  const ToggleTeamModal = () => {
+    // alert("edit modal")
+    setShowTeamModal(!showTeamModal)
+  }
+
+  // function to get all audits specific to an organization
+  const get_all_teams = async(jwt) => {
+    try {
+        const response = await axios_instance.get(get_all_employees_url, {
+          headers: {
+            Authorization: `Bearer ${jwt}`
+          }
+        })
+        console.log(response);
+        setData(response)
+        
+    } catch (error) {
+
+        console.log(error);
+        
+    }
+  }
+
   useEffect(() => {
-    fetch("https://randomuser.me/api/?results=1000")
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log(json)
-        setData(data.results);
-        // console.log(data);
-      });
-  }, []);
+    const url = pathname
+      console.log(url)
+
+      let user_login_details  = get_cookie('ovasite_user')
+      if (!user_login_details && url =='/teams') {
+        router.replace('/')
+      } 
+
+      if (user_login_details) {
+        user_login_details = JSON.parse(user_login_details) ;
+        const jwt = user_login_details.jwt
+        console.log(jwt);
+        get_all_teams(jwt)
+      }
+  },[router, pathname])
+
+  // useEffect(() => {
+  //   fetch("https://randomuser.me/api/?results=1000")
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       // console.log(json)
+  //       setData(data.results);
+  //       // console.log(data);
+  //     });
+  // }, []);
 
   // handle next button
+  
   const nextButton = () => {
     if (current_page + 1 <= total_page_no) {
       set_current_page(current_page + 1);
@@ -85,7 +135,7 @@ const TeamsDashboard = () => {
       <section className=" bg-mobile-bg md:ml-[25vw]  md:w-[75vw]">
 
         {/* main header - header I */}
-        <header className="h-[6rem] hidden flex-row items-center justify-between py-[1.6rem] border-b border-ova_grey_border bg-ova_white md:fixed md:flex md:w-[75vw] z-50">
+        <header className="h-[6rem] hidden flex-row items-center justify-between py-[1.6rem] border-b border-ova_grey_border bg-ova_white md:fixed md:flex md:w-[75vw]">
           <h1 className="text-[2em] font-bold pl-[1.2rem]">Teams</h1>
           <div className="flex flex-row items-center justify-between pr-[1.2rem]">
             {/* search and input text field */}
@@ -154,10 +204,37 @@ const TeamsDashboard = () => {
           </div>
         </header>
 
-        {/* header II */}
-        <div className="max-w-full flex flex-row px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">
-            <h1 className="md:hidden text-[1.25em] font-extrabold text-center w-full mx-auto ">Teams</h1>
+         {/* header II */}
+         <div className="max-w-full flex flex-row justify-between md:justify-end items-center px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">
+            <h1 className="md:hidden text-[1.25em] font-extrabold ">Teams</h1>
+            <div className="flex flex-row justify-center items-center">
+                <button
+                    aria-label="Create Project"
+                    className="flex flex-row items-center bg-peach_primary py-[1rem] px-[1.25rem] rounded-[0.5rem]"
+                    onClick={ToggleTeamModal}
+                >
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    >
+                    <path
+                        d="M12.6666 8.66668H8.66659V12.6667H7.33325V8.66668H3.33325V7.33334H7.33325V3.33334H8.66659V7.33334H12.6666V8.66668Z"
+                        fill="white"
+                    />
+                    </svg>
+                    <span className="text-ova_white hidden md:block ml-2">
+                    Create New Team
+                    </span>
+                </button>
+            </div>
         </div>
+        {/* header II */}
+        {/* <div className="max-w-full flex flex-row px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">
+            <h1 className="md:hidden text-[1.25em] font-extrabold text-center w-full mx-auto ">Teams</h1>
+        </div> */}
         
         {/* project content desktop view*/}
         <div className="px-[1.2rem] ">
@@ -165,10 +242,10 @@ const TeamsDashboard = () => {
           <div className="flex flex-row flex-wrap gap-4 justify-center lg:justify-start">
          
             {/* invite members card */}
-            <article className="w-[100%] mini:w-[48%] md:w-[48%] lg:w-[32%] h-[27.7rem] shadow-sm p-4 border-[#ddd] md:bg-mobile-bg bg-white border rounded-lg">
+            <article className="w-[100%] mini:w-[48%] md:w-[48%] lg:w-[32%] md:h-[25.7rem] h-[18rem] shadow-sm p-4 border-[#ddd] md:bg-mobile-bg bg-white border rounded-lg">
                 {/* profile pics */}
                 <div role="img" aria-label="Profile picture of Jane Doe" 
-                    className='mx-auto w-[10rem] h-[10rem] flex flex--row justify-center items-center 
+                    className='mx-auto md:w-[10rem] md:h-[10rem] w-[6.25rem] h-[6.25rem] flex flex--row justify-center items-center 
                     rounded-full border-2 border-dashed'
                     >
                     <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" fill="none">
@@ -176,16 +253,16 @@ const TeamsDashboard = () => {
                     </svg>
                 </div>
                 <h2 className="max-w-[80%] mx-auto mt-[0.75rem] overflow-hidden 
-                    whitespace-nowrap text-ellipsis font-bold text-[1.5em] text-center">
-                        INVITE USERS
+                    whitespace-nowrap text-ellipsis font-bold text-[1em] md:text-[1.5em] text-center">
+                        Create New Team
                 </h2>
-                <h2 className="text-[1.25em] text-center overflow-wrap break-words mt-[0.75rem]">
-                    Invite to your organisation your members by email
+                <h2 className="text-[0.8em] md:text-[1.25em] text-center overflow-wrap break-words mt-[0.75rem] text-[#5C5C5C]">
+                  Create a new team consisting various employees
                 </h2>
                 <button
-                    onClick={ToggleInviteModal }
+                    onClick={ToggleTeamModal}
                         aria-label="Create Project"
-                        className=" w-[80%] mx-auto mt-[0.75rem] flex flex-row justify-center items-center bg-peach_primary py-[1rem] px-[1.25rem] rounded-[0.5rem]"
+                        className=" w-[80%] mx-auto mt-[0.75rem] flex flex-row justify-center items-center md:gap-4 gap-2 bg-peach_primary py-[0.5rem] md:py-[1rem] px-1[rem] md:px-[1.25rem]  text-[1em] rounded-[0.5rem]"
                     >
                         <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -199,8 +276,8 @@ const TeamsDashboard = () => {
                             fill="white"
                         />
                         </svg>
-                        <span className="text-ova_white ml-2">
-                        Invite New Users
+                        <span className="text-ova_white text-[1em] md:text-[1.25em]">
+                         Create Team
                         </span>
                     </button>
                 
@@ -209,12 +286,11 @@ const TeamsDashboard = () => {
             {
                 current_data.map((item, index) => 
                 <TeamCard key={index}
-                    profileImage={item.picture.thumbnail} 
-                    name={item.name} 
-                    phone={item.phone} 
-                    email={item.email}
+                    organizationImage={item.picture.thumbnail} 
+                    name ={item.name}
+                    numberOfEmployees = {32333}
                     id={item.id ? item.id : index}
-                    toggleEditModal={ToggleEditModal}
+                    toggleEditModal={ToggleEditModal}                   
                 />)
             }
           </div>
@@ -279,18 +355,24 @@ const TeamsDashboard = () => {
         </div>
       </section>
 
-      {
+      {/* {
         showInviteModal ? <SendInviteModal 
         handleCancelBtn={ToggleInviteModal} isInviteModalActive={true} 
         handleCreateBtn={() => null} 
         /> : null
-      }
+      } */}
 
       {
         showEditModal ? <EditEmployeeModal 
         handleCancelBtn={ToggleEditModal} 
-        isEditModalActive={true} 
-        handleCreateBtn={() => null} 
+        isEditEmployeeModalActive={true} 
+        /> : null
+      }
+
+      {
+        showTeamModal ? <CreateTeamModal 
+        handleCancelBtn={ToggleTeamModal} 
+        isCreateTeamActive={true}
         /> : null
       }
 

@@ -2,11 +2,16 @@
 
 import { PaymentMethod, payment_data } from "@/components/PaymentMethod";
 import { SidebarNav } from "@/components/SidebarNav";
+import { get_cookie } from "@/components/helperFunctions/Cookies";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const SubscriptionDashboard = () => {
 
   const active_plan = "basic"
   const payment_method = "paypal"
+  const router = useRouter()
+  const pathname = usePathname()
 
   const checkSvg = () => {
     return (
@@ -16,12 +21,29 @@ const SubscriptionDashboard = () => {
     )
   } 
 
+  useEffect(() => {
+    const url = pathname
+      console.log(url)
+
+      let user_login_details  = get_cookie('ovasite_user')
+      if (!user_login_details && url =='/subscription') {
+        router.replace('/')
+      } 
+
+      if (user_login_details) {
+        user_login_details = JSON.parse(user_login_details) ;
+        const jwt = user_login_details.jwt
+        console.log(jwt);
+        // get_all_org_projects(jwt)
+      }
+  },[router, pathname])
+
   return (
     <main className="flex flex-col md:flex-row">
       <SidebarNav activeLink={"subscription"} pagetitle={"Subscription"}/>
       <section className=" bg-mobile-bg md:ml-[25vw]  md:w-[75vw]">
         {/* main header - header I */}
-        <header className="h-[6rem] hidden flex-row items-center justify-between py-[1.6rem] border-b border-ova_grey_border bg-ova_white md:fixed md:flex md:w-[75vw] z-50">
+        <header className="h-[6rem] hidden flex-row items-center justify-between py-[1.6rem] border-b border-ova_grey_border bg-ova_white md:fixed md:flex md:w-[75vw] z-40">
           <h1 className="text-[2em] font-bold pl-[1.2rem]">Subscription</h1>
           <div className="flex flex-row items-center justify-between pr-[1.2rem]">
             {/* search and input text field */}

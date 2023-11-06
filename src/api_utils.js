@@ -1,5 +1,5 @@
 const user_id = "clnrrevzg0005vems05qoacgs"
-const orgs_id = "clnrrevzg0005vems05qoacgs"
+const orgs_id = "clohjkfm20001h1622t5bsvl1"
 const employee_id = ""
 const user_email = ""
 const audit_id = ""
@@ -22,7 +22,7 @@ export const delete_user_url = `${base_url}/users/${user_id}`
 export const create_project_url = `${base_url}/orgs/${orgs_id}/create/project`
 export const attach_employee_url = `${base_url}/orgs/${orgs_id}/adduser/:projectId`
 export const get_project_url = `${base_url}/orgs/${orgs_id}/project/:projectId`
-export const get_projects_url = `${base_url}/orgs/${orgs_id}/projects`
+export const get_all_org_projects_url = `${base_url}/orgs/${orgs_id}/projects`
 export const get_employee_projects_url =`${base_url}/orgs/${orgs_id}/userprojects/:empId`
 export const get_project_employees_url =`${base_url}/orgs/${orgs_id}/projectusers/:projectId`
 export const update_employee_role_url =`${base_url}/orgs/${orgs_id}/updateprojectrole/:projectId`
@@ -30,11 +30,11 @@ export const remove_employee_url =`${base_url}/orgs/${orgs_id}/removeemployee/:e
 export const update_project_url =`${base_url}/orgs/${orgs_id}/update/project/:projectId`
 export const export_project_url=`${base_url}/orgs/${orgs_id}/export/project/:projectId`
 export const delete_project_url =`${base_url}/orgs/${orgs_id}/delete/project/:projectId`
-// organization
+// organization replace team with organization
 export const get_all_organizations_url = `${base_url}/orgs`
 export const get_organization_url = `${base_url}/orgs/${orgs_id}`
 export const update_organization_url =`${base_url}/orgs/${orgs_id}`
-export const delete_organization_url =`${base_url}/orgs/${orgs_id}`
+export const delete_organization_url =`${base_url}/orgs/`
 // employee
 export const get_all_employees_url  =  `${base_url}/orgs/${orgs_id}/employees/`
 export const get_employee_url =  `${base_url}/orgs/${orgs_id}/employees/${employee_id}`
@@ -54,5 +54,5 @@ export const join_organization_url = `${base_url}/invites/join/${user_id}`
 export const get_all_audits_url = `${base_url}/orgs/:${orgs_id}/audit`
 export const get_org_audits_url = `${base_url}//orgs/:${orgs_id}/orgaudit`
 export const get_audit_url = `${base_url}/orgs/:${orgs_id}/audit/:${audit_id}`
-export const delete_audit_url = `${base_url}/orgs/:${orgs_id}/audit/delete/:${audit_id}`
+export const delete_audit_url = `${base_url}/orgs/:${orgs_id}/audit/delete/`
 export const delete_org_audit_url = `${base_url}/orgs/:${orgs_id}/orgaudit/delete/:${audit_id}`

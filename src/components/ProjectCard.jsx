@@ -1,10 +1,13 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
-export const ProjectCard = ({ id, title, description }) => {
+export const ProjectCard = ({ id, title, description, AttachAnEmployee, goToProject }) => {
   const [isDropdown, setIsDropdown] = useState(false);
 
   return (
-    <article className="w-[100%] relative h-[13rem] shadow-sm p-4 bg-mobile-card-bg border-[#ddd] border rounded-lg mb-4">
+    <article className="w-[100%] relative h-[13rem] shadow-sm p-4 bg-mobile-card-bg border-[#ddd] border rounded-lg mb-4"
+      onClick={goToProject}
+    >
       <div className="relative">
         <button
           className="absolute right-0 top-0 font-bold p-2"
@@ -25,6 +28,19 @@ export const ProjectCard = ({ id, title, description }) => {
           duration-300 ease-in shadow right-0 top-4 list-none"
             role="menu"
           >
+            {/* attach an employee/team member */}
+            <li className="py-1">
+              <button
+                aria-label="Edit button"
+                className="flex flex-row items-center outline-none  border-none"
+                onClick={AttachAnEmployee}
+              >
+                <FontAwesomeIcon icon="fa-solid fa-paperclip" />
+                
+                <span>Attach Employee</span>
+              </button>
+            </li>
+
             {/* edit button */}
             <li className="py-1">
               <button

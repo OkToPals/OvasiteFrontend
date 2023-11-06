@@ -1,18 +1,16 @@
 'use client'
 
-import { ProjectCard } from "@/components/ProjectCard";
+import { EditEmployeeModal } from "@/components/EditEmployeeModal";
+import EmployeeCard from "@/components/EmployeeCard";
+import { SendInviteModal } from "@/components/SendInviteModal";
 import { SidebarNav } from "@/components/SidebarNav";
-import { useEffect, useLayoutEffect, useState } from "react";
-import { audit_trail_dummy_data } from "./dummyData";
-import { AuditCard } from "@/components/AuditCard";
-import axios_instance from "@/axiosInstance";
-import { delete_audit_url, get_all_audits_url, get_org_audits_url } from "@/api_utils";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { LoadingModal } from "@/components/LoadingModal";
 import { get_cookie } from "@/components/helperFunctions/Cookies";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const Audit = () => {
+const EmployeeDashboard = () => {
+
+  const id = 1
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -29,74 +27,66 @@ const Audit = () => {
   const [page_no_limit, set_page_no_limit] = useState(3);
   const [max_page_no_limit, set_max_page_no_limit] = useState(3);
   const [min_page_no_limit, set_min_page_no_limit] = useState(0);
+
   const [togglemenu, setToggleMenu] = useState(false)
+  const [showInviteModal, setShowInviteModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
 
   const array_of_pages = [...Array(total_page_no).keys()].map((i) => i + 1);
 
   const th_style = "p-2 border-b text-[1.125rem] text-ova_dark_secondary";
   const td_style = "p-2 border-b text-[1rem] text-ova_black align-top";
 
+  let user_login_details  = get_cookie('ovasite_user')
+    if (user_login_details) {
+      user_login_details = JSON.parse(user_login_details) ;
+  }
+
+    // function to get all audits specific to an organization
+
   const ToggleMenu = () => {
     setToggleMenu(!togglemenu)
     // alert("menu clicked")
   }
-
-  // function to get all audits specific to an organization
-  const get_all_org_audits = async(jwt) => {
-    try {
-        const response = await axios_instance.get(get_org_audits_url, {
-          headers: {
-            Authorization: `Bearer ${jwt}`
-          }
-        })
-        console.log(response);
-        setData(response)
-        
-    } catch (error) {
-
-        console.log(error);
-        
-    }
+  const ToggleInviteModal = () => {
+    setShowInviteModal(!showInviteModal)
+    // alert("menu clicked")
   }
 
-  // delete audit
-  const deleteAudit = async(id) => {
-    let user_login_details  = get_cookie('ovasite_user')
-    if (user_login_details) {
-      user_login_details = JSON.parse(user_login_details) ;
-    }
-    try {
-        const response = await axios_instance.get(delete_audit_url + id, {
-          headers: {
-            Authorization: `Bearer ${user_login_details.jwt}`
-          }
-        })
-        console.log(response);
-        
-    } catch (error) {
-
-        console.log(error);
-        
-    }
+  const ToggleEditModal = () => {
+    // alert("edit modal")
+    setShowEditModal(!showEditModal)
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    fetch("https://randomuser.me/api/?results=1000")
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(json)
+        setData(data.results);
+        // console.log(data);
+      });
+  }, []);
+
+  useEffect(() => {
+    // const url = `${pathname}?${searchParams}`
     const url = pathname
     console.log(url)
 
     let user_login_details  = get_cookie('ovasite_user')
-    if (!user_login_details && url =='/audit') {
-      // router.replace('/')
+    if (!user_login_details && url ==`/projects/${id}`) {
+      router.replace('/')
     } 
+
     if (user_login_details) {
-      user_login_details = JSON.parse(user_login_details)
+      user_login_details = JSON.parse(user_login_details) ;
       const jwt = user_login_details.jwt
       console.log(jwt);
-      get_all_org_audits(jwt)
+      // get_all_org_projects(jwt)
+
     }
 
 }, [router,  pathname, searchParams])
-
 
   // handle next button
   const nextButton = () => {
@@ -124,12 +114,13 @@ const Audit = () => {
 
   return (
     <main className="flex flex-col md:flex-row">
-      <SidebarNav activeLink={"audit"} pagetitle={'Audit'} />
+      <SidebarNav activeLink={"teams"} pagetitle={'Employees'} />
 
-      <section className=" bg-mobile-bg md:bg-ova_white md:ml-[25vw]  md:w-[75vw]">
+      <section className=" bg-mobile-bg md:ml-[25vw]  md:w-[75vw]">
+
         {/* main header - header I */}
         <header className="h-[6rem] hidden flex-row items-center justify-between py-[1.6rem] border-b border-ova_grey_border bg-ova_white md:fixed md:flex md:w-[75vw]">
-          <h1 className="text-[2em] font-bold pl-[1.2rem]">Audit</h1>
+          <h1 className="text-[2em] font-bold pl-[1.2rem]">Employees</h1>
           <div className="flex flex-row items-center justify-between pr-[1.2rem]">
             {/* search and input text field */}
             <div className="border rounded-md p-[0.75rem] md:w-[31rem] mr-[1rem]">
@@ -196,80 +187,73 @@ const Audit = () => {
             </div>
           </div>
         </header>
+
         {/* header II */}
-        <h1 className="md:hidden text-[1.25em] font-extrabold text-center mt-[4rem] p-4">Audit</h1>
+        <div className="max-w-full flex flex-row px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">
+            <h1 className="md:hidden text-[1.25em] font-extrabold text-center w-full mx-auto ">Teams</h1>
+        </div>
+        
         {/* project content desktop view*/}
         <div className="px-[1.2rem] ">
-          <table className="w-[100%] mx-auto hidden md:block">
-            <thead className="text-left">
-              <tr>
-                <th className={`${th_style}`}>S/N</th>
-                <th className={`${th_style}`}>User Id</th>
-                <th className={`${th_style}`}>User Email</th>
-                <th className={`${th_style}`}>IP Address</th>
-                <th className={`${th_style}`}>Org. Id</th>
-                <th className={`${th_style}`}>Type</th>
-                <th className={`${th_style}`}>TableName</th>
-                <th className={`${th_style}`}>Date</th>
-                <th className={`${th_style}`}>Old vzalues</th>
-                <th className={`${th_style}`}>New Values</th>
-                <th className={`${th_style}`}>Row Id</th>
-                <th className={`${th_style}`}>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {current_data.map((item, index) => (
-                <tr key={index}>
-                  <td className={`${td_style}`}>{item.id}</td>
-                  <td className={`${td_style}`}>{item.userEmail}</td>
-                  <td className={`${td_style}`}>{item.ip_address}</td>
-                  <td className={`${td_style}`}>{item.org_id}</td>
-                  <td className={`${td_style}`}>{item.type}</td>
-                  <td className={`${td_style}`}>{item.table_name}</td>
-                  <td className={`${td_style}`}>{item.date}</td>
-                  <td className={`${td_style}`}>{item.old_values}</td>
-                  <td className={`${td_style}`}>{item.new_values}</td>
-                  <td className={`${td_style}`}>{item.row_id}</td>
-                  <td className={`${td_style}`}>
-                    {/* delete button */}
-                    <button aria-label="Delete button " className="outline-none  border-none" onClick={() => deleteAudit(`${item.id}`)}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
-                                <g clipPath="url(#clip0_124_9141)">
-                                    <path d="M26.674 6.66666C27.0276 6.66666 27.3668 6.80713 27.6168 7.05718C27.8668 7.30723 28.0073 7.64637 28.0073 7.99999C28.0073 8.35361 27.8668 8.69275 27.6168 8.9428C27.3668 9.19285 27.0276 9.33332 26.674 9.33332H25.3407L25.3367 9.42799L24.0927 26.856C24.0448 27.5288 23.7437 28.1584 23.2501 28.6181C22.7566 29.0778 22.1071 29.3333 21.4327 29.3333H10.5807C9.90618 29.3333 9.25675 29.0778 8.76317 28.6181C8.2696 28.1584 7.96855 27.5288 7.92066 26.856L6.67666 9.42932C6.67464 9.39736 6.67375 9.36534 6.67399 9.33332H5.34066C4.98704 9.33332 4.6479 9.19285 4.39785 8.9428C4.1478 8.69275 4.00732 8.35361 4.00732 7.99999C4.00732 7.64637 4.1478 7.30723 4.39785 7.05718C4.6479 6.80713 4.98704 6.66666 5.34066 6.66666H26.674ZM22.67 9.33332H9.34466L10.582 26.6667H21.4327L22.67 9.33332ZM18.674 2.66666C19.0276 2.66666 19.3668 2.80713 19.6168 3.05718C19.8668 3.30723 20.0073 3.64637 20.0073 3.99999C20.0073 4.35361 19.8668 4.69275 19.6168 4.9428C19.3668 5.19285 19.0276 5.33332 18.674 5.33332H13.3407C12.987 5.33332 12.6479 5.19285 12.3978 4.9428C12.1478 4.69275 12.0073 4.35361 12.0073 3.99999C12.0073 3.64637 12.1478 3.30723 12.3978 3.05718C12.6479 2.80713 12.987 2.66666 13.3407 2.66666H18.674Z" fill="#FF595A"/>
-                                </g>
-                                <defs>
-                                    <clipPath id="clip0_124_9141">
-                                    <rect width="32" height="32" fill="white" transform="translate(0.00732422)"/>
-                                    </clipPath>
-                                </defs>
-                            </svg>
+          {/* <div className=" flex flex-col md:flex-row flex-wrap gap-4 justify-center lg:justify-start"> */}
+          <div className="flex flex-row flex-wrap gap-4 justify-center lg:justify-start">
+         
+            {/* invite members card */}
+            <article className="w-[100%] mini:w-[48%] md:w-[48%] lg:w-[32%] h-[27.7rem] shadow-sm p-4 border-[#ddd] md:bg-mobile-bg bg-white border rounded-lg">
+                {/* profile pics */}
+                <div role="img" aria-label="Profile picture of Jane Doe" 
+                    className='mx-auto w-[10rem] h-[10rem] flex flex--row justify-center items-center 
+                    rounded-full border-2 border-dashed'
+                    >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" fill="none">
+                        <path d="M60 30V40M60 40V50M60 40H70M60 40H50M43.3333 23.3333C43.3333 26.8696 41.9286 30.2609 39.4281 32.7614C36.9276 35.2619 33.5362 36.6667 30 36.6667C26.4638 36.6667 23.0724 35.2619 20.5719 32.7614C18.0714 30.2609 16.6667 26.8696 16.6667 23.3333C16.6667 19.7971 18.0714 16.4057 20.5719 13.9052C23.0724 11.4048 26.4638 10 30 10C33.5362 10 36.9276 11.4048 39.4281 13.9052C41.9286 16.4057 43.3333 19.7971 43.3333 23.3333ZM10 66.6667C10 61.3623 12.1071 56.2753 15.8579 52.5245C19.6086 48.7738 24.6957 46.6667 30 46.6667C35.3043 46.6667 40.3914 48.7738 44.1421 52.5245C47.8929 56.2753 50 61.3623 50 66.6667V70H10V66.6667Z" stroke="#C3C3C3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                </div>
+                <h2 className="max-w-[80%] mx-auto mt-[0.75rem] overflow-hidden 
+                    whitespace-nowrap text-ellipsis font-bold text-[1.5em] text-center">
+                        INVITE USERS
+                </h2>
+                <h2 className="text-[1.25em] text-center overflow-wrap break-words mt-[0.75rem]">
+                    Invite to your organisation your members by email
+                </h2>
+                <button
+                    onClick={ToggleInviteModal }
+                        aria-label="Create Project"
+                        className=" w-[80%] mx-auto mt-[0.75rem] flex flex-row justify-center items-center bg-peach_primary py-[1rem] px-[1.25rem] rounded-[0.5rem]"
+                    >
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        >
+                        <path
+                            d="M12.6666 8.66668H8.66659V12.6667H7.33325V8.66668H3.33325V7.33334H7.33325V3.33334H8.66659V7.33334H12.6666V8.66668Z"
+                            fill="white"
+                        />
+                        </svg>
+                        <span className="text-ova_white ml-2">
+                        Invite New Users
+                        </span>
                     </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          
-          {/* mobile viwq */}
-          <div className=" flex flex-col justify-center items-center md:hidden">
+                
+
+            </article>
             {
                 current_data.map((item, index) => 
-                <AuditCard key={index} 
-                  userEmail = {item.userEmail} 
-                  ip_address = {item.ip_address} 
-                  org_id = {item.org_id}  
-                  type = {item.type} 
-                  table_name = {item.table_name}  
-                  date = {item.date} 
-                  old_values = {item.old_values} 
-                  new_values = {item.new_values} 
-                  row_id = {item.row_id} 
-                  deleteAudit= {() => deleteAudit(`${item.id}`)}
+                <EmployeeCard key={index}
+                    profileImage={item.picture.thumbnail} 
+                    name={item.name} 
+                    phone={item.phone} 
+                    email={item.email}
+                    id={item.id ? item.id : index}
+                    toggleEditModal={ToggleEditModal}
                 />)
             }
           </div>
 
-          {/* pagination */}
+           {/* pagination */}
       <div className="w-full flex md:flex-row justify-between items-center my-4" aria-label="Pagination navigation">
 
             {/* 1/3 */}
@@ -325,11 +309,28 @@ const Audit = () => {
                 </button>
             </div>
 
-        </div>
+         </div>
         </div>
       </section>
+
+      {
+        showInviteModal ? <SendInviteModal 
+        handleCancelBtn={ToggleInviteModal} isInviteModalActive={true} 
+        handleCreateBtn={() => null} 
+        /> : null
+      }
+
+      {
+        showEditModal ? <EditEmployeeModal 
+        handleCancelBtn={ToggleEditModal} 
+        isEditModalActive={true} 
+        handleCreateBtn={() => null} 
+        /> : null
+      }
+
+     
     </main>
-  )
+  );
 };
 
-export default Audit;
+export default EmployeeDashboard;
