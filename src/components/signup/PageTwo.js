@@ -10,6 +10,28 @@ function PageTwo() {
   const [currentStep, setCurrentStep] = useState(1);
   const [stateData, setStateData] = useState();
 
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data, e) => {
+    e.preventDefault();
+    // console.log("form data", data);
+
+    axiosInstance
+      .post("organization", data)
+      .then((response) => {
+        console.log(response)
+        handleNext()
+      })
+      .catch((e) => console.log(e));
+
+    
+  };
+
   const handleNext = () => {
     setCurrentStep(currentStep + 1);
   };

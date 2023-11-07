@@ -22,9 +22,10 @@ margin-right: 20px;
 #span{
   border: 1px solid #68040a;
   position: absolute;
-  top: 35px;
+  top: 30px;
   right: 40px;
   padding: 7px;
+  cursor: pointer;
 }
 #ul{
  background-color: #ffffff;

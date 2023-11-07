@@ -25,7 +25,7 @@ export default function Signin() {
 
   const onSubmit = (data, e) => {
     e.preventDefault();
-    console.log("form data", data);
+    // console.log("form data", data);
 
     axiosInstance
       .post("auth/login", data)
