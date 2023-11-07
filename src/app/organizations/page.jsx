@@ -9,12 +9,13 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { get_cookie } from "@/components/helperFunctions/Cookies";
 import axios_instance from "@/axiosInstance";
-import { get_all_employees_url, get_all_organizations_url } from "@/api_utils";
+import { base_url, get_all_employees_url, get_all_organizations_url } from "@/api_utils";
 import OrganizationCard from "@/components/OrganizationCard";
 import { EditOrganizationModal } from "@/components/EditOrganizationModal";
 import { CreateOrganizationModal } from "@/components/CreateOrganizationModal";
 import { ConfirmActionModal } from "@/components/ConfirmActionModal";
 import NoDataCard from "@/components/NoDataCard";
+import { CreateProject } from "@/components/CreateProject";
 
 const Organizations = () => {
 
@@ -55,26 +56,33 @@ const Organizations = () => {
     // alert("menu clicked")
   }
 
-  const ToggleOrganizationModal = () => {
+  const ToggleOrganizationModal = (e) => {
+    e.preventDefault();
     // alert("edit modal")
     setShowOrganizationModal(!showOrganizationModal)
   }
 
-       // handles edit organization modal
-       const ToggleEditOrganization = () => {
-        setToggleEdit(!toggleEdit)
-    }
+   // handles edit organization modal
+  const ToggleEditOrganization = (e) => {
+    e.preventDefault();
+    setToggleEdit(!toggleEdit)
+  }
 
-    // handles delete organization modal
-    const ToggleDeleteOrganization =  () => {
-        setToggleDelete(!toggleDelete)
-    }
+  // handles delete organization modal
+  const ToggleDeleteOrganization =  (e) => {
+    e.preventDefault();
+    setToggleDelete(!toggleDelete)
+  }
 
-    // handle delete organization
-    const handleDeleteOrganization = () => {
+  // navigate to projects
+  const goToProject = (id) => {
+    return router.push(`/organizations/${id}`)
+  }
 
-    } 
 
+  // handle delete organization
+  const handleDeleteOrganization = () => {
+  } 
 
   // function to get all audits specific to an organization
   const get_all_organizations = async(jwt) => {
@@ -312,9 +320,9 @@ const Organizations = () => {
                       organizationImage={item.picture ? item.picture.thumbnail : item.logo } 
                       name ={item.name}
                       numberOfEmployees = {32333}
-                      id={item.id ? item.id : index}
+                      id={item.id}
                       toggleEditModal={ToggleEditOrganization}   
-                      toggleDeleteModal={ToggleDeleteOrganization}                
+                      toggleDeleteModal={ToggleDeleteOrganization}                  
                   />)
               }
             </div>
@@ -378,7 +386,7 @@ const Organizations = () => {
           </div>
           </div>
           : 
-          <div className="flex flex-col justify-center items-center my-88px-9">
+          <div className="flex flex-col justify-center items-center my-8 md:px-8 px-4">
             <NoDataCard title={"No Organization Data"} description={"Add organization to continue"}/>
           </div>
         }
@@ -398,13 +406,12 @@ const Organizations = () => {
         isEditEmployeeModalActive={true} 
         /> : null
       } */}
-
-      {
-        showOrganizationModal ? <CreateOrganizationModal 
-        handleCancelBtn={ToggleOrganizationModal} 
-        isCreateOrganizationActive={true}
-        /> : null
-      }
+       {
+            showOrganizationModal ? <CreateOrganizationModal 
+            handleCancelBtn={ToggleOrganizationModal} 
+            isCreateOrganizationActive={true}
+            /> : null
+        }
 
       {
           toggleEdit ? <EditOrganizationModal 

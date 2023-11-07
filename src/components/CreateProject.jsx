@@ -8,6 +8,7 @@ export const CreateProject = ({
     handleCancelBtn,
     handleCreateBtn,
     isCreateProjectActive,
+    id
     }) => {
     const [projectName, setProjectName] = useState("");
     const [projectDescription, setProjectDescription] = useState("");
@@ -26,9 +27,8 @@ export const CreateProject = ({
     const [startDateError, setStartDateError] = useState(false)
     const [endDateError, setEndDateError] = useState(false)
 
-
+    const base_url = "https://ovasite.onrender.com/api/v1"
   const CreateProject = () => {
-    let user_login_details = get_cookie("ovasite_user");
     if (!projectName) {
         setProjectNameError(true)
         setErrorMessage("Input project name")
@@ -61,9 +61,12 @@ export const CreateProject = ({
         setStartDateError(false)
         setEndDateError(false)
 
+        let user_login_details = get_cookie("ovasite_user");
         if (user_login_details) {
           setLoading(true)
           user_login_details = JSON.parse(user_login_details);
+
+          console.log("org id =>", id, user_login_details.jwt);
         
           let data = JSON.stringify({
           name: projectName,
@@ -75,7 +78,7 @@ export const CreateProject = ({
           });
           let config = {
           method: "post",
-          url: create_project_url,
+          url: `${base_url}/orgs/${id}/create/project`,
           headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${user_login_details.jwt}`,
@@ -90,7 +93,7 @@ export const CreateProject = ({
               setLoading(false)
           })
           .catch((error) => {
-              console.log(error);
+              console.log(error.response.data);
               setLoading(false)
           });
         }
@@ -109,8 +112,8 @@ export const CreateProject = ({
     >
       <div className="bg-white border w-[96%] md:w-[50%] pb-8 mx-auto my-8 flex flex-col h-[90vh] overflow-y-scroll ">
         {/* header */}
-        <div className="fixed flex flex-row justify-between px-[0.5rem] bg-ova_white h-16 w-[96%] md:w-[50%] border-b">
-          <p className="text-center my-4 font-semibold text-[1em] md:text-[1.5em]">
+        <div className="fixed flex flex-row justify-between px-8 bg-ova_white h-16 w-[96%] md:w-[50%] border-b">
+          <p className="text-center my-4 font-semibold text-[1em] md:text-[1.25em]">
             Create Project: Project details
           </p>
           <button className="" onClick={handleCancelBtn}>
@@ -123,7 +126,7 @@ export const CreateProject = ({
             >
               <path
                 d="M1 17L17 1M1 1L17 17"
-                stroke="red"
+                stroke="black"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -133,7 +136,7 @@ export const CreateProject = ({
         </div>
         {/* body */}
         <div className="flex flex-col px-[2rem] mt-20">
-            <p className="text-red-500 p-4 md:p-8 text-center italic text-[1em] md:text[1.2em]">{errorMessage}</p>
+          { errorMessage ?  <p className="text-red-500 p-4 md:p-8 text-center italic text-[1em] md:text[1.2em]">{errorMessage}</p> : null }
           {/* project name */}
           <div className="flex flex-col">
             <label htmlFor="projectName" className=" text-[1em] md:text-[1.25rem]">
