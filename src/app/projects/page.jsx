@@ -222,11 +222,11 @@ const ProjectsDashboard = () => {
           </header>
           {/* header II */}
           <div className="max-w-full flex flex-row justify-between md:justify-end items-center px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">
-            <h1 className="md:hidden text-[1.25em] font-extrabold ">Projects</h1>
+            <h1 className="md:hidden text-[1em] md:text-[1.25em] font-extrabold ">Projects</h1>
             <div className="flex flex-row justify-center items-center">
               <button
                 aria-label="Sort by"
-                className="flex flex-row items-center py-[1rem] px-[1.25rem] border-[0.0625rem] border-ova_grey_border rounded-[0.5rem] mr-[0.75rem]"
+                className="flex flex-row items-center py-[0.6rem] px-[1rem]  md:py-[0.9rem] md:px-[1.25rem] border-[0.0625rem] border-ova_grey_border rounded-[0.5rem] mr-[0.75rem] text-[1em]"
               >
                 Status
                 <svg
@@ -244,10 +244,10 @@ const ProjectsDashboard = () => {
                   />
                 </svg>
               </button>
-              <button
+              {/* <button
                 onClick={ToggleCreateProjectModal}
                 aria-label="Create Project"
-                className="flex flex-row items-center bg-peach_primary py-[1rem] px-[1.25rem] rounded-[0.5rem]"
+                className="flex flex-row items-center bg-peach_primary py-[0.8rem] px-[1rem]  md:py-[1rem] md:px-[1.25rem] rounded-[0.5rem]"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -264,7 +264,7 @@ const ProjectsDashboard = () => {
                 <span className="text-ova_white hidden md:block ml-2">
                   Create Project
                 </span>
-              </button>
+              </button> */}
             </div>
           </div>
           { data.length > 0 ?
@@ -507,7 +507,7 @@ const ProjectsDashboard = () => {
             </div>
           </div>
           : 
-          <div className="flex flex-col justify-center items-center my-8">
+          <div className="flex flex-col justify-center items-center my-8 px-8">
              <NoDataCard title={"No Project Data"} description={"Create a project to continue"}/>
           </div>
         }

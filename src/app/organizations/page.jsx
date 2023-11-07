@@ -378,7 +378,7 @@ const Organizations = () => {
           </div>
           </div>
           : 
-          <div className="flex flex-col justify-center items-center my-8">
+          <div className="flex flex-col justify-center items-center my-88px-9">
             <NoDataCard title={"No Organization Data"} description={"Add organization to continue"}/>
           </div>
         }

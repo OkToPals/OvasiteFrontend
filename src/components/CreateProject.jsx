@@ -60,39 +60,40 @@ export const CreateProject = ({
         setDurationError(false)
         setStartDateError(false)
         setEndDateError(false)
-        setLoading(true)
 
         if (user_login_details) {
-        user_login_details = JSON.parse(user_login_details);
-        }
-        let data = JSON.stringify({
-        name: projectName,
-        description: projectDescription,
-        status: status,
-        duration: duration,
-        startdate: startDate,
-        endDate: endDate,
-        });
-        let config = {
-        method: "post",
-        url: create_project_url,
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user_login_details.jwt}`,
-        },
-        data: data,
-        };
+          setLoading(true)
+          user_login_details = JSON.parse(user_login_details);
+        
+          let data = JSON.stringify({
+          name: projectName,
+          description: projectDescription,
+          status: status,
+          duration: duration,
+          startdate: startDate,
+          endDate: endDate,
+          });
+          let config = {
+          method: "post",
+          url: create_project_url,
+          headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user_login_details.jwt}`,
+          },
+          data: data,
+          };
 
-        axios_instance
-        .request(config)
-        .then((response) => {
-            console.log(JSON.stringify(response.data));
-            setLoading(false)
-        })
-        .catch((error) => {
-            console.log(error);
-            setLoading(false)
-        });
+          axios_instance
+          .request(config)
+          .then((response) => {
+              console.log(JSON.stringify(response.data));
+              setLoading(false)
+          })
+          .catch((error) => {
+              console.log(error);
+              setLoading(false)
+          });
+        }
     }
   };
 
@@ -189,8 +190,8 @@ export const CreateProject = ({
                 name="duration"
                 id="duration"
                 type="text"
-                placeholder="Expected duration (e.g 2 weeks, 3 years etc.)"
-                className={`border-[1px] ${durationError ? 'border-red-500' : 'border-ova_grey_border' } p-[1rem] rounded-md`}
+                placeholder="Duration (e.g 2 weeks, 3 years)"
+                className={`border-[1px] ${durationError ? 'border-red-500' : 'border-ova_grey_border' } p-[1rem] rounded-md md:text-[1.25em]::placeholder text-[1em]::placeholder`}
                 onChange={(e) => setDuration(e.target.value.trim())}
               />
             </div>
