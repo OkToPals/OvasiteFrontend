@@ -4,6 +4,7 @@ import { get_all_employees_url } from "@/api_utils";
 import axios_instance from "@/axiosInstance";
 import { EditEmployeeModal } from "@/components/EditEmployeeModal";
 import EmployeeCard from "@/components/EmployeeCard";
+import NoDataCard from "@/components/NoDataCard";
 import { SendInviteModal } from "@/components/SendInviteModal";
 import { SidebarNav } from "@/components/SidebarNav";
 import { get_cookie } from "@/components/helperFunctions/Cookies";
@@ -23,7 +24,7 @@ const EmployeesDashboard = () => {
   const [items_per_page, set_items_per_page] = useState(10);
   const index_of_last_item = current_page * items_per_page;
   const index_of_first_item = index_of_last_item - items_per_page;
-  const current_data = data.slice(index_of_first_item, index_of_last_item);
+  const current_data = data.length > 0 ? data.slice(index_of_first_item, index_of_last_item) : [];
   const total_page_no = Math.ceil(data.length / items_per_page);
 
   const [page_no_limit, set_page_no_limit] = useState(3);
@@ -34,7 +35,7 @@ const EmployeesDashboard = () => {
   const [showInviteModal, setShowInviteModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
 
-  const array_of_pages = [...Array(total_page_no).keys()].map((i) => i + 1);
+  const array_of_pages = data.length > 0 ? [...Array(total_page_no).keys()].map((i) => i + 1) : [];
 
   const th_style = "p-2 border-b text-[1.125rem] text-ova_dark_secondary";
   const td_style = "p-2 border-b text-[1rem] text-ova_black align-top";
@@ -236,8 +237,10 @@ const EmployeesDashboard = () => {
         {/* <div className="max-w-full flex flex-row px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">
             <h1 className="md:hidden text-[1.25em] font-extrabold text-center w-full mx-auto ">Teams</h1>
         </div> */}
+
+        { data.length > 0 ?
         
-        {/* project content desktop view*/}
+        //{/* project content desktop view*/}
         <div className="px-[1.2rem] ">
           {/* <div className=" flex flex-col md:flex-row flex-wrap gap-4 justify-center lg:justify-start"> */}
           <div className="flex flex-row flex-wrap gap-4 justify-center lg:justify-start">
@@ -353,6 +356,11 @@ const EmployeesDashboard = () => {
 
          </div>
         </div>
+        : 
+        <div className="flex flex-col justify-center items-center my-8">
+           <NoDataCard title={"No Employee Data"} description={"Add an employee to continue"}/>
+        </div>
+      }
       </section>
 
       {

@@ -11,6 +11,10 @@ import { get_cookie } from "@/components/helperFunctions/Cookies";
 import axios_instance from "@/axiosInstance";
 import { get_all_employees_url, get_all_organizations_url } from "@/api_utils";
 import OrganizationCard from "@/components/OrganizationCard";
+import { EditOrganizationModal } from "@/components/EditOrganizationModal";
+import { CreateOrganizationModal } from "@/components/CreateOrganizationModal";
+import { ConfirmActionModal } from "@/components/ConfirmActionModal";
+import NoDataCard from "@/components/NoDataCard";
 
 const Organizations = () => {
 
@@ -23,19 +27,21 @@ const Organizations = () => {
   const [items_per_page, set_items_per_page] = useState(10);
   const index_of_last_item = current_page * items_per_page;
   const index_of_first_item = index_of_last_item - items_per_page;
-  const current_data = data.slice(index_of_first_item, index_of_last_item);
+  const current_data = data.length > 0 ? data.slice(index_of_first_item, index_of_last_item) : [];
   const total_page_no = Math.ceil(data.length / items_per_page);
 
   const [page_no_limit, set_page_no_limit] = useState(3);
   const [max_page_no_limit, set_max_page_no_limit] = useState(3);
   const [min_page_no_limit, set_min_page_no_limit] = useState(0);
 
+  const array_of_pages = data.length > 0 ? [...Array(total_page_no).keys()].map((i) => i + 1) : [];
+
   const [togglemenu, setToggleMenu] = useState(false)
   const [showInviteModal, setShowInviteModal] = useState(false)
-  const [showEditModal, setShowEditModal] = useState(false)
+  const [toggleEdit, setToggleEdit] = useState(false)
   const [showOrganizationModal, setShowOrganizationModal] = useState(false)
-
-  const array_of_pages = [...Array(total_page_no).keys()].map((i) => i + 1);
+  const [toggleDelete, setToggleDelete] = useState(false)
+  const [loadingDeleteOrganization, setLoadingDeleteOrganization] = useState(false)
 
   const th_style = "p-2 border-b text-[1.125rem] text-ova_dark_secondary";
   const td_style = "p-2 border-b text-[1rem] text-ova_black align-top";
@@ -49,25 +55,37 @@ const Organizations = () => {
     // alert("menu clicked")
   }
 
-  const ToggleEditModal = () => {
-    // alert("edit modal")
-    setShowEditModal(!showEditModal)
-  }
-
   const ToggleOrganizationModal = () => {
     // alert("edit modal")
     setShowOrganizationModal(!showOrganizationModal)
   }
+
+       // handles edit organization modal
+       const ToggleEditOrganization = () => {
+        setToggleEdit(!toggleEdit)
+    }
+
+    // handles delete organization modal
+    const ToggleDeleteOrganization =  () => {
+        setToggleDelete(!toggleDelete)
+    }
+
+    // handle delete organization
+    const handleDeleteOrganization = () => {
+
+    } 
+
 
   // function to get all audits specific to an organization
   const get_all_organizations = async(jwt) => {
     try {
         const response = await axios_instance.get(get_all_organizations_url, {
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${jwt}`
           }
         })
-        console.log(response);
+        console.log("all organizations => ", response);
         setData(response.data)
         
     } catch (error) {
@@ -237,126 +255,134 @@ const Organizations = () => {
             <h1 className="md:hidden text-[1.25em] font-extrabold text-center w-full mx-auto ">Teams</h1>
         </div> */}
         
-        {/* project content desktop view*/}
-        <div className="px-[1.2rem] ">
-          {/* <div className=" flex flex-col md:flex-row flex-wrap gap-4 justify-center lg:justify-start"> */}
-          <div className="flex flex-row flex-wrap gap-4 justify-center lg:justify-start">
-         
-            {/* invite members card */}
-            <article className="w-[100%] mini:w-[48%] md:w-[48%] lg:w-[32%] md:h-[25.7rem] h-[18rem] shadow-sm p-4 border-[#ddd] md:bg-mobile-bg bg-white border rounded-lg">
-                {/* profile pics */}
-                <div role="img" aria-label="Profile picture of Jane Doe" 
-                    className='mx-auto md:w-[10rem] md:h-[10rem] w-[6.25rem] h-[6.25rem] flex flex--row justify-center items-center 
-                    rounded-full border-2 border-dashed'
-                    >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" fill="none">
-                        <path d="M60 30V40M60 40V50M60 40H70M60 40H50M43.3333 23.3333C43.3333 26.8696 41.9286 30.2609 39.4281 32.7614C36.9276 35.2619 33.5362 36.6667 30 36.6667C26.4638 36.6667 23.0724 35.2619 20.5719 32.7614C18.0714 30.2609 16.6667 26.8696 16.6667 23.3333C16.6667 19.7971 18.0714 16.4057 20.5719 13.9052C23.0724 11.4048 26.4638 10 30 10C33.5362 10 36.9276 11.4048 39.4281 13.9052C41.9286 16.4057 43.3333 19.7971 43.3333 23.3333ZM10 66.6667C10 61.3623 12.1071 56.2753 15.8579 52.5245C19.6086 48.7738 24.6957 46.6667 30 46.6667C35.3043 46.6667 40.3914 48.7738 44.1421 52.5245C47.8929 56.2753 50 61.3623 50 66.6667V70H10V66.6667Z" stroke="#C3C3C3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                </div>
-                <h2 className="max-w-[80%] mx-auto mt-[0.75rem] overflow-hidden 
-                    whitespace-nowrap text-ellipsis font-bold text-[1em] md:text-[1em] text-center">
-                        Create New Organization
-                </h2>
-                <h2 className="text-[0.8em] md:text-[1em] text-center overflow-wrap break-words mt-[0.75rem] text-[#5C5C5C]">
-                  Create a new organization consisting various teams and employees
-                </h2>
-                <button
-                    onClick={ToggleOrganizationModal}
-                        aria-label="Create Project"
-                        className=" w-[80%] mx-auto mt-[0.75rem] flex flex-row justify-center items-center md:gap-4 gap-2 bg-peach_primary py-[0.5rem] md:py-[1rem] px-1[rem] md:px-[1.25rem]  text-[1em] rounded-[0.5rem] text-ellipsis"
-                    >
-                        <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        >
-                        <path
-                            d="M12.6666 8.66668H8.66659V12.6667H7.33325V8.66668H3.33325V7.33334H7.33325V3.33334H8.66659V7.33334H12.6666V8.66668Z"
-                            fill="white"
-                        />
-                        </svg>
-                        <span className="text-ova_white text-[1em] hidden md:block">
-                            Create Org. 
-                        </span>
-                        <span className="text-ova_white text-[1em] md:hidden ">
-                            Create Org. 
-                        </span>
-                    </button>
-                
+        { data.length > 0 ?
+          // project content desktop view
+          <div className="px-[1.2rem] ">
+            {/* <div className=" flex flex-col md:flex-row flex-wrap gap-4 justify-center lg:justify-start"> */}
+            <div className="flex flex-row flex-wrap gap-4 justify-center lg:justify-start">
+          
+              {/* invite members card */}
+              <article className="w-[100%] mini:w-[48%] md:w-[48%] lg:w-[32%] md:h-[25.7rem] h-[18rem] shadow-sm p-4 border-[#ddd] md:bg-mobile-bg bg-white border rounded-lg">
+                  {/* profile pics */}
+                  <div role="img" aria-label="Profile picture of Jane Doe" 
+                      className='mx-auto md:w-[10rem] md:h-[10rem] w-[6.25rem] h-[6.25rem] flex flex--row justify-center items-center 
+                      rounded-full border-2 border-dashed'
+                      >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" fill="none">
+                          <path d="M60 30V40M60 40V50M60 40H70M60 40H50M43.3333 23.3333C43.3333 26.8696 41.9286 30.2609 39.4281 32.7614C36.9276 35.2619 33.5362 36.6667 30 36.6667C26.4638 36.6667 23.0724 35.2619 20.5719 32.7614C18.0714 30.2609 16.6667 26.8696 16.6667 23.3333C16.6667 19.7971 18.0714 16.4057 20.5719 13.9052C23.0724 11.4048 26.4638 10 30 10C33.5362 10 36.9276 11.4048 39.4281 13.9052C41.9286 16.4057 43.3333 19.7971 43.3333 23.3333ZM10 66.6667C10 61.3623 12.1071 56.2753 15.8579 52.5245C19.6086 48.7738 24.6957 46.6667 30 46.6667C35.3043 46.6667 40.3914 48.7738 44.1421 52.5245C47.8929 56.2753 50 61.3623 50 66.6667V70H10V66.6667Z" stroke="#C3C3C3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                  </div>
+                  <h2 className="max-w-[80%] mx-auto mt-[0.75rem] overflow-hidden 
+                      whitespace-nowrap text-ellipsis font-bold text-[1em] md:text-[1em] text-center">
+                          Create New Organization
+                  </h2>
+                  <h2 className="text-[0.8em] md:text-[1em] text-center overflow-wrap break-words mt-[0.75rem] text-[#5C5C5C]">
+                    Create a new organization consisting various teams and employees
+                  </h2>
+                  <button
+                      onClick={ToggleOrganizationModal}
+                          aria-label="Create Project"
+                          className=" w-[80%] mx-auto mt-[0.75rem] flex flex-row justify-center items-center md:gap-4 gap-2 bg-peach_primary py-[0.5rem] md:py-[1rem] px-1[rem] md:px-[1.25rem]  text-[1em] rounded-[0.5rem] text-ellipsis"
+                      >
+                          <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          >
+                          <path
+                              d="M12.6666 8.66668H8.66659V12.6667H7.33325V8.66668H3.33325V7.33334H7.33325V3.33334H8.66659V7.33334H12.6666V8.66668Z"
+                              fill="white"
+                          />
+                          </svg>
+                          <span className="text-ova_white text-[1em] hidden md:block">
+                              Create Org. 
+                          </span>
+                          <span className="text-ova_white text-[1em] md:hidden ">
+                              Create Org. 
+                          </span>
+                      </button>
+                  
 
-            </article>
-            {
-                current_data.map((item, index) => 
-                <OrganizationCard key={index}
-                    organizationImage={item.picture ? item.picture.thumbnail : item.logo } 
-                    name ={item.name}
-                    numberOfEmployees = {32333}
-                    id={item.id ? item.id : index}
-                    toggleEditModal={ToggleEditModal}                   
-                />)
-            }
-          </div>
-
-           {/* pagination */}
-      <div className="w-full flex md:flex-row justify-between items-center my-4" aria-label="Pagination navigation">
-
-            {/* 1/3 */}
-            {/* <p className="mb-2 w-12 h-12 rounded-full bg-[#001233] text-white flex flex-row items-center justify-center font-bold text-[12px]"
-            role="status" aria-label={`Page ${current_page} of ${total_page_no}`}>
-            <span className="text-[#FF595A]">{current_page}&nbsp;</span>/&nbsp;{total_page_no}
-            </p> */}
-
-            <div className="w-full mx-auto mb-2 flex flex-row gap-2 justify-center md:justify-end items-center px-2">
-                <button className="w-[2rem] h-[2rem] border-[0.00625rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex justify-center items-center"
-                    onClick={previousButton} disabled={current_page == 1 ? true : false}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M11.7267 12L12.6667 11.06L9.61341 8L12.6667 4.94L11.7267 4L7.72675 8L11.7267 12Z" fill="#333333"/>
-                        <path d="M7.33344 12L8.27344 11.06L5.2201 8L8.27344 4.94L7.33344 4L3.33344 8L7.33344 12Z" fill="#333333"/>
-                    </svg>
-                </button>
-
-                {/* left ellipses */}
-                { min_page_no_limit >= 1  ? 
-                    <button className="w-[2rem] h-[2rem] flex flex-row items-center justify-center p-[0.625rem]  border-ova_grey_order font-bold text-ova_dark_primary"
-                    onClick={previousButton}>...</button>
-                : ""
-                }
-
-                {          
-                    array_of_pages.map((item, index) => (
-                    item < max_page_no_limit + 1 && item > min_page_no_limit ? (
-                    <button key={index} aria-label={`Go to page ${item}`}
-                        onClick={() => set_current_page(item)} aria-pressed={current_page == item ? 'true' : 'false'}
-                        className={`w-[2rem] h-[2rem]  border-[0.0625rem] rounded-[0.5rem] border-ova_grey_order text-center
-                        flex flex-row items-center justify-center font-bold text-[0.8125em] 
-                        ${current_page === item ? 'text-ova_white bg-navy_blue' : ' text-ova_dark_primary'}
-                        `}   
-                        >{item}</button>  ) 
-                    : ""
-                    )
-                    )                 
-                }
-
-            {/* right ellipse */}
-                { array_of_pages.length > max_page_no_limit ?
-                    <button 
-                    className="w-[2rem] h-[2rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex flex-row items-center justify-center font-bold text-ova_dark_primary"
-                    onClick={nextButton}>...</button>
-                : null
-                }
-                <button className="w-[2rem] h-[2rem] border-[0.00625rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex justify-center items-center"
-                    onClick={nextButton} disabled={current_page == total_page_no ? true : false} >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M4.27325 4L3.33325 4.94L6.38659 8L3.33325 11.06L4.27325 12L8.27325 8L4.27325 4Z" fill="black"/>
-                        <path d="M8.66656 4L7.72656 4.94L10.7799 8L7.72656 11.06L8.66656 12L12.6666 8L8.66656 4Z" fill="black"/>
-                    </svg>
-                </button>
+              </article>
+              {
+                  current_data.map((item, index) => 
+                  <OrganizationCard key={index}
+                      organizationImage={item.picture ? item.picture.thumbnail : item.logo } 
+                      name ={item.name}
+                      numberOfEmployees = {32333}
+                      id={item.id ? item.id : index}
+                      toggleEditModal={ToggleEditOrganization}   
+                      toggleDeleteModal={ToggleDeleteOrganization}                
+                  />)
+              }
             </div>
 
-         </div>
-        </div>
+            {/* pagination */}
+        <div className="w-full flex md:flex-row justify-between items-center my-4" aria-label="Pagination navigation">
+
+              {/* 1/3 */}
+              {/* <p className="mb-2 w-12 h-12 rounded-full bg-[#001233] text-white flex flex-row items-center justify-center font-bold text-[12px]"
+              role="status" aria-label={`Page ${current_page} of ${total_page_no}`}>
+              <span className="text-[#FF595A]">{current_page}&nbsp;</span>/&nbsp;{total_page_no}
+              </p> */}
+
+              <div className="w-full mx-auto mb-2 flex flex-row gap-2 justify-center md:justify-end items-center px-2">
+                  <button className="w-[2rem] h-[2rem] border-[0.00625rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex justify-center items-center"
+                      onClick={previousButton} disabled={current_page == 1 ? true : false}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <path d="M11.7267 12L12.6667 11.06L9.61341 8L12.6667 4.94L11.7267 4L7.72675 8L11.7267 12Z" fill="#333333"/>
+                          <path d="M7.33344 12L8.27344 11.06L5.2201 8L8.27344 4.94L7.33344 4L3.33344 8L7.33344 12Z" fill="#333333"/>
+                      </svg>
+                  </button>
+
+                  {/* left ellipses */}
+                  { min_page_no_limit >= 1  ? 
+                      <button className="w-[2rem] h-[2rem] flex flex-row items-center justify-center p-[0.625rem]  border-ova_grey_order font-bold text-ova_dark_primary"
+                      onClick={previousButton}>...</button>
+                  : ""
+                  }
+
+                  {          
+                      array_of_pages.map((item, index) => (
+                      item < max_page_no_limit + 1 && item > min_page_no_limit ? (
+                      <button key={index} aria-label={`Go to page ${item}`}
+                          onClick={() => set_current_page(item)} aria-pressed={current_page == item ? 'true' : 'false'}
+                          className={`w-[2rem] h-[2rem]  border-[0.0625rem] rounded-[0.5rem] border-ova_grey_order text-center
+                          flex flex-row items-center justify-center font-bold text-[0.8125em] 
+                          ${current_page === item ? 'text-ova_white bg-navy_blue' : ' text-ova_dark_primary'}
+                          `}   
+                          >{item}</button>  ) 
+                      : ""
+                      )
+                      )                 
+                  }
+
+              {/* right ellipse */}
+                  { array_of_pages.length > max_page_no_limit ?
+                      <button 
+                      className="w-[2rem] h-[2rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex flex-row items-center justify-center font-bold text-ova_dark_primary"
+                      onClick={nextButton}>...</button>
+                  : null
+                  }
+                  <button className="w-[2rem] h-[2rem] border-[0.00625rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex justify-center items-center"
+                      onClick={nextButton} disabled={current_page == total_page_no ? true : false} >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <path d="M4.27325 4L3.33325 4.94L6.38659 8L3.33325 11.06L4.27325 12L8.27325 8L4.27325 4Z" fill="black"/>
+                          <path d="M8.66656 4L7.72656 4.94L10.7799 8L7.72656 11.06L8.66656 12L12.6666 8L8.66656 4Z" fill="black"/>
+                      </svg>
+                  </button>
+              </div>
+
+          </div>
+          </div>
+          : 
+          <div className="flex flex-col justify-center items-center my-8">
+            <NoDataCard title={"No Organization Data"} description={"Add organization to continue"}/>
+          </div>
+        }
+
       </section>
 
       {/* {
@@ -366,19 +392,41 @@ const Organizations = () => {
         /> : null
       } */}
 
-      {
-        showEditModal ? <EditEmployeeModal 
+      {/* {
+        showEditModal ? <EditOrganizationModal 
         handleCancelBtn={ToggleEditModal} 
         isEditEmployeeModalActive={true} 
+        /> : null
+      } */}
+
+      {
+        showOrganizationModal ? <CreateOrganizationModal 
+        handleCancelBtn={ToggleOrganizationModal} 
+        isCreateOrganizationActive={true}
         /> : null
       }
 
       {
-        showOrganizationModal ? <CreateTeamModal 
-        handleCancelBtn={ToggleOrganizationModal} 
-        isCreateTeamActive={true}
-        /> : null
+          toggleEdit ? <EditOrganizationModal 
+          handleCancelBtn={ToggleEditOrganization} isEditOrganizationModalActive={true} 
+          handleCreateBtn={() => null} 
+          /> : null
       }
+
+        
+        {toggleDelete ? 
+            <ConfirmActionModal 
+            title={'Are you sure you want to Delete?'}
+            description={'Once you choose to delete, the action is final and cannot be undone. Please take a moment to ensure that you truly wish to proceed with this irreversible step.'}
+            isConfirmModalActive ={true} 
+            url 
+            id={'id'} 
+            handleCancelBtn={ToggleDeleteOrganization}
+            // handleConfirmBtn ={handleDeleteOrganization} 
+            loading={loadingDeleteOrganization}
+            /> 
+            : null
+        }
 
      
     </main>

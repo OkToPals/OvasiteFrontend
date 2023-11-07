@@ -4,7 +4,7 @@ import { delete_employee_url } from "@/api_utils"
 import { EditEmployeeModal } from "./EditEmployeeModal"
 import { useState } from "react"
 
-const OrganizationCard = ({organizationImage, name, phone, numberOfEmployess, id, toggleEditModal }) => { 
+const OrganizationCard = ({organizationImage, name, numberOfEmployess, id, toggleEditModal, toggleDeleteModal }) => { 
 
     const [loading, setLoading] = useState(false)
 
@@ -26,7 +26,7 @@ const OrganizationCard = ({organizationImage, name, phone, numberOfEmployess, id
   return (
     <>
     {/* <article className=" w-1/4 relative h-[27.7rem] p-4 border-[#ddd] border rounded-lg bg-ova_white"> */}
-    <article className="w-[100%] mini:w-[48%] md:w-[48%] lg:w-[32%] h-[27.7rem] shadow-sm p-4 border-[#ddd] bg-white border rounded-lg">
+    <article className="w-[100%] mini:w-[48%] md:w-[48%] lg:w-[32%] md:h-[25.7rem] h-[18rem]  shadow-sm p-4 border-[#ddd] bg-white border rounded-lg">
         {/* profile pics */}
         <div role="img" aria-label="Profile picture of Jane Doe" 
             className='mx-auto w-[12.5rem] h-[12.5rem]  
@@ -78,7 +78,7 @@ const OrganizationCard = ({organizationImage, name, phone, numberOfEmployess, id
             <button
             aria-label="Delete button"
             className="flex flex-row items-center outline-none  border-none"
-            onClick={handleDeleteEmployee}
+            onClick={toggleDeleteModal}
             >
             <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -6,9 +6,9 @@ export function middleware(request) {
   const cookieStore = cookies(request);
   const oversiteUser = cookieStore.get("ovasite_user");
 
-  if (!oversiteUser) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
+  // if (!oversiteUser) {
+  //   return NextResponse.redirect(new URL("/", request.url));
+  // }
 }
 
 // See "Matching Paths" below to learn more

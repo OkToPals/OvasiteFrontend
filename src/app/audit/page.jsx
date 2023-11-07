@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { LoadingModal } from "@/components/LoadingModal";
 import { get_cookie } from "@/components/helperFunctions/Cookies";
+import NoDataCard from "@/components/NoDataCard";
 
 const Audit = () => {
   const router = useRouter()
@@ -23,7 +24,7 @@ const Audit = () => {
   const [items_per_page, set_items_per_page] = useState(10);
   const index_of_last_item = current_page * items_per_page;
   const index_of_first_item = index_of_last_item - items_per_page;
-  const current_data = data.slice(index_of_first_item, index_of_last_item);
+  const current_data = data.length > 0 ? data.slice(index_of_first_item, index_of_last_item) : [];
   const total_page_no = Math.ceil(data.length / items_per_page);
 
   const [page_no_limit, set_page_no_limit] = useState(3);
@@ -31,7 +32,7 @@ const Audit = () => {
   const [min_page_no_limit, set_min_page_no_limit] = useState(0);
   const [togglemenu, setToggleMenu] = useState(false)
 
-  const array_of_pages = [...Array(total_page_no).keys()].map((i) => i + 1);
+  const array_of_pages = data.length > 0 ? [...Array(total_page_no).keys()].map((i) => i + 1) : [];
 
   const th_style = "p-2 border-b text-[1.125rem] text-ova_dark_secondary";
   const td_style = "p-2 border-b text-[1rem] text-ova_black align-top";
@@ -198,135 +199,141 @@ const Audit = () => {
         </header>
         {/* header II */}
         <h1 className="md:hidden text-[1.25em] font-extrabold text-center mt-[4rem] p-4">Audit</h1>
-        {/* project content desktop view*/}
-        <div className="px-[1.2rem] ">
-          <table className="w-[100%] mx-auto hidden md:block">
-            <thead className="text-left">
-              <tr>
-                <th className={`${th_style}`}>S/N</th>
-                <th className={`${th_style}`}>User Id</th>
-                <th className={`${th_style}`}>User Email</th>
-                <th className={`${th_style}`}>IP Address</th>
-                <th className={`${th_style}`}>Org. Id</th>
-                <th className={`${th_style}`}>Type</th>
-                <th className={`${th_style}`}>TableName</th>
-                <th className={`${th_style}`}>Date</th>
-                <th className={`${th_style}`}>Old vzalues</th>
-                <th className={`${th_style}`}>New Values</th>
-                <th className={`${th_style}`}>Row Id</th>
-                <th className={`${th_style}`}>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {current_data.map((item, index) => (
-                <tr key={index}>
-                  <td className={`${td_style}`}>{item.id}</td>
-                  <td className={`${td_style}`}>{item.userEmail}</td>
-                  <td className={`${td_style}`}>{item.ip_address}</td>
-                  <td className={`${td_style}`}>{item.org_id}</td>
-                  <td className={`${td_style}`}>{item.type}</td>
-                  <td className={`${td_style}`}>{item.table_name}</td>
-                  <td className={`${td_style}`}>{item.date}</td>
-                  <td className={`${td_style}`}>{item.old_values}</td>
-                  <td className={`${td_style}`}>{item.new_values}</td>
-                  <td className={`${td_style}`}>{item.row_id}</td>
-                  <td className={`${td_style}`}>
-                    {/* delete button */}
-                    <button aria-label="Delete button " className="outline-none  border-none" onClick={() => deleteAudit(`${item.id}`)}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
-                                <g clipPath="url(#clip0_124_9141)">
-                                    <path d="M26.674 6.66666C27.0276 6.66666 27.3668 6.80713 27.6168 7.05718C27.8668 7.30723 28.0073 7.64637 28.0073 7.99999C28.0073 8.35361 27.8668 8.69275 27.6168 8.9428C27.3668 9.19285 27.0276 9.33332 26.674 9.33332H25.3407L25.3367 9.42799L24.0927 26.856C24.0448 27.5288 23.7437 28.1584 23.2501 28.6181C22.7566 29.0778 22.1071 29.3333 21.4327 29.3333H10.5807C9.90618 29.3333 9.25675 29.0778 8.76317 28.6181C8.2696 28.1584 7.96855 27.5288 7.92066 26.856L6.67666 9.42932C6.67464 9.39736 6.67375 9.36534 6.67399 9.33332H5.34066C4.98704 9.33332 4.6479 9.19285 4.39785 8.9428C4.1478 8.69275 4.00732 8.35361 4.00732 7.99999C4.00732 7.64637 4.1478 7.30723 4.39785 7.05718C4.6479 6.80713 4.98704 6.66666 5.34066 6.66666H26.674ZM22.67 9.33332H9.34466L10.582 26.6667H21.4327L22.67 9.33332ZM18.674 2.66666C19.0276 2.66666 19.3668 2.80713 19.6168 3.05718C19.8668 3.30723 20.0073 3.64637 20.0073 3.99999C20.0073 4.35361 19.8668 4.69275 19.6168 4.9428C19.3668 5.19285 19.0276 5.33332 18.674 5.33332H13.3407C12.987 5.33332 12.6479 5.19285 12.3978 4.9428C12.1478 4.69275 12.0073 4.35361 12.0073 3.99999C12.0073 3.64637 12.1478 3.30723 12.3978 3.05718C12.6479 2.80713 12.987 2.66666 13.3407 2.66666H18.674Z" fill="#FF595A"/>
-                                </g>
-                                <defs>
-                                    <clipPath id="clip0_124_9141">
-                                    <rect width="32" height="32" fill="white" transform="translate(0.00732422)"/>
-                                    </clipPath>
-                                </defs>
-                            </svg>
-                    </button>
-                  </td>
+        {data.length > 0 ?
+          //{/* project content desktop view*/}
+          <div className="px-[1.2rem] ">
+            <table className="w-[100%] mx-auto hidden md:block">
+              <thead className="text-left">
+                <tr>
+                  <th className={`${th_style}`}>S/N</th>
+                  <th className={`${th_style}`}>User Id</th>
+                  <th className={`${th_style}`}>User Email</th>
+                  <th className={`${th_style}`}>IP Address</th>
+                  <th className={`${th_style}`}>Org. Id</th>
+                  <th className={`${th_style}`}>Type</th>
+                  <th className={`${th_style}`}>TableName</th>
+                  <th className={`${th_style}`}>Date</th>
+                  <th className={`${th_style}`}>Old vzalues</th>
+                  <th className={`${th_style}`}>New Values</th>
+                  <th className={`${th_style}`}>Row Id</th>
+                  <th className={`${th_style}`}>Delete</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          
-          {/* mobile viwq */}
-          <div className=" flex flex-col justify-center items-center md:hidden">
-            {
-                current_data.map((item, index) => 
-                <AuditCard key={index} 
-                  userEmail = {item.userEmail} 
-                  ip_address = {item.ip_address} 
-                  org_id = {item.org_id}  
-                  type = {item.type} 
-                  table_name = {item.table_name}  
-                  date = {item.date} 
-                  old_values = {item.old_values} 
-                  new_values = {item.new_values} 
-                  row_id = {item.row_id} 
-                  deleteAudit= {() => deleteAudit(`${item.id}`)}
-                />)
-            }
-          </div>
-
-          {/* pagination */}
-      <div className="w-full flex md:flex-row justify-between items-center my-4" aria-label="Pagination navigation">
-
-            {/* 1/3 */}
-            {/* <p className="mb-2 w-12 h-12 rounded-full bg-[#001233] text-white flex flex-row items-center justify-center font-bold text-[12px]"
-            role="status" aria-label={`Page ${current_page} of ${total_page_no}`}>
-            <span className="text-[#FF595A]">{current_page}&nbsp;</span>/&nbsp;{total_page_no}
-            </p> */}
-
-            <div className="w-full mx-auto mb-2 flex flex-row gap-2 justify-center md:justify-end items-center px-2">
-                <button className="w-[2rem] h-[2rem] border-[0.00625rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex justify-center items-center"
-                    onClick={previousButton} disabled={current_page == 1 ? true : false}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M11.7267 12L12.6667 11.06L9.61341 8L12.6667 4.94L11.7267 4L7.72675 8L11.7267 12Z" fill="#333333"/>
-                        <path d="M7.33344 12L8.27344 11.06L5.2201 8L8.27344 4.94L7.33344 4L3.33344 8L7.33344 12Z" fill="#333333"/>
-                    </svg>
-                </button>
-
-                {/* left ellipses */}
-                { min_page_no_limit >= 1  ? 
-                    <button className="w-[2rem] h-[2rem] flex flex-row items-center justify-center p-[0.625rem]  border-ova_grey_order font-bold text-ova_dark_primary"
-                    onClick={previousButton}>...</button>
-                : ""
-                }
-
-                {          
-                    array_of_pages.map((item, index) => (
-                    item < max_page_no_limit + 1 && item > min_page_no_limit ? (
-                    <button key={index} aria-label={`Go to page ${item}`}
-                        onClick={() => set_current_page(item)} aria-pressed={current_page == item ? 'true' : 'false'}
-                        className={`w-[2rem] h-[2rem]  border-[0.0625rem] rounded-[0.5rem] border-ova_grey_order text-center
-                        flex flex-row items-center justify-center font-bold text-[0.8125em] 
-                        ${current_page === item ? 'text-ova_white bg-navy_blue' : ' text-ova_dark_primary'}
-                        `}   
-                        >{item}</button>  ) 
-                    : ""
-                    )
-                    )                 
-                }
-
-            {/* right ellipse */}
-                { array_of_pages.length > max_page_no_limit ?
-                    <button 
-                    className="w-[2rem] h-[2rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex flex-row items-center justify-center font-bold text-ova_dark_primary"
-                    onClick={nextButton}>...</button>
-                : null
-                }
-                <button className="w-[2rem] h-[2rem] border-[0.00625rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex justify-center items-center"
-                    onClick={nextButton} disabled={current_page == total_page_no ? true : false} >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M4.27325 4L3.33325 4.94L6.38659 8L3.33325 11.06L4.27325 12L8.27325 8L4.27325 4Z" fill="black"/>
-                        <path d="M8.66656 4L7.72656 4.94L10.7799 8L7.72656 11.06L8.66656 12L12.6666 8L8.66656 4Z" fill="black"/>
-                    </svg>
-                </button>
+              </thead>
+              <tbody>
+                {current_data.map((item, index) => (
+                  <tr key={index}>
+                    <td className={`${td_style}`}>{item.id}</td>
+                    <td className={`${td_style}`}>{item.userEmail}</td>
+                    <td className={`${td_style}`}>{item.ip_address}</td>
+                    <td className={`${td_style}`}>{item.org_id}</td>
+                    <td className={`${td_style}`}>{item.type}</td>
+                    <td className={`${td_style}`}>{item.table_name}</td>
+                    <td className={`${td_style}`}>{item.date}</td>
+                    <td className={`${td_style}`}>{item.old_values}</td>
+                    <td className={`${td_style}`}>{item.new_values}</td>
+                    <td className={`${td_style}`}>{item.row_id}</td>
+                    <td className={`${td_style}`}>
+                      {/* delete button */}
+                      <button aria-label="Delete button " className="outline-none  border-none" onClick={() => deleteAudit(`${item.id}`)}>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
+                                  <g clipPath="url(#clip0_124_9141)">
+                                      <path d="M26.674 6.66666C27.0276 6.66666 27.3668 6.80713 27.6168 7.05718C27.8668 7.30723 28.0073 7.64637 28.0073 7.99999C28.0073 8.35361 27.8668 8.69275 27.6168 8.9428C27.3668 9.19285 27.0276 9.33332 26.674 9.33332H25.3407L25.3367 9.42799L24.0927 26.856C24.0448 27.5288 23.7437 28.1584 23.2501 28.6181C22.7566 29.0778 22.1071 29.3333 21.4327 29.3333H10.5807C9.90618 29.3333 9.25675 29.0778 8.76317 28.6181C8.2696 28.1584 7.96855 27.5288 7.92066 26.856L6.67666 9.42932C6.67464 9.39736 6.67375 9.36534 6.67399 9.33332H5.34066C4.98704 9.33332 4.6479 9.19285 4.39785 8.9428C4.1478 8.69275 4.00732 8.35361 4.00732 7.99999C4.00732 7.64637 4.1478 7.30723 4.39785 7.05718C4.6479 6.80713 4.98704 6.66666 5.34066 6.66666H26.674ZM22.67 9.33332H9.34466L10.582 26.6667H21.4327L22.67 9.33332ZM18.674 2.66666C19.0276 2.66666 19.3668 2.80713 19.6168 3.05718C19.8668 3.30723 20.0073 3.64637 20.0073 3.99999C20.0073 4.35361 19.8668 4.69275 19.6168 4.9428C19.3668 5.19285 19.0276 5.33332 18.674 5.33332H13.3407C12.987 5.33332 12.6479 5.19285 12.3978 4.9428C12.1478 4.69275 12.0073 4.35361 12.0073 3.99999C12.0073 3.64637 12.1478 3.30723 12.3978 3.05718C12.6479 2.80713 12.987 2.66666 13.3407 2.66666H18.674Z" fill="#FF595A"/>
+                                  </g>
+                                  <defs>
+                                      <clipPath id="clip0_124_9141">
+                                      <rect width="32" height="32" fill="white" transform="translate(0.00732422)"/>
+                                      </clipPath>
+                                  </defs>
+                              </svg>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            
+            {/* mobile viwq */}
+            <div className=" flex flex-col justify-center items-center md:hidden">
+              {
+                  current_data.map((item, index) => 
+                  <AuditCard key={index} 
+                    userEmail = {item.userEmail} 
+                    ip_address = {item.ip_address} 
+                    org_id = {item.org_id}  
+                    type = {item.type} 
+                    table_name = {item.table_name}  
+                    date = {item.date} 
+                    old_values = {item.old_values} 
+                    new_values = {item.new_values} 
+                    row_id = {item.row_id} 
+                    deleteAudit= {() => deleteAudit(`${item.id}`)}
+                  />)
+              }
             </div>
 
-        </div>
-        </div>
+            {/* pagination */}
+        <div className="w-full flex md:flex-row justify-between items-center my-4" aria-label="Pagination navigation">
+
+              {/* 1/3 */}
+              {/* <p className="mb-2 w-12 h-12 rounded-full bg-[#001233] text-white flex flex-row items-center justify-center font-bold text-[12px]"
+              role="status" aria-label={`Page ${current_page} of ${total_page_no}`}>
+              <span className="text-[#FF595A]">{current_page}&nbsp;</span>/&nbsp;{total_page_no}
+              </p> */}
+
+              <div className="w-full mx-auto mb-2 flex flex-row gap-2 justify-center md:justify-end items-center px-2">
+                  <button className="w-[2rem] h-[2rem] border-[0.00625rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex justify-center items-center"
+                      onClick={previousButton} disabled={current_page == 1 ? true : false}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <path d="M11.7267 12L12.6667 11.06L9.61341 8L12.6667 4.94L11.7267 4L7.72675 8L11.7267 12Z" fill="#333333"/>
+                          <path d="M7.33344 12L8.27344 11.06L5.2201 8L8.27344 4.94L7.33344 4L3.33344 8L7.33344 12Z" fill="#333333"/>
+                      </svg>
+                  </button>
+
+                  {/* left ellipses */}
+                  { min_page_no_limit >= 1  ? 
+                      <button className="w-[2rem] h-[2rem] flex flex-row items-center justify-center p-[0.625rem]  border-ova_grey_order font-bold text-ova_dark_primary"
+                      onClick={previousButton}>...</button>
+                  : ""
+                  }
+
+                  {          
+                      array_of_pages.map((item, index) => (
+                      item < max_page_no_limit + 1 && item > min_page_no_limit ? (
+                      <button key={index} aria-label={`Go to page ${item}`}
+                          onClick={() => set_current_page(item)} aria-pressed={current_page == item ? 'true' : 'false'}
+                          className={`w-[2rem] h-[2rem]  border-[0.0625rem] rounded-[0.5rem] border-ova_grey_order text-center
+                          flex flex-row items-center justify-center font-bold text-[0.8125em] 
+                          ${current_page === item ? 'text-ova_white bg-navy_blue' : ' text-ova_dark_primary'}
+                          `}   
+                          >{item}</button>  ) 
+                      : ""
+                      )
+                      )                 
+                  }
+
+              {/* right ellipse */}
+                  { array_of_pages.length > max_page_no_limit ?
+                      <button 
+                      className="w-[2rem] h-[2rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex flex-row items-center justify-center font-bold text-ova_dark_primary"
+                      onClick={nextButton}>...</button>
+                  : null
+                  }
+                  <button className="w-[2rem] h-[2rem] border-[0.00625rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex justify-center items-center"
+                      onClick={nextButton} disabled={current_page == total_page_no ? true : false} >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <path d="M4.27325 4L3.33325 4.94L6.38659 8L3.33325 11.06L4.27325 12L8.27325 8L4.27325 4Z" fill="black"/>
+                          <path d="M8.66656 4L7.72656 4.94L10.7799 8L7.72656 11.06L8.66656 12L12.6666 8L8.66656 4Z" fill="black"/>
+                      </svg>
+                  </button>
+              </div>
+
+          </div>
+          </div>
+          : 
+          <div className="flex flex-col justify-center items-center md:mt-28 mt-8 mb-8">
+             <NoDataCard title={"No Audit Data"} description={"Seems you are a new user, start creating new projects."}/>
+          </div>
+        }
       </section>
     </main>
   )
