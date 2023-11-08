@@ -44,7 +44,7 @@ const ProjectsDashboard = ({params}) => {
   const [toggleAttachEmployee, setToggleAttachEmployee] = useState(false);
   const [loadingAttachEmployee, setLoadingAttachEmployee] = useState(false);
 
-  const array_of_pages = data.length > 0 ? [...Array(total_page_no).keys()].map((i) => i + 1) : [];
+  const array_of_pages = data && data.length > 0 ? [...Array(total_page_no).keys()].map((i) => i + 1) : [];
 
   const th_style = "p-2 border-b text-[1.125rem] text-ova_dark_secondary";
   const td_style = "p-2 border-b text-[1rem] text-ova_black align-top";
@@ -282,7 +282,7 @@ const ProjectsDashboard = ({params}) => {
               </button> */}
             </div>
           </div>
-          { data.length > 0 ?
+          { data &&  data.length > 0 ?
           // project content desktop and mobile view
           <div className="px-[1.2rem] ">
             <table className="w-[100%] mx-auto hidden md:block">

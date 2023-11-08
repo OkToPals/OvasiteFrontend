@@ -18,7 +18,7 @@ const NoDataCard = ({title, description }) => {
             >
         </div>
         <h2 className="max-w-[80%] mx-auto mt-1 overflow-hidden 
-            whitespace-nowrap text-ellipsis font-bold text-[1em] md:text-[1.5em] text-center">
+            whitespace-nowrap text-ellipsis font-bold text-[1em] md:text-[1.25em] text-center">
                 {title}
         </h2>
         <h2 className="text-[0.8em] md:text-[1em] text-center">{description}</h2>

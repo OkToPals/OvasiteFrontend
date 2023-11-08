@@ -237,10 +237,10 @@ export const SidebarNav = ({ activeLink }) => {
           </li>
           <li
             className={`${
-              activeLink == "subscription" ? activeLinkStyle : null
+              activeLink == "reports" ? activeLinkStyle : null
             } px-[1.2rem] py-[0.8rem] mt-[2rem]"`}
           >
-            <Link href="/subscription" className="flex flex-row items-center">
+            <Link href="/reports" className="flex flex-row items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="48"
@@ -251,7 +251,7 @@ export const SidebarNav = ({ activeLink }) => {
                 <path
                   d="M18 34V14M18 34C18 35.0609 17.5786 36.0783 16.8284 36.8284C16.0783 37.5786 15.0609 38 14 38H10C8.93913 38 7.92172 37.5786 7.17157 36.8284C6.42143 36.0783 6 35.0609 6 34V14C6 12.9391 6.42143 11.9217 7.17157 11.1716C7.92172 10.4214 8.93913 10 10 10H14C15.0609 10 16.0783 10.4214 16.8284 11.1716C17.5786 11.9217 18 12.9391 18 14M18 34C18 35.0609 18.4214 36.0783 19.1716 36.8284C19.9217 37.5786 20.9391 38 22 38H26C27.0609 38 28.0783 37.5786 28.8284 36.8284C29.5786 36.0783 30 35.0609 30 34M18 14C18 12.9391 18.4214 11.9217 19.1716 11.1716C19.9217 10.4214 20.9391 10 22 10H26C27.0609 10 28.0783 10.4214 28.8284 11.1716C29.5786 11.9217 30 12.9391 30 14M30 34V14M30 34C30 35.0609 30.4214 36.0783 31.1716 36.8284C31.9217 37.5786 32.9391 38 34 38H38C39.0609 38 40.0783 37.5786 40.8284 36.8284C41.5786 36.0783 42 35.0609 42 34V14C42 12.9391 41.5786 11.9217 40.8284 11.1716C40.0783 10.4214 39.0609 10 38 10H34C32.9391 10 31.9217 10.4214 31.1716 11.1716C30.4214 11.9217 30 12.9391 30 14"
                   stroke={`${
-                    activeLink == "subscription" ? "#FF595A" : "white"
+                    activeLink == "reports" ? "#FF595A" : "white"
                   }`}
                   strokeWidth="2"
                   strokeLinecap="round"
@@ -260,12 +260,12 @@ export const SidebarNav = ({ activeLink }) => {
               </svg>
               <h4
                 className={`${
-                  activeLink == "subscription"
+                  activeLink == "reports"
                     ? "text-[#FF595A] font-semibold"
                     : "text-ova_white"
                 } ml-[1rem] font-normal  text-[1.25em] `}
               >
-                Subscription
+                Reports
               </h4>
             </Link>
           </li>
@@ -492,10 +492,10 @@ export const SidebarNav = ({ activeLink }) => {
           </li>
           <li
             className={`${
-              activeLink == "subscription" ? activeLinkStyle : null
+              activeLink == "reports" ? activeLinkStyle : null
             } px-[1.2rem] py-[0.8rem] mt-[2rem]"`}
           >
-            <Link href="/subscription" className="flex flex-row items-center">
+            <Link href="/reports" className="flex flex-row items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="48"
@@ -506,7 +506,7 @@ export const SidebarNav = ({ activeLink }) => {
                 <path
                   d="M18 34V14M18 34C18 35.0609 17.5786 36.0783 16.8284 36.8284C16.0783 37.5786 15.0609 38 14 38H10C8.93913 38 7.92172 37.5786 7.17157 36.8284C6.42143 36.0783 6 35.0609 6 34V14C6 12.9391 6.42143 11.9217 7.17157 11.1716C7.92172 10.4214 8.93913 10 10 10H14C15.0609 10 16.0783 10.4214 16.8284 11.1716C17.5786 11.9217 18 12.9391 18 14M18 34C18 35.0609 18.4214 36.0783 19.1716 36.8284C19.9217 37.5786 20.9391 38 22 38H26C27.0609 38 28.0783 37.5786 28.8284 36.8284C29.5786 36.0783 30 35.0609 30 34M18 14C18 12.9391 18.4214 11.9217 19.1716 11.1716C19.9217 10.4214 20.9391 10 22 10H26C27.0609 10 28.0783 10.4214 28.8284 11.1716C29.5786 11.9217 30 12.9391 30 14M30 34V14M30 34C30 35.0609 30.4214 36.0783 31.1716 36.8284C31.9217 37.5786 32.9391 38 34 38H38C39.0609 38 40.0783 37.5786 40.8284 36.8284C41.5786 36.0783 42 35.0609 42 34V14C42 12.9391 41.5786 11.9217 40.8284 11.1716C40.0783 10.4214 39.0609 10 38 10H34C32.9391 10 31.9217 10.4214 31.1716 11.1716C30.4214 11.9217 30 12.9391 30 14"
                   stroke={`${
-                    activeLink == "subscription" ? "#FF595A" : "white"
+                    activeLink == "reports" ? "#FF595A" : "white"
                   }`}
                   strokeWidth="2"
                   strokeLinecap="round"
@@ -515,12 +515,12 @@ export const SidebarNav = ({ activeLink }) => {
               </svg>
               <h4
                 className={`${
-                  activeLink == "subscription"
+                  activeLink == "reports"
                     ? "text-[#FF595A] font-semibold"
                     : "text-ova_white"
                 } ml-[1rem] font-normal  text-[1.25em] `}
               >
-                Subscriptions
+                Reports
               </h4>
             </Link>
           </li>
