@@ -30,8 +30,8 @@ const ProjectsDashboard = ({params}) => {
   const [items_per_page, set_items_per_page] = useState(10);
   const index_of_last_item = current_page * items_per_page;
   const index_of_first_item = index_of_last_item - items_per_page;
-  const current_data = data.length > 0 ? data.slice(index_of_first_item, index_of_last_item) : [];
-  const total_page_no = Math.ceil(data.length / items_per_page);
+  const current_data = data && data.length > 0 ? data.slice(index_of_first_item, index_of_last_item) : [];
+  const total_page_no = Math.ceil(data && data.length > 0 ?  data.length / items_per_page : 0);
 
   const [page_no_limit, set_page_no_limit] = useState(3);
   const [max_page_no_limit, set_max_page_no_limit] = useState(3);
@@ -72,9 +72,8 @@ const ProjectsDashboard = ({params}) => {
     // function to get all audits specific to an organization
     const get_org_employees = async (jwt) => {
 
-    const url = base_url + `/orgs/${org_id}/employees/`
     try {
-        const response = await axios_instance.get(url, {
+        const response = await axios_instance.get(get_all_org_projects_url +`${org_id}/projects`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${jwt}`,
@@ -93,7 +92,7 @@ const ProjectsDashboard = ({params}) => {
     console.log(url);
 
     let user_login_details = get_cookie("ovasite_user");
-    if (!user_login_details && url == "/projects") {
+    if (!user_login_details) {
       router.replace("/");
     }
 
@@ -104,7 +103,7 @@ const ProjectsDashboard = ({params}) => {
     //   get_all_org_projects(jwt)
         get_org_employees(jwt)
     }
-  }, [router, pathname, searchParams]);
+  }, []);
 
   // fetch("https://jsonplaceholder.typicode.com/posts")
   //   .then((response) => response.json())

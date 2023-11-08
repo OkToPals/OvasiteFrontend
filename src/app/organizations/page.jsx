@@ -1,21 +1,15 @@
 'use client'
 
-import { CreateTeamModal } from "@/components/CreateTeamModal";
-import { EditEmployeeModal } from "@/components/EditEmployeeModal";
-import { SendInviteModal } from "@/components/SendInviteModal";
 import { SidebarNav } from "@/components/SidebarNav";
-import TeamCard from "@/components/TeamCard";
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { get_cookie } from "@/components/helperFunctions/Cookies";
 import axios_instance from "@/axiosInstance";
-import { base_url, get_all_employees_url, get_all_organizations_url } from "@/api_utils";
+import { get_all_organizations_url } from "@/api_utils";
 import OrganizationCard from "@/components/OrganizationCard";
-import { EditOrganizationModal } from "@/components/EditOrganizationModal";
 import { CreateOrganizationModal } from "@/components/CreateOrganizationModal";
-import { ConfirmActionModal } from "@/components/ConfirmActionModal";
 import NoDataCard from "@/components/NoDataCard";
-import { CreateProject } from "@/components/CreateProject";
+
 
 const Organizations = () => {
 
@@ -28,7 +22,7 @@ const Organizations = () => {
   const [items_per_page, set_items_per_page] = useState(10);
   const index_of_last_item = current_page * items_per_page;
   const index_of_first_item = index_of_last_item - items_per_page;
-  const current_data = data.length > 0 ? data.slice(index_of_first_item, index_of_last_item) : [];
+  const current_data = data && data.length > 0 ? data.slice(index_of_first_item, index_of_last_item) : [];
   const total_page_no = Math.ceil(data.length / items_per_page);
 
   const [page_no_limit, set_page_no_limit] = useState(3);

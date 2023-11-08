@@ -16,8 +16,8 @@ export const CreateProject = ({
     const [projectDescription, setProjectDescription] = useState("");
     const [status, setStatus] = useState("");
     const [duration, setDuration] = useState("");
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
     const [loading, setLoading] = useState(false);
 
     // handle error message
@@ -69,40 +69,50 @@ export const CreateProject = ({
           setLoading(true)
           user_login_details = JSON.parse(user_login_details);
 
-          console.log("org id =>", id, user_login_details.jwt);
+          console.log("org id and jwt =>", id, user_login_details.jwt);
           const url_1 = `${create_project_url}${id}/create/project` 
           const url_2 = `${base_url}/orgs/${id}/create/project`
 
           console.log(url_1, url_2);
 
-        
+          const newStartDate = new Date(startDate);
+          const newEndDate = new Date(endDate)
+
+          
           let data = JSON.stringify({
           name: projectName,
           description: projectDescription,
           status: status,
-          duration: duration,
-          startdate: startDate,
-          endDate: endDate,
+          expectedDuration: duration,
+          startDate: newStartDate.toISOString(),
+          endDate: newEndDate.toISOString()
           });
+
+          // post config
           let config = {
           method: "post",
-          url: ,
+          url: url_1,
           headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${user_login_details.jwt}`,
+              "Cookie": "access_token=" + user_login_details.jwt
+              // Authorization: `Bearer ${user_login_details.jwt}`,
           },
           data: data,
           };
 
+          console.log("create project =>", data);
           axios_instance
           .request(config)
           .then((response) => {
               console.log(response);
+              toast.success(response);
+              
               setLoading(false)
           })
           .catch((error) => {
-              console.log(error.response.data);
+              console.log(error.response);
               setLoading(false)
+              toast.error(error.response.data.message);
           });
         }
     }
@@ -251,6 +261,7 @@ export const CreateProject = ({
         loading ? <LoadingModal title={"Creating Project"} description={"Please wait while your project is being setup"}/> : null
     }
 
+    <ToastContainer/>
     </div>
   );
 };
