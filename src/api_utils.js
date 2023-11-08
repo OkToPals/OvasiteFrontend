@@ -19,7 +19,7 @@ export const get_user_url = `${base_url}/users/${user_id}`
 export const delete_user_url = `${base_url}/users/${user_id}`
 
 // project
-export const create_project_url = `${base_url}/orgs/${orgs_id}/create/project`
+export const create_project_url = `${base_url}/orgs/`
 export const attach_employee_url = `${base_url}/orgs/${orgs_id}/adduser/:projectId`
 export const get_project_url = `${base_url}/orgs/${orgs_id}/project/:projectId`
 export const get_all_org_projects_url = `${base_url}/orgs/${orgs_id}/projects`
@@ -33,7 +33,7 @@ export const delete_project_url =`${base_url}/orgs/${orgs_id}/delete/project/:pr
 // organization replace team with organization
 export const get_all_organizations_url = `${base_url}/orgs`
 export const get_organization_url = `${base_url}/orgs/${orgs_id}`
-export const update_organization_url =`${base_url}/orgs/${orgs_id}`
+export const update_organization_url =`${base_url}/orgs/`
 export const delete_organization_url =`${base_url}/orgs/`
 // employee
 export const get_all_employees_url  =  `${base_url}/orgs/${orgs_id}/employees/`

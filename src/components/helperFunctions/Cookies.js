@@ -11,11 +11,11 @@ export const set_cookie = (no_of_hours, cookie_name, cookie_value, cookie_path) 
         expiry_date = expiry_date.toUTCString();
     }
 
-    alert('expiry date =>', expiry_date);
+    // alert('expiry date =>', expiry_date);
     console.log('expiry date =>', expiry_date);
     if (typeof document !== 'undefined') {
         document.cookie = `${cookie_name} = ${cookie_value}; expires=${expiry_date}; ${cookie_path}`
-        alert("login details saved in cookie ")
+        // alert("login details saved in cookie ")
     } 
 }
 

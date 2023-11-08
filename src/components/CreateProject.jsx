@@ -3,6 +3,8 @@ import axios_instance from "@/axiosInstance";
 import { useRef, useState } from "react";
 import { LoadingModal } from "./LoadingModal";
 import { get_cookie } from "./helperFunctions/Cookies";
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 export const CreateProject = ({
     handleCancelBtn,
@@ -62,11 +64,17 @@ export const CreateProject = ({
         setEndDateError(false)
 
         let user_login_details = get_cookie("ovasite_user");
+
         if (user_login_details) {
           setLoading(true)
           user_login_details = JSON.parse(user_login_details);
 
           console.log("org id =>", id, user_login_details.jwt);
+          const url_1 = `${create_project_url}${id}/create/project` 
+          const url_2 = `${base_url}/orgs/${id}/create/project`
+
+          console.log(url_1, url_2);
+
         
           let data = JSON.stringify({
           name: projectName,
@@ -78,7 +86,7 @@ export const CreateProject = ({
           });
           let config = {
           method: "post",
-          url: `${base_url}/orgs/${id}/create/project`,
+          url: ,
           headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${user_login_details.jwt}`,
@@ -89,7 +97,7 @@ export const CreateProject = ({
           axios_instance
           .request(config)
           .then((response) => {
-              console.log(JSON.stringify(response.data));
+              console.log(response);
               setLoading(false)
           })
           .catch((error) => {
@@ -101,7 +109,6 @@ export const CreateProject = ({
   };
 
   return (
-    <>
     <div
       role="modal"
       aria-label="Create project"
@@ -239,11 +246,11 @@ export const CreateProject = ({
           </div>
         </div>
       </div>
-    </div>
 
     {
         loading ? <LoadingModal title={"Creating Project"} description={"Please wait while your project is being setup"}/> : null
     }
-    </>
+
+    </div>
   );
 };

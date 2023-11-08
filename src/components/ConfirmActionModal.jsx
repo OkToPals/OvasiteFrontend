@@ -4,32 +4,6 @@ import { LoadingModal } from "./LoadingModal"
 
 export const ConfirmActionModal = ({handleCancelBtn, title, description, isConfirmModalActive, url, id, handleConfirmBtn, loading}) => {
 
-    // const [fullname, setFullname] = useState('')
-    // const [role, setRole] = useState('')    
-    // const [loading, setLoading] = useState(false)
-
-    // const handleEndPoint = (url, method, body) => {
-    //     setLoading(true)
-    //     fetch(url, {
-    //         method: method,
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: body ? JSON.stringify(body) : null
-    //     }).then(prom => prom.json()).then(res => {
-    //         console.log(res)
-    //         setLoading(false)
-    //     }).catch(err => {
-    //         console.log(err)
-    //         setLoading(false)
-    //     })
-    // }
-
-    // hanle delete organization
-    // const DeleteOrganization = () => {
-    //     handleEndPoint(delete_organization_url + id, "DELETE")
-    // }
-
     return (
       <div role="modal" aria-label="Create project" 
         className={`fixed inset-0 top-0 bottom-0 left-0 right-0 rounded-md max-h-screen z-50 
@@ -49,13 +23,12 @@ export const ConfirmActionModal = ({handleCancelBtn, title, description, isConfi
                 </button>
                 <button 
                     className=" w-24 h-12 md:w-24 md:h-14 bg-peach_primary rounded-md font-semibold px-5 py-3 text-[0.8em] md:text-[1em] md:px-6 md:py-4 text-white" 
-                    onClick={handleConfirmBtn}>{loading ? "Loading..." : "Yes"}
+                    onClick={handleConfirmBtn}>Yes
                 </button>
             </div>
 
         </div>
         
-        {loading ? LoadingModal : null}
         </div>
   
     )

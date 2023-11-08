@@ -1,16 +1,25 @@
 'use client'
 
-import { delete_employee_url } from "@/api_utils"
+import { delete_employee_url, delete_organization_url } from "@/api_utils"
 import { EditEmployeeModal } from "./EditEmployeeModal"
 import { useState } from "react"
 import { CreateOrganizationModal } from "./CreateOrganizationModal"
 import { CreateProject } from "./CreateProject"
 import Link from "next/link"
+import { EditOrganizationModal } from "./EditOrganizationModal"
+import { ConfirmActionModal } from "./ConfirmActionModal"
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { LoadingModal } from "./LoadingModal"
+import { get_cookie } from "./helperFunctions/Cookies"
+import axios_instance from "@/axiosInstance"
 
-const OrganizationCard = ({organizationImage, name, numberOfEmployess, id, toggleEditModal, toggleDeleteModal }) => { 
+const OrganizationCard = ({organizationImage, name, numberOfEmployess, org_id }) => { 
 
-    const [loading, setLoading] = useState(false)
     const [showCreateProjectModal, setShowCreateProjectModal] = useState(false)
+    const [toggleEdit, setToggleEdit] = useState(false)
+    const [toggleDelete, setToggleDelete] = useState(false)
+    const [loadingDeleteOrganization, setLoadiDeleteOrganization] = useState(false)
     // const [loadingCreateProjwct, setLoadingCreateProject] = useState(false)
 
 
@@ -20,24 +29,66 @@ const OrganizationCard = ({organizationImage, name, numberOfEmployess, id, toggl
         setShowCreateProjectModal(!showCreateProjectModal)
     }
 
-    const handleDeleteEmployee = () => {
-        fetch(deleteur + id, {
-            method: "DELETE",
+        // handles edit organization modal
+    const ToggleEditOrganization = (e) => {
+        e.preventDefault();
+        setToggleEdit(!toggleEdit)
+    }
+
+     // handles delete organization modal
+    const ToggleDeleteOrganization =  (e) => {
+        e.preventDefault();
+        setToggleDelete(!toggleDelete)
+    }
+
+    const handleDeleteOrganization = () => {
+
+        let user_login_details = get_cookie("ovasite_user");
+        if (user_login_details) {
+            setLoadiDeleteOrganization(true)
+            user_login_details = JSON.parse(user_login_details);
+
+            const patch_url = `${delete_organization_url}`+ org_id
+            const jwt = user_login_details.jwt
+            console.log(patch_url + " => " + jwt);
+        
+            let config = {
+            method: "delete",
+            url: `${delete_organization_url}${org_id}`,
             headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(prom => prom.json()).then(res => {
-            console.log(res)
-        }).catch(err => {
-            console.log(err)
-        })
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user_login_details.jwt}`,
+            },
+            data: JSON.stringify({
+                name: name
+                }),
+            };
+    
+            axios_instance
+            .request(config)
+            .then((response) => {
+               
+            console.log(JSON.stringify(response.data));
+            setLoadiDeleteOrganization(false)
+            toast.success("Organization name deleted successfully!")
+            console.log(JSON.stringify(response));
+            setLoadiDeleteOrganization(false)
+            setToggleDelete(!toggleDelete)
+               
+            })
+            .catch((error) => {
+                console.log(error);
+                setLoadiDeleteOrganization(false)
+                toast.error(`${error.response.data.error}`)
+                // setToggleDelete(!toggleDelete)
+            });
+        }
     }
 
   return (
-    <>
-    {/* <article className=" w-1/4 relative h-[27.7rem] p-4 border-[#ddd] border rounded-lg bg-ova_white"> */}
+    //{/* <article className=" w-1/4 relative h-[27.7rem] p-4 border-[#ddd] border rounded-lg bg-ova_white"> */}
     <article className="w-[100%] mini:w-[48%] md:w-[48%] lg:w-[32%] md:h-[25.7rem] h-[18rem]  shadow-sm p-4 border-[#ddd] bg-white border rounded-lg hover:cursor-pointer">
-        <Link href={`/organizations/${id}`}>
+        <Link href={`/organizations/${org_id}`}>
             
             {/* profile pics */}
             <div role="img" aria-label="Profile picture of Jane Doe" 
@@ -66,7 +117,7 @@ const OrganizationCard = ({organizationImage, name, numberOfEmployess, id, toggl
                 <button
                     aria-label="Edit button"
                     className="flex flex-row items-center outline-none  border-none"
-                    onClick={toggleEditModal}
+                    onClick={ToggleEditOrganization}
                     >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -90,7 +141,7 @@ const OrganizationCard = ({organizationImage, name, numberOfEmployess, id, toggl
                 <button
                 aria-label="Delete button"
                 className="flex flex-row items-center outline-none  border-none"
-                onClick={toggleDeleteModal}
+                onClick={ToggleDeleteOrganization}
                 >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +167,7 @@ const OrganizationCard = ({organizationImage, name, numberOfEmployess, id, toggl
                     </clipPath>
                     </defs>
                 </svg>
-                <span className=" text-ova_grey" onClick={handleDeleteEmployee}>Delete</span>
+                <span className=" text-ova_grey">Delete</span>
                 </button>
             </div>
 
@@ -143,17 +194,42 @@ const OrganizationCard = ({organizationImage, name, numberOfEmployess, id, toggl
             </button>
 
         </Link>
-
-    </article>
-
         {
             showCreateProjectModal ? <CreateProject 
             handleCancelBtn={ToggleCreateProjectModal}
             isCreateProjectActive={true}
-            id={id}
+            id={org_id}
             /> : null
         }
-      </>
+
+        {
+          toggleEdit ? <EditOrganizationModal 
+          handleCancelBtn={ToggleEditOrganization} isEditOrganizationModalActive={true} 
+          handleCreateBtn={() => null} 
+          org_id={org_id}
+          /> : null
+        }
+
+        {toggleDelete ? 
+            <ConfirmActionModal
+            title={'Are you sure you want to Delete?'}
+            description={'Once you choose to delete, the action is final and cannot be undone. Please take a moment to ensure that you truly wish to proceed with this irreversible step.'}
+            isConfirmModalActive ={true} 
+            url  
+            handleCancelBtn={ToggleDeleteOrganization}
+            handleConfirmBtn ={handleDeleteOrganization}
+            loading={loadingDeleteOrganization}
+            /> 
+            : null
+        }
+         {
+            loadingDeleteOrganization ? <LoadingModal/> : null
+        }
+
+        <ToastContainer/>
+
+    </article>
+
   )
 }
 

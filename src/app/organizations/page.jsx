@@ -39,10 +39,7 @@ const Organizations = () => {
 
   const [togglemenu, setToggleMenu] = useState(false)
   const [showInviteModal, setShowInviteModal] = useState(false)
-  const [toggleEdit, setToggleEdit] = useState(false)
   const [showOrganizationModal, setShowOrganizationModal] = useState(false)
-  const [toggleDelete, setToggleDelete] = useState(false)
-  const [loadingDeleteOrganization, setLoadingDeleteOrganization] = useState(false)
 
   const th_style = "p-2 border-b text-[1.125rem] text-ova_dark_secondary";
   const td_style = "p-2 border-b text-[1rem] text-ova_black align-top";
@@ -62,17 +59,7 @@ const Organizations = () => {
     setShowOrganizationModal(!showOrganizationModal)
   }
 
-   // handles edit organization modal
-  const ToggleEditOrganization = (e) => {
-    e.preventDefault();
-    setToggleEdit(!toggleEdit)
-  }
-
-  // handles delete organization modal
-  const ToggleDeleteOrganization =  (e) => {
-    e.preventDefault();
-    setToggleDelete(!toggleDelete)
-  }
+ 
 
   // navigate to projects
   const goToProject = (id) => {
@@ -320,9 +307,7 @@ const Organizations = () => {
                       organizationImage={item.picture ? item.picture.thumbnail : item.logo } 
                       name ={item.name}
                       numberOfEmployees = {32333}
-                      id={item.id}
-                      toggleEditModal={ToggleEditOrganization}   
-                      toggleDeleteModal={ToggleDeleteOrganization}                  
+                      org_id={item.id}             
                   />)
               }
             </div>
@@ -412,29 +397,6 @@ const Organizations = () => {
             isCreateOrganizationActive={true}
             /> : null
         }
-
-      {
-          toggleEdit ? <EditOrganizationModal 
-          handleCancelBtn={ToggleEditOrganization} isEditOrganizationModalActive={true} 
-          handleCreateBtn={() => null} 
-          /> : null
-      }
-
-        
-        {toggleDelete ? 
-            <ConfirmActionModal 
-            title={'Are you sure you want to Delete?'}
-            description={'Once you choose to delete, the action is final and cannot be undone. Please take a moment to ensure that you truly wish to proceed with this irreversible step.'}
-            isConfirmModalActive ={true} 
-            url 
-            id={'id'} 
-            handleCancelBtn={ToggleDeleteOrganization}
-            // handleConfirmBtn ={handleDeleteOrganization} 
-            loading={loadingDeleteOrganization}
-            /> 
-            : null
-        }
-
      
     </main>
   );

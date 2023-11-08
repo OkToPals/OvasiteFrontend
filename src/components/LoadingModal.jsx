@@ -12,7 +12,7 @@ export const LoadingModal = ({title, description}) => {
         `}>
         <div className="bg-white border w-[96%] md:w-[50%] pb-8 mx-auto my-8 flex flex-col h-fit justify-center items-center overflow-y-scroll p-4 md:p-8 ">
             {/* header */}
-            <img src="" alt="company-logo" />
+            <img src="" alt="organization-logo" />
             <h1 className="text-[1em] font-bold md:text-[1.5em] my-4 md:my-8">{title}</h1>
             {/* body */}
             <p className="text-[0.8em] font-bold md:text-[1em] ">{description}</p>

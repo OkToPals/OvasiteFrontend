@@ -32,7 +32,7 @@ const TestSignin = () => {
       setLoading(false)
       if (response.status == 200) {
         
-        let no_of_hours = 0.25; //15 mins => 15/60
+        let no_of_hours = 1; //15 mins => 15/60
 
         // or save user data in cookie
         const cookie_data = JSON.stringify({
