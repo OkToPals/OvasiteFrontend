@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const Middle = () => {
   return (
-<div style={{backgroundColor:"#0013330D;",textAlign:'center',paddingLeft:'12%',paddingRight:'12%',paddingTop:'5%',paddingBottom:'5%'}}>
+<div style={{backgroundColor:"#0013330D;",textAlign:'center',paddingLeft:'12%',paddingRight:'12%',paddingBottom:'5%'}} id='middle'>
 <h1 style={{fontSize:'30px',fontWeight:700,lineHeight:'60px'}}>Why OvaSite</h1>
 <ul style={{fontSize:'20px',fontWeight:400,lineHeight:'30px'}}>
 <li>At OvaSite, we know that information is super important. We are experts at gathering different types of information from lots of places. Do not worry, your data is safe with us! We use special techniques to make sure no one can see it unless you want them to.</li>

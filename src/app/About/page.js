@@ -53,7 +53,6 @@ We continuously strive to improve OvaSite based on the feedback of our users. Th
     hover:bg-[#fe5000] rounded text-[#001233]  font-bold"  >Get Started
   </button>
 </div>
-
 </div>
 
 </div>

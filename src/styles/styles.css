@@ -83,6 +83,10 @@ height: 350px;
 font-size: 14.5px;
 border-left:1px solid #001233;
 }
+#middle{
+  padding-top: 5%;
+}
+
 #hstyle{
 color: #052053;
 }
@@ -491,6 +495,7 @@ width:600px;
 }
 }
 
+
 @media (max-width: 900px) { 
 #smart{
   padding:20px;
@@ -610,3 +615,14 @@ margin-left: 0.25rem;
 #correct{
   margin: 30px;
 }
+@media (max-width: 450px) { 
+  #about{
+    height: 1900px;
+  }
+  }
+  
+  @media (max-width: 350px) { 
+    #about{
+      height: 2100px;
+    }
+    }
