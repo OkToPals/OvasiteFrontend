@@ -27,9 +27,9 @@ export const get_employee_projects_url =`${base_url}/orgs/${orgs_id}/userproject
 export const get_project_employees_url =`${base_url}/orgs/${orgs_id}/projectusers/:projectId`
 export const update_employee_role_url =`${base_url}/orgs/${orgs_id}/updateprojectrole/:projectId`
 export const remove_employee_url =`${base_url}/orgs/${orgs_id}/removeemployee/:empId`
-export const update_project_url =`${base_url}/orgs/${orgs_id}/update/project/:projectId`
+export const update_project_url =`${base_url}/orgs/`
 export const export_project_url=`${base_url}/orgs/${orgs_id}/export/project/:projectId`
-export const delete_project_url =`${base_url}/orgs/${orgs_id}/delete/project/:projectId`
+export const delete_project_url =`${base_url}/orgs/`
 // organization replace team with organization
 export const get_all_organizations_url = `${base_url}/orgs`
 export const get_organization_url = `${base_url}/orgs/${orgs_id}`

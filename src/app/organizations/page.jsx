@@ -244,9 +244,8 @@ const Organizations = () => {
             <h1 className="md:hidden text-[1.25em] font-extrabold text-center w-full mx-auto ">Teams</h1>
         </div> */}
         
-        { data.length > 0 ?
-          // project content desktop view
-          <div className="px-[1.2rem] ">
+          {/* // project content desktop view */}
+          <div className="px-[1.2rem] mb-8">
             {/* <div className=" flex flex-col md:flex-row flex-wrap gap-4 justify-center lg:justify-start"> */}
             <div className="flex flex-row flex-wrap gap-4 justify-center lg:justify-start">
           
@@ -295,7 +294,7 @@ const Organizations = () => {
                   
 
               </article>
-              {
+              { data.length > 0 ?
                   current_data.map((item, index) => 
                   <OrganizationCard key={index}
                       organizationImage={item.picture ? item.picture.thumbnail : item.logo } 
@@ -303,10 +302,12 @@ const Organizations = () => {
                       numberOfEmployees = {32333}
                       org_id={item.id}             
                   />)
+                  : <NoDataCard title={"No organization data"} description={"Create new organization to"}/>
               }
             </div>
 
-            {/* pagination */}
+            { data.length > 0 ? 
+            // {/* pagination */}
         <div className="w-full flex md:flex-row justify-between items-center my-4" aria-label="Pagination navigation">
 
               {/* 1/3 */}
@@ -363,12 +364,10 @@ const Organizations = () => {
               </div>
 
           </div>
-          </div>
           : 
-          <div className="flex flex-col justify-center items-center my-8 md:px-8 px-4">
-            <NoDataCard title={"No Organization Data"} description={"Add organization to continue"}/>
-          </div>
+          null
         }
+        </div>
 
       </section>
 

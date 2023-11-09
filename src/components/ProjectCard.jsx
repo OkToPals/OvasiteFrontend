@@ -1,13 +1,38 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { AttachEmployeeModal } from "./AttachEmployeeModal";
+import { ConfirmActionModal } from "./ConfirmActionModal";
+import { EditProjectModal } from "./EditProjectModal";
+import ExportProjectModal from "./ExportProjectModal";
 
-export const ProjectCard = ({ id, title, description, AttachAnEmployee, goToProject }) => {
+export const ProjectCard = ({ id, title, description, AttachAnEmployee, status, startDate, endDate, index, goToProject }) => {
+  
   const [isDropdown, setIsDropdown] = useState(false);
+  const [toggleAttachEmployee, setToggleAttachEmployee] = useState(false);
+  const [toggleDeleteProject, setToggleDeleteProject] = useState(false)
+  const [toggleEditProject, setToggleEditProject] = useState(false)
+  const [toggleExportProject, setToggleExportProject] = useState(false)
+
+  const ToggleAttachEmployee = () => {
+    setToggleAttachEmployee(!toggleAttachEmployee)
+  }
+
+  const ToggleDeleteProject = () => {
+    setToggleDeleteProject(!toggleDeleteProject)
+  }
+
+  const ToggleEditProject = () => {
+    setToggleEditProject(!toggleEditProject)
+  }
+  const ToggleExportProject = () => {
+    setToggleExportProject(!toggleExportProject)
+  }
 
   return (
     <article className="w-[100%] relative h-[13rem] shadow-sm p-4 bg-mobile-card-bg border-[#ddd] border rounded-lg mb-4"
       onClick={goToProject}
     >
+      {/* options button */}
       <div className="relative">
         <button
           className="absolute right-0 top-0 font-bold p-2"
@@ -33,7 +58,7 @@ export const ProjectCard = ({ id, title, description, AttachAnEmployee, goToProj
               <button
                 aria-label="Edit button"
                 className="flex flex-row items-center outline-none  border-none"
-                onClick={AttachAnEmployee}
+                onClick={ToggleAttachEmployee}
               >
                 <FontAwesomeIcon icon="fa-solid fa-paperclip" />
                 
@@ -46,6 +71,7 @@ export const ProjectCard = ({ id, title, description, AttachAnEmployee, goToProj
               <button
                 aria-label="Edit button"
                 className="flex flex-row items-center outline-none  border-none"
+                onClick={ToggleEditProject}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -71,6 +97,7 @@ export const ProjectCard = ({ id, title, description, AttachAnEmployee, goToProj
               <button
                 aria-label="Delete button "
                 className="flex flex-row items-center outline-none  border-none"
+                onClick={ToggleDeleteProject}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -105,6 +132,7 @@ export const ProjectCard = ({ id, title, description, AttachAnEmployee, goToProj
             <button
               aria-label="Share button"
               className="flex flex-row items-center outline-none border-none"
+              onClick={ToggleExportProject}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -125,7 +153,7 @@ export const ProjectCard = ({ id, title, description, AttachAnEmployee, goToProj
         )}
       </div>
       <h2 className="max-w-[80%] text-left mt-1 overflow-hidden whitespace-nowrap text-ellipsis font-bold my-[0.5rem] text-[0.75em]">
-        {id} <span className=" text-card-span-text">Project Name: </span> {title}
+        {index} <span className=" text-card-span-text">Project Name: </span> {title}
       </h2>
       <p className="max-w-[80%] line-clamp-3 text-left my-[0.5rem] overflow-hidden whitespace-normal  text-[0.75em]">
         <span className=" text-card-span-text">Description: </span>{description}
@@ -135,14 +163,14 @@ export const ProjectCard = ({ id, title, description, AttachAnEmployee, goToProj
       <div role="status" aria-label="Project Status" className="">
         {/* date div */}
         <div className="flex flex-col justify-between">
-          <p className="text-[0.75em] my-[0.5rem]"><span className=" text-card-span-text">Start Date: </span> 29/08/2023</p>
-          <p className="text-[0.75em] my-[0.5rem]"><span className=" text-card-span-text">Due Date: </span> 29/08/2024</p>
+          <p className="text-[0.75em] my-[0.5rem]"><span className=" text-card-span-text">Start Date: </span>{startDate}</p>
+          <p className="text-[0.75em] my-[0.5rem]"><span className=" text-card-span-text">Due Date: </span>{endDate}</p>
         </div>
         {/* progress */}
         <div className="flex flex-col-reverse">
           {/* progress bar */}
           <div>
-             <span className=" text-card-span-text text-[0.75em] my-[0.5rem]">Status: </span> 
+             <span className=" text-card-span-text text-[0.75em] my-[0.5rem]">Status: {status}</span> 
             <progress
               id="poject_progress_percentage"
               value="32"
@@ -156,6 +184,23 @@ export const ProjectCard = ({ id, title, description, AttachAnEmployee, goToProj
           {/* <p className="text-[12px]">Status: <span className="text-orange-600" >In Progress</span></p> */}
         </div>
       </div>
+
+      {
+        toggleAttachEmployee ? <AttachEmployeeModal /> : null
+      }
+      
+      {
+        toggleDeleteProject ? <ConfirmActionModal /> : null
+      }
+      
+      {
+        toggleEditProject ? <EditProjectModal /> : null
+      }
+
+      {
+        toggleExportProject ? <ExportProjectModal /> : null
+      }
+
     </article>
   );
 };

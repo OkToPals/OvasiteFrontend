@@ -2,7 +2,7 @@ import { delete_organization_url, update_employee_url } from "@/api_utils"
 import { useState } from "react"
 import { LoadingModal } from "./LoadingModal"
 
-export const ConfirmActionModal = ({handleCancelBtn, title, description, isConfirmModalActive, url, id, handleConfirmBtn, loading}) => {
+export const ConfirmActionModal = ({handleCancelBtn, title, description, isConfirmModalActive, handleConfirmBtn}) => {
 
     return (
       <div role="modal" aria-label="Create project" 

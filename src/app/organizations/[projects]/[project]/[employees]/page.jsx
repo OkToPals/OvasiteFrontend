@@ -41,7 +41,6 @@ const ProjectsDashboard = ({params}) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
 
-  const [toggleAttachEmployee, setToggleAttachEmployee] = useState(false);
   const [loadingAttachEmployee, setLoadingAttachEmployee] = useState(false);
 
   const array_of_pages = data && data.length > 0 ? [...Array(total_page_no).keys()].map((i) => i + 1) : [];

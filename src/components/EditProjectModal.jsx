@@ -1,53 +1,36 @@
-import { update_employee_url } from "@/api_utils"
+import { update_employee_url, update_project_url } from "@/api_utils"
+import axios_instance from "@/axiosInstance"
 import { useState } from "react"
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { LoadingModal } from "./LoadingModal";
 
-export const EditProjectModal = ({handleCancelBtn, isEditProjectModalActive, id}) => {
+export const EditProjectModal = ({handleCancelBtn, isEditProjectModalActive, org_id, id}) => {
 
     const [fullname, setFullname] = useState('')
     const [role, setRole] = useState('')    
     const [loading, setLoading] = useState(false)
 
-    const handleEndPoint = (url, method, body) => {
-        setLoading(true)
-        fetch(url, {
-            method: method,
+   const handleUpdateProjectBtn = async () => {
+    setLoading(true)
+        try {
+            const response = await axios_instance.post(update_project_url +`${org_id}/update/project/${id}`, {
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${jwt}`,
             },
-            body: body ? JSON.stringify(body) : null
-        }).then(prom => prom.json()).then(res => {
-            console.log(res)
-            setLoading(false)
-        }).catch(err => {
-            console.log(err)
-            setLoading(false)
-        })
-    }
-
-    const handleUpdateEmployeeButton = () => {
-
-        if (fullname) {
-            
-            const url = update_employee_url + id
-            const method = "PATCH"
-            const body = {
-                fullName: fullname
-            }
-            handleEndPoint(url, method, body)
-        } else if (role) {
-            const url = update_employee_role_in_org_url + id
-            const method = "PATCH"
-            const body = {
-                role: role
-            }
-            handleEndPoint(url, method, body)
-        } else {
-            alert("No action selected")
-            setLoading(false)
+            });
+            console.log(response);
+            setData(response.data);
+            setLoadingDeleteProject(false)
+            ToggleDeleteProject()
+            toast.success(response.data.message)
+        } catch (error) {
+            console.log(error.response.data.error);
+            setLoadingDeleteProject(false)
+            toast.error(error.response.data.error)
         }
-
-    }
-
+   } 
     
 
     return (
@@ -58,8 +41,8 @@ export const EditProjectModal = ({handleCancelBtn, isEditProjectModalActive, id}
         `}>
         <div className="bg-white border w-[96%] md:w-[50%] pb-8 mx-auto my-8 flex flex-col h-fit overflow-y-scroll ">
             {/* header */}
-            <div className="fixed flex flex-row justify-between px-[0.5rem] bg-ova_white h-16 w-[96%] md:w-[50%] border-b">
-                <p className="text-center my-4 font-semibold text-[1.5em]" >Edit: User details</p>
+            <div className="fixed flex flex-row justify-between px-[1rem] bg-ova_white h-16 w-[96%] md:w-[50%] border-b">
+                <p className="text-center my-4 font-semibold text-[1em] md:text-[1.25em]" >Edit: Project details</p>
                 <button className="" onClick={handleCancelBtn}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path d="M1 17L17 1M1 1L17 17" stroke="red" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -67,7 +50,7 @@ export const EditProjectModal = ({handleCancelBtn, isEditProjectModalActive, id}
                 </button>
             </div>
             {/* body */}
-            <div className="flex flex-col px-[2rem] mt-20">
+            <div className="flex flex-col px-[1rem] mt-20">
                     {/* invitee email */}
                 <div className="flex flex-col">
                     <label htmlFor="userFullname" className="text-[1.25rem]">Fullname <span className="text-red-500">*</span></label>
@@ -93,13 +76,14 @@ export const EditProjectModal = ({handleCancelBtn, isEditProjectModalActive, id}
                 <div className="flex flex-row justify-end">
                     <button 
                         className="w-[96%] md:w-[30%] px-4 py-2 my-8 bg-peach_primary rounded-md text-white" 
-                        onClick={handleUpdateEmployeeButton}>{loading ? "Loading..." : "Update"}
+                        onClick={handleUpdateProjectBtn}>Update
                     </button>
                 </div>
 
             </div>
         </div>
-  
+        {loading ? <LoadingModal/> : null}
+        <ToastContainer/>
       </div>
   
     )

@@ -245,7 +245,7 @@ const Reports = () => {
         </div> */}
         
           {/* // project content desktop view */}
-          <div className="px-[1.2rem] ">
+          <div className="px-[1.2rem] mb-8">
             {/* <div className=" flex flex-col md:flex-row flex-wrap gap-4 justify-center lg:justify-start"> */}
             <div className="flex flex-row flex-wrap gap-4 justify-center lg:justify-start">
           
@@ -290,7 +290,7 @@ const Reports = () => {
                           <span className="text-ova_white text-[1em] md:hidden ">
                               Create Report. 
                           </span>
-                      </button>
+                  </button>
                   
 
               </article>
@@ -304,7 +304,7 @@ const Reports = () => {
                   />)
               : 
                 // <div className="flex flex-col justify-center items-center my-8 md:px-8 px-4">
-                  <NoDataCard title={"No reports data"} description={"Add organization to continue"}/>
+                  <NoDataCard title={"No reports data"} description={"Add offline reports"}/>
                 // </div>
               }
             </div>

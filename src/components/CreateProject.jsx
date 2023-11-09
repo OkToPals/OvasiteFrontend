@@ -94,8 +94,8 @@ export const CreateProject = ({
           url: url_1,
           headers: {
               "Content-Type": "application/json",
-              "Cookie": "access_token=" + user_login_details.jwt
-              // Authorization: `Bearer ${user_login_details.jwt}`,
+              // "Cookie": "access_token=" + user_login_details.jwt
+              Authorization: `Bearer ${user_login_details.jwt}`,
           },
           data: data,
           };
