@@ -3,6 +3,7 @@ import React from 'react';
 import { useState } from 'react';
 import Link from 'next/link';
 import '../styles/styles.css'
+import Image from 'next/image';
 
 
 const Header = () => {
@@ -37,7 +38,7 @@ const Header = () => {
 <div class="text-[#1F1F1F] body-font" style={{backgroundColor:'white'}}>
   <div class="container mx-auto flex flex-wrap  flex-col md:flex-row items-center" style={{paddingTop:'5px',paddingBottom:'-5px',paddingRight:'10px'}}>
     <a class="flex title-font font-bold items-center mb-4 md:mb-0 " style={{color:'rgb(256, 89, 90)',marginLeft:'50px'}}>
-      <img src='/Logo.jpg' width={60} />
+    <Image alt='Logo' src='/Logo.jpg' width={60} height={60}  />
     </a>
     <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center gap-4">
       <Link class="mr-5 hover:text-[#FF595A]" href='/home'>Home</Link>
@@ -56,7 +57,7 @@ const Header = () => {
   <div id='header'>
  <div style={linkStyles} id='divs'>
  <a class="flex title-font font-bold items-center mb-4 md:mb-0 " style={{color:'rgb(256, 89, 90)',position:'absolute',left:'6%',top:'25px'}}>
-    <img src='/Logo.jpg' width={60} />
+    <Image src='/Logo.jpg' width={60} height={100} alt='imagery'/>
 </a>
   <div>
 </div>

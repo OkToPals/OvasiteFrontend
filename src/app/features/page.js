@@ -3,6 +3,7 @@ import TopHeader from '@/components/topheader';
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 import '@/styles/styles.css';
+import Image from 'next/image';
 
 
 export default function features() {
@@ -21,13 +22,13 @@ export default function features() {
         </ul>
        </div>
        <div id='divsnd'>
-       <img src='/survey.png' alt='desc'/>
+       <Image src='/survey.png' alt='desc' width={400} height={100}/>
        </div>
         </div>
 
         <div id='div1'>
         <div id='divsnd'>
-       <img src='/devices.png' alt='desc'/>
+       <Image src='/devices.png' alt='desc' width={400} height={100}/>
        </div>
        <div>
         <h1 style={{fontWeight:'bolder',fontSize:25,}}>Real-time Data Entry, updating and analysis</h1>
@@ -52,7 +53,7 @@ export default function features() {
         </ul>
        </div>
        <div id='divsnd'>
-       <img src='/indicators.png' alt='desc'/>
+       <Image src='/indicators.png' alt='desc' width={400} height={100}/>
        </div>
         </div> 
          <div id='background'> 

@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/styles.css'
+import Image from 'next/image';
 
 
 
@@ -19,13 +20,25 @@ export const Steps = () => {
 <p style={{fontSize:'16px',lineHeight:'36px',fontWeight:'400'}}>In today&apos;s data-driven world, the ability to gather information efficiently and effectively is paramount. Our platform offers you a simplified and intuitive interface that empowers you to collect data from a wide range of sources with ease, all within a single, centralized hub.</p>
 </div>
 <div id='images'>
-<img src='/Frame 177.svg' alt='frame'/>
+<Image
+            className="w-full"
+            alt="frame"
+            width={100}
+            height={50}
+            src="/Frame 177.svg"
+          />
 </div>
   </div>
 
   <div id='frame22'>
   <div id='images'>
-<img src='/Frame 178.svg' alt='frame'/>
+  <Image
+            className="w-full"
+            alt="frame"
+            width={100}
+            height={50}
+            src="/Frame 178.svg"
+          />
 </div>
 <div id='text'>
 <h1 style={{fontSize:'18px',lineHeight:'60px',fontWeight:'700'}}>Real-Time Progress Monitoring</h1>
@@ -39,13 +52,25 @@ export const Steps = () => {
 <p style={{fontSize:'16px',lineHeight:'36px',fontWeight:'400'}}>Our platform goes beyond basic data analysis, offering a suite of advanced evaluation tools that enable you to delve deep into your data, uncover patterns, and derive actionable insights to inform your decision-making process.</p>
 </div>
 <div id='images'>
-<img src='/Frame 180.svg' alt='frame'/>
+<Image
+            className="w-full"
+            alt="frame"
+            width={100}
+            height={50}
+            src="/Frame 180.svg"
+          />
 </div>
 </div>
 
   <div id='frame22'>
   <div id='images'>
-<img src='/Frame 182.svg' alt='frame' />
+  <Image
+            className="w-full"
+            alt="frame"
+            width={100}
+            height={50}
+            src="/Frame 182.svg"
+          />
 </div>
 <div  id='text'>
 <h1 style={{fontSize:'18px',lineHeight:'60px',fontWeight:'700'}}>Team Collaboration</h1>

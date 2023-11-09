@@ -1,5 +1,5 @@
 'use client';
-
+import Image from 'next/image';
 import Link from 'next/link';
 import { City, Country, State } from 'country-state-city';
 import { useEffect, useState } from 'react';
@@ -20,9 +20,11 @@ export default function Location() {
   }, [country]);
 
   useEffect(() => {
-    setCityData(City.getCitiesOfState(country?.isoCode, state?.isoCode));
-  }, [state]);
-
+    if (country?.isoCode && state?.isoCode) {
+      setCityData(City.getCitiesOfState(country.isoCode, state.isoCode));
+    }
+  }, [country?.isoCode, state?.isoCode]);
+  
   useEffect(() => {
     stateData && setState(stateData[0]);
   }, [stateData]);
@@ -126,10 +128,12 @@ export default function Location() {
           </div>
         </div>
         <div className='relative hidden w-0 flex-1 lg:block'>
-          <img
+          <Image
             className='absolute inset-0 h-full w-full object-cover rounded-md ps-8'
-            src='https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80'
+            src='/photo.avif'
             alt=''
+            width={100}
+            height={100}
           />
         </div>
       </main>

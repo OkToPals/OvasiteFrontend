@@ -1,13 +1,15 @@
 import React from 'react';
 import '../styles/styles.css';
-
+import Image from 'next/image';
 export const TopHeader = () => {
   return (
     <div className="relative">
-      <img
-        src="https://images.pexels.com/photos/3228766/pexels-photo-3228766.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
+      <Image
+        src="/pexels.jpeg"
         className="absolute inset-0 object-cover w-full h-full"
         alt=""
+        width={600}
+        height={10}
       />
       <div className="bg border-b-0">
         <svg

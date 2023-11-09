@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/styles.css'
 import Link from 'next/link';
 import PropTypes from 'prop-types';
+import Image from 'next/image';
 
 
 export const Hero = () => {
@@ -27,7 +28,14 @@ export const Hero = () => {
   </Link>
 </div>
 <div style={{marginTop:"4%"}}>
-  <img src='/Frame 6.svg' width={'85%'} style={{paddingLeft:'15%'}}/>
+  <Image
+            alt="Frame6"
+            width={85}
+            height={30}
+            src="/Frame 6.svg"
+            className="w-full"
+            style={{paddingLeft:'15%',paddingRight:'15%'}}
+          />
 </div>
   </div>
   );

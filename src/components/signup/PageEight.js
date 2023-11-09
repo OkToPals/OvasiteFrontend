@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from 'next/image';
 
 function PageEight() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -33,7 +34,7 @@ function PageEight() {
                 marginBottom: "20px",
               }}
             >
-              <img src="Logo.jpg" width={"200px"} />
+              <Image src="/Logo.jpg" width={200}  height={100} alt='imagery'/>
             </div>
             <h1 style={{ fontWeight: "bold", fontSize: "30px" }}>
               Setting up account{" "}
@@ -43,7 +44,7 @@ function PageEight() {
               Stay tuned as we prepare your experience. The journey begins
               shortly.
             </p>
-            <img src="loading.jpg" width={"300px"} />
+            <Image src="/loading.jpg" width={300} height={100} alt='imagery'/>
           </div>
         </div>
       </div>

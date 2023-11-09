@@ -1,6 +1,8 @@
 import { City, Country } from "country-state-city";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import Image from 'next/image';
+import Selector from '@/components/selector';
 
 let countryData = Country.getAllCountries();
 
@@ -34,8 +36,11 @@ function PageThree() {
     stateData && setState(stateData[0]);
   }, [stateData]);
   useEffect(() => {
-    setCityData(City.getCitiesOfState(country?.isoCode, state?.isoCode));
-  }, [state]);
+    if (country?.isoCode && state?.isoCode) {
+      setCityData(City.getCitiesOfState(country.isoCode, state.isoCode));
+    }
+  }, [country?.isoCode, state?.isoCode]);
+  
   useEffect(() => {
     cityData && setCity(cityData[0]);
   }, [cityData]);
@@ -48,22 +53,26 @@ function PageThree() {
             <div>
               <div>
                 <Link href="/home">
-                  <img
-                    src="Logo.jpg"
-                    width={70}
-                    style={{ marginLeft: "20%", marginTop: "10px" }}
-                  />
+                  <Image
+                  src="/Logo.jpg"
+                  width={70}
+                  height={100}
+                  style={{ marginLeft: "20%", marginTop: "10px" }}
+                  alt='imagery'
+                />
                 </Link>
-                <img
+                <Image
                   src="/Frame7562.jpg"
                   width={400}
+                  height={100}
                   style={{ marginLeft: "20%", marginTop: "40px" }}
+                  alt='imagery'
                 />
                 <div className="flex flex-1 flex-col justify-center px-4 py-2 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
                   <div className="mx-auto w-full max-w-sm lg:w-96">
                     <div>
                       <h1 className="title-font font-bold text-xl text-[#001233] mb-4 mt-10">
-                        Where's your business Location?
+                        Where&apos;s your business Location?
                       </h1>
                     </div>
 
@@ -191,7 +200,7 @@ function PageThree() {
             </div>
           </div>
           <div>
-            <img src="Frame750.jpg" />
+             <Image src="/Frame750.jpg" width={700} height={700} alt='imagery'/>
           </div>
         </div>
       </div>

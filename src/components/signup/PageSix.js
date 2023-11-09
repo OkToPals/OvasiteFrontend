@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React, { useState } from "react";
+import Image from 'next/image';
 
 function PageSix() {
   const [previewImage, setPreviewImage] = useState(null);
@@ -46,16 +47,20 @@ function PageSix() {
             <div>
               <div>
                 <Link href="/home">
-                  <img
-                    src="Logo.jpg"
-                    width={70}
-                    style={{ marginLeft: "20%", marginTop: "10px" }}
-                  />
+                  <Image
+                  src="/Logo.jpg"
+                  width={70}
+                  height={100}
+                  style={{ marginLeft: "20%", marginTop: "10px" }}
+                  alt='imagery'
+                />
                 </Link>
-                <img
+                <Image
                   src="/Frame7567.jpg"
                   width={400}
+                  height={100}
                   style={{ marginLeft: "20%", marginTop: "40px" }}
+                  alt='imagery'
                 />
 
                 <h1
@@ -173,7 +178,7 @@ rounded text-[#001233] font-medium "
             </div>
           </div>
           <div>
-            <img src="Frame750.jpg" />
+             <Image src="/Frame750.jpg" width={700} height={700} alt='imagery'/>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React, { useState } from "react";
+import Image from 'next/image';
 
 function PageFour() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -29,16 +30,20 @@ function PageFour() {
             <div>
               <div>
                 <Link href="/home">
-                  <img
-                    src="Logo.jpg"
-                    width={70}
-                    style={{ marginLeft: "20%", marginTop: "10px" }}
-                  />
+                  <Image
+                  src="/Logo.jpg"
+                  width={70}
+                  height={100}
+                  style={{ marginLeft: "20%", marginTop: "10px" }}
+                  alt='imagery'
+                />
                 </Link>
-                <img
+                <Image
                   src="/Frame7563.jpg"
                   width={400}
+                  height={100}
                   style={{ marginLeft: "20%", marginTop: "40px" }}
+                  alt='imagery'
                 />
                 <div className="flex flex-1 flex-col justify-center px-4 py-2 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
                   <div className="mx-auto w-full max-w-sm lg:w-96">
@@ -102,7 +107,7 @@ function PageFour() {
             </div>
           </div>
           <div>
-            <img src="Frame750.jpg" />
+          <Image src="/Frame750.jpg" width={700} height={700} alt='imagery'/>
           </div>
         </div>
       </div>

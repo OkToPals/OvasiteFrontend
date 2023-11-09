@@ -2,6 +2,7 @@ import { Country, State } from "country-state-city";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Selector from "../selector";
+import Image from 'next/image';
 
 function PageTwo() {
   let countryData = Country.getAllCountries();
@@ -39,17 +40,21 @@ function PageTwo() {
           <div>
             <div>
               <Link href="/home">
-                <img
-                  src="Logo.jpg"
+                <Image
+                  src="/Logo.jpg"
                   width={70}
+                  height={100}
                   style={{ marginLeft: "20%", marginTop: "10px" }}
+                  alt="imagine"
                 />
               </Link>
 
-              <img
+              <Image
                 src="/Frame756.jpg"
                 width={400}
+                height={100}
                 style={{ marginLeft: "20%", marginTop: "40px" }}
+                alt="imagine"
               />
               <div className="flex flex-1 flex-col justify-center px-4 py-2 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
                 <div className="mx-auto w-full max-w-sm lg:w-96">
@@ -137,7 +142,7 @@ function PageTwo() {
             </div>
           </div>
           <div>
-            <img src="Frame750.jpg" />
+             <Image src="/Frame750.jpg" width={700} height={700}  alt="imagine"/>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import '../styles/styles.css'
+import Image from 'next/image';
 
 export const Footer = () => {
   return (

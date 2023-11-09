@@ -1,10 +1,10 @@
 "use client";
-
 import React from "react";
 import Link from "next/link";
 import "@/styles/styles.css";
 import { useForm } from "react-hook-form";
 import axiosInstance from "@/lib/axios";
+import Image from 'next/image';
 
 export default function ForgotPassword() {
   const {
@@ -28,10 +28,12 @@ export default function ForgotPassword() {
     <>
       <div>
         <Link href='/home'>
-        <img
-          src="Logo.jpg"
+        <Image
+          src="/Logo.jpg"
           width={70}
           style={{ marginLeft: "10%", marginTop: "10px", paddingRight: "10px" }}
+         height={100}
+        alt="see"
         />
         </Link>
 
@@ -61,7 +63,7 @@ export default function ForgotPassword() {
                     <input
                       id="email"
                       name="email"
-                      type="email"
+                      type="Email"
                       autoComplete="email"
                       required
                       className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-[#001233] focus:ring-[#001233] block w-full rounded-md sm:text-sm focus:ring-1"
@@ -76,7 +78,7 @@ export default function ForgotPassword() {
                     type="submit"
                     className="flex w-full justify-center rounded-md bg-[#FF595A] px-3 py-1.5 text-sm font-bold leading-6 text-[white] shadow-sm hover:bg-[#fe5000] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#001233]"
                   >
-                    Reset Password
+                    Reset password
                   </button>
                 </div>
               </form>
