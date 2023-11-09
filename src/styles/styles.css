@@ -310,14 +310,22 @@ width: 50%;
 #text{
 width: 40%;
 }
+
+#action{
+  font-size: 18px;
+}
 @media (max-width: 600px) {
 #heroUP{
+  margin-top: 10%;
   font-size: 20px;
   line-height: 30px;
 }
 #frame2{
   flex-direction: column;
 
+}
+#action{
+  font-size: 15px;
 }
 #frame22{
 flex-direction: column-reverse;
