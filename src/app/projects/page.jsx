@@ -98,7 +98,7 @@ const ProjectsDashboard = ({ params }) => {
   // get all projects in a particular organization using the organization id
   const get_org_projects = async (jwt) => {
 
-    if (organizationData.length >) {
+    // if (organizationData.length > 0 && orgId) {
       setLoadingProjects(true);
       try {
 
@@ -118,7 +118,7 @@ const ProjectsDashboard = ({ params }) => {
         console.log(error);
         setLoadingProjects(false);
       }
-    }
+    // }
   };
 
   useEffect(() => {
