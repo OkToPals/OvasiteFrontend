@@ -9,8 +9,6 @@ const DeleteOrganization = () => {};
 
 export const SidebarNav = ({ activeLink }) => {
   const [togglemenu, setToggleMenu] = useState(false);
-  const [toggleDelete, setToggleDelete] = useState(false);
-  const [toggleEdit, setToggleEdit] = useState(false);
 
   const th_style = "p-2 border-b text-[1.125rem] text-ova_dark_secondary";
   const td_style = "p-2 border-b text-[1rem] text-ova_black align-top";
@@ -104,7 +102,7 @@ export const SidebarNav = ({ activeLink }) => {
             
             `}
         >
-          {/* <li
+          <li
             className={`${
               activeLink == "projects" ? activeLinkStyle : null
             } px-[1.2rem] py-[0.8rem] mt-[2rem]`}
@@ -135,7 +133,7 @@ export const SidebarNav = ({ activeLink }) => {
                 Projects
               </h4>
             </Link>
-          </li> */}
+          </li>
           <li
             className={`${
               activeLink == "employees" ? activeLinkStyle : null
@@ -360,7 +358,7 @@ export const SidebarNav = ({ activeLink }) => {
                 md:mx-auto md:mt-[2rem] overflow-y-scroll md:pb-8
             `}
         >
-          {/* <li
+          <li
             className={`${
               activeLink == "projects" ? activeLinkStyle : null
             } px-[1.2rem] py-[0.8rem] mt-[2rem]"`}
@@ -391,7 +389,7 @@ export const SidebarNav = ({ activeLink }) => {
                 Projects
               </h4>
             </Link>
-          </li> */}
+          </li>
           <li
             className={`${
               activeLink == "employees" ? activeLinkStyle : null

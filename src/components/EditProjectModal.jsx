@@ -79,7 +79,6 @@ export const EditProjectModal = ({handleCancelBtn, isEditProjectModalActive, org
                         onClick={handleUpdateProjectBtn}>Update
                     </button>
                 </div>
-
             </div>
         </div>
         {loading ? <LoadingModal/> : null}

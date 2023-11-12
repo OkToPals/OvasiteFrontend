@@ -38,6 +38,7 @@ module.exports = {
         'progress-bar': "#d9d9d9"
       },screens: {
         'mini': '500px',
+        'mini-sm': '300px'
       }
     },
   },

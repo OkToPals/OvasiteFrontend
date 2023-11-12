@@ -3,13 +3,18 @@
 import { login_url } from "@/api_utils";
 import axios_instance from "@/axiosInstance";
 import { set_cookie } from "@/components/helperFunctions/Cookies";
+import { setUser } from "@/store/AuthSlice";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 const TestSignin = () => {
 
+  // qazQaz123
+
   // initalize route
   const router = useRouter()
+  const dispatch = useDispatch()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false)
@@ -43,6 +48,10 @@ const TestSignin = () => {
         // cookies().set("ovasite_user", cookie_data)
 
         set_cookie(no_of_hours, "ovasite_user", cookie_data, '/')
+
+        dispatch(setUser(response.data))
+
+
 
 
         // redirect user to dashboard 

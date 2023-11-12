@@ -36,7 +36,7 @@ export const get_organization_url = `${base_url}/orgs/${orgs_id}`
 export const update_organization_url =`${base_url}/orgs/`
 export const delete_organization_url =`${base_url}/orgs/`
 // employee
-export const get_all_employees_url  =  `${base_url}/orgs/${orgs_id}/employees/`
+export const get_all_employees_url  =  `${base_url}/orgs/`
 export const get_employee_url =  `${base_url}/orgs/${orgs_id}/employees/${employee_id}`
 export const update_employee_url  =  `${base_url}/orgs/${orgs_id}/employees/`
 export const delete_employee_url =  `${base_url}/orgs/${orgs_id}/employees/`

@@ -1,9 +1,10 @@
 'use client'
 
-import { get_all_employees_url } from "@/api_utils";
+import { get_all_employees_url, get_all_organizations_url } from "@/api_utils";
 import axios_instance from "@/axiosInstance";
 import { EditEmployeeModal } from "@/components/EditEmployeeModal";
 import EmployeeCard from "@/components/EmployeeCard";
+import { LoadingModal } from "@/components/LoadingModal";
 import NoDataCard from "@/components/NoDataCard";
 import { SendInviteModal } from "@/components/SendInviteModal";
 import { SidebarNav } from "@/components/SidebarNav";
@@ -13,7 +14,6 @@ import { useEffect, useState } from "react";
 
 const EmployeesDashboard = () => {
 
-  const id = 1
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -24,8 +24,10 @@ const EmployeesDashboard = () => {
   const [items_per_page, set_items_per_page] = useState(10);
   const index_of_last_item = current_page * items_per_page;
   const index_of_first_item = index_of_last_item - items_per_page;
-  const current_data = data.length > 0 ? data.slice(index_of_first_item, index_of_last_item) : [];
-  const total_page_no = Math.ceil(data.length / items_per_page);
+  const current_data = data && data.length > 0 ? data.slice(index_of_first_item, index_of_last_item) : [];
+  const total_page_no = Math.ceil(
+    data && data.length > 0 ? data.length / items_per_page : 0
+  );
 
   const [page_no_limit, set_page_no_limit] = useState(3);
   const [max_page_no_limit, set_max_page_no_limit] = useState(3);
@@ -34,8 +36,15 @@ const EmployeesDashboard = () => {
   const [togglemenu, setToggleMenu] = useState(false)
   const [showInviteModal, setShowInviteModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
+  const [organizationData, setOrganizationData] = useState([]);
+  const [orgId, setOrgId] = useState("");
+  const [loadingProjects, setLoadingProjects] = useState(true);
 
-  const array_of_pages = data.length > 0 ? [...Array(total_page_no).keys()].map((i) => i + 1) : [];
+  
+  const array_of_pages =
+    data && data.length > 0
+      ? [...Array(total_page_no).keys()].map((i) => i + 1)
+      : [];
 
   const th_style = "p-2 border-b text-[1.125rem] text-ova_dark_secondary";
   const td_style = "p-2 border-b text-[1rem] text-ova_black align-top";
@@ -59,34 +68,52 @@ const EmployeesDashboard = () => {
     setShowEditModal(!showEditModal)
   }
 
+    // handle select organization
+    const handleSelectOrganization = (evt) => {
+      const orgId = evt.target.value.trim();
+      setOrgId(orgId);
+    };
+
+   // get all organizations
+   const get_all_organizations = async (jwt) => {
+    try {
+      const response = await axios_instance.get(get_all_organizations_url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      console.log("all organizations => ", response);
+      setOrganizationData(response.data);
+      if (!orgId) {
+        setOrgId(response.data[0].id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // get all employees
   const get_all_employees = async(jwt) => {
-    try {
-        const response = await axios_instance.get(get_all_employees_url, {
-          headers: {
-            Authorization: `Bearer ${jwt}`
-          }
-        })
-        console.log(response);
-        setData(response)
-        
-    } catch (error) {
-
-        console.log(error);
-        
+    setLoadingProjects(true);
+    if (organizationData.length > 0 && orgId) {
+      try {
+          const response = await axios_instance.get(get_all_employees_url + `${orgId}/employees/`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jwt}`
+            }
+          })
+          console.log(response);
+          setData(response)
+          setLoadingProjects(false)
+          
+      } catch (error) {
+          console.log(error);
+          setLoadingProjects(false)       
+      }
     }
   }
-
-
-  // useEffect(() => {
-  //   fetch("https://randomuser.me/api/?results=1000")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       // console.log(json)
-  //       setData(data.results);
-  //       // console.log(data);
-  //     });
-  // }, []);
 
   useEffect(() => {
     const url = pathname
@@ -101,10 +128,12 @@ const EmployeesDashboard = () => {
         user_login_details = JSON.parse(user_login_details) ;
         const jwt = user_login_details.jwt
         console.log(jwt);
+        get_all_organizations(jwt)
         get_all_employees(jwt)
       }
   },[router,  pathname, searchParams])
 
+  
   // handle next button
   const nextButton = () => {
     if (current_page + 1 <= total_page_no) {
@@ -129,7 +158,9 @@ const EmployeesDashboard = () => {
     }
   };
 
-  return (
+  return  loadingProjects ? 
+    <LoadingModal />
+   : 
     <main className="flex flex-col md:flex-row">
       <SidebarNav activeLink={"employees"} pagetitle={'Employees'} />
 
@@ -206,9 +237,26 @@ const EmployeesDashboard = () => {
         </header>
 
          {/* header II */}
-         <div className="max-w-full flex flex-row justify-between md:justify-end items-center px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">
-            <h1 className="md:hidden text-[1.25em] font-extrabold ">Employees</h1>
-            <div className="flex flex-row justify-center items-center">
+         <div className="max-w-full flex-col gap-2 flex mini:flex-row justify-between md:justify-end items-start mini:items-center px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">            <h1 className="md:hidden text-[1em] font-extrabold ">Employees</h1>
+            <div className="flex flex-col mini:flex-row justify-center items-start mini:items-center gap-2">
+               {/* select organization from a list of organization */}
+            <select
+              name="select_orgs"
+              id="select_orgs"
+              className="bg-mobile-bg py-[0.6rem] px-[1rem]  md:py-[0.9rem] md:px-[1.25rem] border-[0.0625rem] border-ova_grey_border rounded-[0.5rem]"
+              onChange={handleSelectOrganization}
+            >
+              <option value="">Select Organization</option>
+              {organizationData && organizationData.length > 0 ? (
+                organizationData.map((item, index) => (
+                  <option key={item.id} value={`${item.id}`}>
+                    {item.name}
+                  </option>
+                ))
+              ) : (
+                <option value="">No registered organization</option>
+              )}
+            </select>
                 <button
                     aria-label="Create Project"
                     className="flex flex-row items-center bg-peach_primary py-[1rem] px-[1.25rem] rounded-[0.5rem]"
@@ -238,7 +286,7 @@ const EmployeesDashboard = () => {
             <h1 className="md:hidden text-[1.25em] font-extrabold text-center w-full mx-auto ">Teams</h1>
         </div> */}
 
-        { data.length > 0 ?
+        { data && data.length > 0 ?
         
         //{/* project content desktop view*/}
         <div className="px-[1.2rem] ">
@@ -379,7 +427,6 @@ const EmployeesDashboard = () => {
 
      
     </main>
-  );
 };
 
 export default EmployeesDashboard;

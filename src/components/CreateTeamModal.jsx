@@ -1,7 +1,64 @@
-export const CreateTeamModal = ({handleCancelBtn, handleCreateBtn, isCreateTeamActive}) => {
+import { base_url } from '@/api_utils';
+import axios_instance from '@/axiosInstance';
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { LoadingModal } from './LoadingModal';
+import { useState } from 'react';
+import { get_cookie } from './helperFunctions/Cookies';
+
+export const CreateTeamModal = ({handleCancelBtn, handleCreateBtn, isCreateTeamActive, orgId}) => {
+
+    const [name, setName] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('');
+    const [nameError, setNameError] = useState(false)
 
     const CreateTeam = () => {
 
+        if (!name) {
+            setNameError(true)
+            setErrorMessage("Insert team name")
+        } else {
+            setErrorMessage('')
+            setNameError(false)
+
+            let user_login_details = get_cookie("ovasite_user");
+
+            if (user_login_details) {
+                setLoading(true)
+                user_login_details = JSON.parse(user_login_details);
+            
+                let data = JSON.stringify({
+                name: name
+                });
+                let config = {
+                method: "post",
+                url: `${base_url}/orgs/${orgId}/teams`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${user_login_details.jwt}`,
+                },
+                data: data,
+                };
+        
+                axios_instance
+                .request(config)
+                .then((response) => {
+                    setLoading(false)
+                    console.log(JSON.stringify(response.data));
+                    toast.success("Organization created successfully!")
+                    setTimeout(() => {
+                        window.location.reload();
+                      }, 5000);
+
+                })
+                .catch((error) => {
+                    console.log(error.response);
+                    setLoading(false)
+                    toast.error(`${error.response.data.message}`)
+                });
+            }
+        }
     }
 
     return (
@@ -22,11 +79,14 @@ export const CreateTeamModal = ({handleCancelBtn, handleCreateBtn, isCreateTeamA
             </div>
             {/* body */}
             <div className="flex flex-col px-[2rem] mt-20">
+
+            {errorMessage ? <p className="text-red-500 p-4 md:p-8 text-center italic text-[1em]">{errorMessage}</p> : null }
                     {/* project name */}
                 <div className="flex flex-col">
-                    <label htmlFor="projectName" className="text-[1.25rem]">Project Name <span className="text-red-500">*</span></label>
-                    <input type="text" placeholder="Enter project name"  id="projectName"
-                        className="border-[1px] border-ova_grey_border p-[1rem] rounded-md"
+                    <label htmlFor="TeamName" className="text-[1.25rem]">Team Name <span className="text-red-500">*</span></label>
+                    <input type="text" placeholder="Enter team name"  id="TeamName"
+                        className="border-[1px] ${nameError ? 'border-red-500' : 'border-ova_grey_border' } border-ova_grey_border p-[1rem] rounded-md"
+                        onChange={(e) => setName(e.target.value)}
                     />
                 </div>
 
@@ -42,7 +102,7 @@ export const CreateTeamModal = ({handleCancelBtn, handleCreateBtn, isCreateTeamA
                 </div> */}
 
                 {/* sector and country select options */}
-                <div className="flex flex-col md:flex-row justify-between gap-2 mt-[1rem]">
+                {/* <div className="flex flex-col md:flex-row justify-between gap-2 mt-[1rem]">
                     <div className="flex flex-col flex-grow">
                         <label htmlFor="add-employee" className="text-[1.25rem]">Add Employee <span className="text-red-500"></span></label>
                         <select name="add-employee" id="add-employee" className="border-[1px] border-ova_grey_border p-[1rem] rounded-md">
@@ -50,18 +110,21 @@ export const CreateTeamModal = ({handleCancelBtn, handleCreateBtn, isCreateTeamA
                         </select>
                     </div>
                     
-                </div>
+                </div> */}
 
             
                 <div className="flex flex-row justify-end">
                     <button 
-                        className="w-[96%] md:w-[30%] px-4 py-2 my-8 bg-peach_primary rounded-md text-white" 
+                        className="w-[96%] md:w-[40%] px-4 py-2 my-8 bg-peach_primary rounded-md text-white" 
                         onClick={CreateTeam}>Create Team
                     </button>
                 </div>
 
             </div>
         </div>
+
+        {loading ? <LoadingModal/> : null}
+        <ToastContainer/>
   
       </div>
   

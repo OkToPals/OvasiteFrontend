@@ -5,8 +5,12 @@ import { base_url } from "@/api_utils"
 import axios_instance from "@/axiosInstance"
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { redirect, useRouter} from "next/navigation"
 
-export const CreateOrganizationModal = ({handleCancelBtn, isCreateOrganizationActive}) => {
+export const CreateOrganizationModal = ({handleCancelBtn, isCreateOrganizationActive, refreshPage}) => {
+
+
+    const router = useRouter()
 
     const [name, setName] = useState('')
     const [address, setAddress] = useState('')
@@ -63,12 +67,13 @@ export const CreateOrganizationModal = ({handleCancelBtn, isCreateOrganizationAc
                 axios_instance
                 .request(config)
                 .then((response) => {
+                    setLoading(false)
                     console.log(JSON.stringify(response.data));
-                    setLoading(false)
                     toast.success("Organization created successfully!")
-                    console.log(JSON.stringify(response));
-                    setLoading(false)
-                   
+                    setTimeout(() => {
+                        window.location.reload();
+                      }, 5000);
+
                 })
                 .catch((error) => {
                     console.log(error.response.data);
@@ -87,8 +92,8 @@ export const CreateOrganizationModal = ({handleCancelBtn, isCreateOrganizationAc
             `}>
             <div className="bg-white border w-[96%] md:w-[50%] pb-8 mx-auto my-8 flex flex-col h-[90vh] overflow-y-scroll ">
                 {/* header */}
-                <div className="fixed flex flex-row justify-between md:px-8 bg-ova_white h-16 w-[96%] md:w-[50%] border-b">
-                    <p className="text-center my-4 px-8 font-semibold text-[1em] md:text-[1.25em]" >Create Organization</p>
+                <div className="fixed flex flex-row justify-between px-4 mini:px-8 bg-ova_white h-16 w-[96%] md:w-[50%] border-b">
+                    <p className="text-center my-4 font-semibold text-[1em] md:text-[1.25em]" >Create Organization</p>
                     <button className="" onClick={handleCancelBtn}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M1 17L17 1M1 1L17 17" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

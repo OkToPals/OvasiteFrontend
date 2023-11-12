@@ -29,9 +29,9 @@ export const SendInviteModal = ({handleCancelBtn, handleSendInviteBtn, isInviteM
         transition-all duration-500 ease-in-out bg-ova_grey
         ${isInviteModalActive ? 'opacity-100' : 'opacity-0'}
         `}>
-        <div className="bg-white border w-[96%] md:w-[50%] pb-8 mx-auto my-8 flex flex-col h-fit overflow-y-scroll ">
+        <div className="bg-white border max-w-32 w-[90%]  pb-8 mx-auto my-8 flex flex-col h-fit overflow-y-scroll ">
             {/* header */}
-            <div className="fixed flex flex-row justify-between px-[0.5rem] bg-ova_white h-16 w-[96%] md:w-[50%] border-b">
+            <div className="fixed flex flex-row justify-between px-[0.5rem] bg-ova_white h-16 max-w-32 w-[90%] mx-auto border-b">
                 <p className="text-center my-4 font-semibold text-[1.5em]" >Send Invite: Invite details</p>
                 <button className="" onClick={handleCancelBtn}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -65,7 +65,7 @@ export const SendInviteModal = ({handleCancelBtn, handleSendInviteBtn, isInviteM
                 {/* send invite button */}
                 <div className="flex flex-row justify-end">
                     <button 
-                        className="w-[96%] md:w-[30%] px-4 py-2 my-8 bg-peach_primary rounded-md text-white" 
+                        className="w-20 px-4 py-2 my-8 bg-peach_primary rounded-md text-white" 
                         onClick={handleSendInviteButton}>Send Invite
                     </button>
                 </div>

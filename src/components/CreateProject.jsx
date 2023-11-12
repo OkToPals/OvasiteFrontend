@@ -3,118 +3,119 @@ import axios_instance from "@/axiosInstance";
 import { useRef, useState } from "react";
 import { LoadingModal } from "./LoadingModal";
 import { get_cookie } from "./helperFunctions/Cookies";
-import { toast, ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const CreateProject = ({
-    handleCancelBtn,
-    handleCreateBtn,
-    isCreateProjectActive,
-    id
-    }) => {
-    const [projectName, setProjectName] = useState("");
-    const [projectDescription, setProjectDescription] = useState("");
-    const [status, setStatus] = useState("");
-    const [duration, setDuration] = useState("");
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
-    const [loading, setLoading] = useState(false);
+  handleCancelBtn,
+  handleCreateBtn,
+  isCreateProjectActive,
+  id,
+  refreshPage,
+}) => {
+  const [projectName, setProjectName] = useState("");
+  const [projectDescription, setProjectDescription] = useState("");
+  const [status, setStatus] = useState("");
+  const [duration, setDuration] = useState("");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-    // handle error message
-    const [errorMessage, setErrorMessage] = useState('');
-    const [projectNameError, setProjectNameError] = useState(false)
-    const [projectDescriptionError, setProjectDescriptionError] = useState(false)
-    const [statusError, setStatusError] = useState(false)
-    const [durationError, setDurationError] = useState(false)
-    const [startDateError, setStartDateError] = useState(false)
-    const [endDateError, setEndDateError] = useState(false)
+  // handle error message
+  const [errorMessage, setErrorMessage] = useState("");
+  const [projectNameError, setProjectNameError] = useState(false);
+  const [projectDescriptionError, setProjectDescriptionError] = useState(false);
+  const [statusError, setStatusError] = useState(false);
+  const [durationError, setDurationError] = useState(false);
+  const [startDateError, setStartDateError] = useState(false);
+  const [endDateError, setEndDateError] = useState(false);
 
-    const base_url = "https://ovasite.onrender.com/api/v1"
+  const base_url = "https://ovasite.onrender.com/api/v1";
   const CreateProject = () => {
     if (!projectName) {
-        setProjectNameError(true)
-        setErrorMessage("Input project name")
+      setProjectNameError(true);
+      setErrorMessage("Input project name");
     } else if (!projectDescription) {
-        setProjectNameError(false)
-        setProjectDescriptionError(true)
-        setErrorMessage("Input project description")
+      setProjectNameError(false);
+      setProjectDescriptionError(true);
+      setErrorMessage("Input project description");
     } else if (!status) {
-        setProjectDescriptionError(false)
-        setStatusError(true)
-        setErrorMessage("Select project status")
+      setProjectDescriptionError(false);
+      setStatusError(true);
+      setErrorMessage("Select project status");
     } else if (!duration) {
-        setStatusError(false)
-        setDurationError(true)
-        setErrorMessage("Input project duration")
+      setStatusError(false);
+      setDurationError(true);
+      setErrorMessage("Input project duration");
     } else if (!startDate) {
-        setDurationError(false)
-        setStartDateError(true)
-        setErrorMessage("Set start date")
+      setDurationError(false);
+      setStartDateError(true);
+      setErrorMessage("Set start date");
     } else if (!endDate) {
-        setStartDateError(false)
-        setEndDateError(true)
-        setErrorMessage("Set end date")
+      setStartDateError(false);
+      setEndDateError(true);
+      setErrorMessage("Set end date");
     } else {
-        setErrorMessage('')
-        setProjectNameError(false)
-        setProjectDescriptionError(false)
-        setStatusError(false)
-        setDurationError(false)
-        setStartDateError(false)
-        setEndDateError(false)
+      setErrorMessage("");
+      setProjectNameError(false);
+      setProjectDescriptionError(false);
+      setStatusError(false);
+      setDurationError(false);
+      setStartDateError(false);
+      setEndDateError(false);
 
-        let user_login_details = get_cookie("ovasite_user");
+      let user_login_details = get_cookie("ovasite_user");
 
-        if (user_login_details) {
-          setLoading(true)
-          user_login_details = JSON.parse(user_login_details);
+      if (user_login_details) {
+        setLoading(true);
+        user_login_details = JSON.parse(user_login_details);
 
-          console.log("org id and jwt =>", id, user_login_details.jwt);
-          const url_1 = `${create_project_url}${id}/create/project` 
-          const url_2 = `${base_url}/orgs/${id}/create/project`
+        console.log("org id and jwt =>", id, user_login_details.jwt);
+        const url_1 = `${create_project_url}${id}/project/create`;
+        const url_2 = `${base_url}/orgs/${id}/create/project`;
 
-          console.log(url_1, url_2);
+        console.log(url_1, url_2);
 
-          const newStartDate = new Date(startDate);
-          const newEndDate = new Date(endDate)
+        const newStartDate = new Date(startDate);
+        const newEndDate = new Date(endDate);
 
-          
-          let data = JSON.stringify({
+        let data = JSON.stringify({
           name: projectName,
           description: projectDescription,
           status: status,
           expectedDuration: duration,
           startDate: newStartDate.toISOString(),
-          endDate: newEndDate.toISOString()
-          });
+          endDate: newEndDate.toISOString(),
+        });
 
-          // post config
-          let config = {
+        // post config
+        let config = {
           method: "post",
           url: url_1,
           headers: {
-              "Content-Type": "application/json",
-              // "Cookie": "access_token=" + user_login_details.jwt
-              Authorization: `Bearer ${user_login_details.jwt}`,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user_login_details.jwt}`,
           },
           data: data,
-          };
+        };
 
-          console.log("create project =>", data);
-          axios_instance
+        console.log("create project =>", data);
+        axios_instance
           .request(config)
           .then((response) => {
-              console.log(response);
-              toast.success(response);
-              
-              setLoading(false)
+            console.log(response);
+            setLoading(false);
+            toast.success(response.data.message);
+            setTimeout(() => {
+              window.location.reload();
+            }, 5000);
           })
           .catch((error) => {
-              console.log(error.response);
-              setLoading(false)
-              toast.error(error.response.data.message);
+            console.log(error);
+            setLoading(false);
+            toast.error(error.response.data.message);
           });
-        }
+      }
     }
   };
 
@@ -153,24 +154,36 @@ export const CreateProject = ({
         </div>
         {/* body */}
         <div className="flex flex-col px-[2rem] mt-20">
-          { errorMessage ?  <p className="text-red-500 p-4 md:p-8 text-center italic text-[1em] md:text[1.2em]">{errorMessage}</p> : null }
+          {errorMessage ? (
+            <p className="text-red-500 p-4 md:p-8 text-center italic text-[1em] md:text[1.2em]">
+              {errorMessage}
+            </p>
+          ) : null}
           {/* project name */}
           <div className="flex flex-col">
-            <label htmlFor="projectName" className=" text-[1em] md:text-[1.25rem]">
+            <label
+              htmlFor="projectName"
+              className=" text-[1em] md:text-[1.25rem]"
+            >
               Project Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               placeholder="Enter project name"
               id="projectName"
-              className={`border-[1px] ${projectNameError ? 'border-red-500' : 'border-ova_grey_border' } p-[1rem] rounded-md`}
+              className={`border-[1px] ${
+                projectNameError ? "border-red-500" : "border-ova_grey_border"
+              } p-[1rem] rounded-md`}
               onChange={(e) => setProjectName(e.target.value.trim())}
             />
           </div>
 
           {/* project description */}
           <div className="flex flex-col mt-[1rem]">
-            <label htmlFor="projectDescription" className=" text-[1em] md:text-[1.25rem]">
+            <label
+              htmlFor="projectDescription"
+              className=" text-[1em] md:text-[1.25rem]"
+            >
               Project Description <span className="text-red-500">*</span>
             </label>
             <textarea
@@ -179,7 +192,11 @@ export const CreateProject = ({
               cols="30"
               rows="5"
               placeholder="Enter a short decription about the project"
-              className={`border-[1px] ${projectDescriptionError ? 'border-red-500' : 'border-ova_grey_border' } p-[1rem] rounded-md`}
+              className={`border-[1px] ${
+                projectDescriptionError
+                  ? "border-red-500"
+                  : "border-ova_grey_border"
+              } p-[1rem] rounded-md`}
               onChange={(e) => setProjectDescription(e.target.value.trim())}
             ></textarea>
           </div>
@@ -193,7 +210,9 @@ export const CreateProject = ({
               <select
                 name="status"
                 id="status"
-                className={`border-[1px] ${statusError ? 'border-red-500' : 'border-ova_grey_border' } p-[1rem] rounded-md`}
+                className={`border-[1px] ${
+                  statusError ? "border-red-500" : "border-ova_grey_border"
+                } p-[1rem] rounded-md`}
                 onChange={(e) => setStatus(e.target.value.trim())}
               >
                 <option value="">-Select status-</option>
@@ -203,7 +222,10 @@ export const CreateProject = ({
               </select>
             </div>
             <div className="flex flex-col flex-grow">
-              <label htmlFor="duration" className=" text-[1em] md:text-[1.25rem]">
+              <label
+                htmlFor="duration"
+                className=" text-[1em] md:text-[1.25rem]"
+              >
                 Expected duration <span className="text-red-500">*</span>
               </label>
               <input
@@ -211,7 +233,9 @@ export const CreateProject = ({
                 id="duration"
                 type="text"
                 placeholder="Duration (e.g 2 weeks, 3 years)"
-                className={`border-[1px] ${durationError ? 'border-red-500' : 'border-ova_grey_border' } p-[1rem] rounded-md md:text-[1.25em]::placeholder text-[1em]::placeholder`}
+                className={`border-[1px] ${
+                  durationError ? "border-red-500" : "border-ova_grey_border"
+                } p-[1rem] rounded-md md:text-[1.25em]::placeholder text-[1em]::placeholder`}
                 onChange={(e) => setDuration(e.target.value.trim())}
               />
             </div>
@@ -219,7 +243,10 @@ export const CreateProject = ({
 
           <div className="flex flex-col md:flex-row justify-between gap-2 mt-[1rem]">
             <div className="flex flex-col flex-grow">
-              <label htmlFor="startDate" className=" text-[1em] md:text-[1.25rem]">
+              <label
+                htmlFor="startDate"
+                className=" text-[1em] md:text-[1.25rem]"
+              >
                 Start Date <span className="text-red-500">*</span>
               </label>
               <input
@@ -227,12 +254,17 @@ export const CreateProject = ({
                 name="startDate"
                 id="startDate"
                 placeholder="-Select Start Date-"
-                className={`border-[1px] ${startDateError ? 'border-red-500' : 'border-ova_grey_border' } p-[1rem] rounded-md`}
+                className={`border-[1px] ${
+                  startDateError ? "border-red-500" : "border-ova_grey_border"
+                } p-[1rem] rounded-md`}
                 onChange={(e) => setStartDate(e.target.value.trim())}
               />
             </div>
             <div className="flex flex-col flex-grow">
-              <label htmlFor="endDate" className=" text-[1em] md:text-[1.25rem]">
+              <label
+                htmlFor="endDate"
+                className=" text-[1em] md:text-[1.25rem]"
+              >
                 End Date <span className="text-red-500">*</span>
               </label>
               <input
@@ -240,7 +272,9 @@ export const CreateProject = ({
                 name="endDate"
                 id="endDate"
                 placeholder="-Select End Date"
-                className={`border-[1px] ${endDateError ? 'border-red-500' : 'border-ova_grey_border' } p-[1rem] rounded-md`}
+                className={`border-[1px] ${
+                  endDateError ? "border-red-500" : "border-ova_grey_border"
+                } p-[1rem] rounded-md`}
                 onChange={(e) => setEndDate(e.target.value.trim())}
               />
             </div>
@@ -248,7 +282,7 @@ export const CreateProject = ({
 
           <div className="flex flex-row justify-end">
             <button
-              className="w-[96%] md:w-[30%] px-4 py-2 my-8 bg-peach_primary rounded-md text-white"
+              className="w-[96%] md:w-[50%] px-4 py-2 my-8 bg-peach_primary rounded-md text-white"
               onClick={CreateProject}
             >
               Create Project
@@ -257,11 +291,14 @@ export const CreateProject = ({
         </div>
       </div>
 
-    {
-        loading ? <LoadingModal title={"Creating Project"} description={"Please wait while your project is being setup"}/> : null
-    }
+      {loading ? (
+        <LoadingModal
+          title={"Creating Project"}
+          description={"Please wait while your project is being setup"}
+        />
+      ) : null}
 
-    <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 };

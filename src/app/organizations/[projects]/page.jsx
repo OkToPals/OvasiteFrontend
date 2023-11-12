@@ -14,7 +14,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   useRouter,
-  redirect,
   usePathname,
   useSearchParams,
 } from "next/navigation";
@@ -138,14 +137,6 @@ const ProjectsDashboard = ({ params }) => {
       get_all_org_projects(jwt);
     }
   }, []);
-
-  // fetch("https://jsonplaceholder.typicode.com/posts")
-  //   .then((response) => response.json())
-  //   .then((json) => {
-  //     // console.log(json)
-  //     setData(json);
-  //     // console.log(data);
-  //   });
 
   // handle attach employee
   const AttachAnEmployee = async () => {
@@ -350,8 +341,8 @@ const ProjectsDashboard = ({ params }) => {
                         ? item.description.slice(0, 200) + "..."
                         : item.description}
                     </td>
-                    <td className={`${td_style}`}>{item.startDate}</td>
-                    <td className={`${td_style}`}>{item.endDate}</td>
+                    <td className={`${td_style}`}>{new Date(item.startDate).toLocaleString()}</td>
+                    <td className={`${td_style}`}>{new Date(item.endDate).toLocaleString()}</td>
                     <td className={`${td_style}`}>
                       {/* <progress
                         id="poject_progress_percentage"
@@ -510,8 +501,8 @@ const ProjectsDashboard = ({ params }) => {
                   description={item.description}
                   AttachAnEmployee={() => AttachAnEmployee(`${item.id}`)}
                   onClick={() => goToProject(`${item.id}`)}
-                  startDate={item.startDate}
-                  endDate={item.endDate}
+                  startDate={new Date(item.startDate).toLocaleString()}
+                  endDate={new Date(item.endDate).toLocaleString()}
                   status={item.status}
                 />
               ))}
