@@ -42,7 +42,7 @@ const TeamsDashboard = () => {
   const [showInviteModal, setShowInviteModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [showTeamModal, setShowTeamModal] = useState(false)
-  // const [organizationData, setOrganizationData] = useState([]);
+  const [organizationDetails, setOrganizationDetails] = useState({});
   const [orgId, setOrgId] = useState("");
   const [loadingTeams, setLoadingTeams] = useState(true);
 
@@ -76,7 +76,7 @@ const TeamsDashboard = () => {
     setOrgId(orgId);
   };
 
-
+ 
 
   
    // get all organizations
@@ -135,18 +135,12 @@ const TeamsDashboard = () => {
         console.log(jwt);
         get_all_teams(jwt)
         dispatch(fetchAllOrganizations(jwt));
+        ovasite_organization = get_cookie("ovasite_organization")
+        setOrganizationDetails(ovasite_organization)
+
       }
   },[router, pathname])
 
-  // useEffect(() => {
-  //   fetch("https://randomuser.me/api/?results=1000")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       // console.log(json)
-  //       setData(data.results);
-  //       // console.log(data);
-  //     });
-  // }, []);
 
   // handle next button
   
@@ -174,9 +168,9 @@ const TeamsDashboard = () => {
   };
 
 
-  const org_name = orgId
-  ? organizationData.find((organization) => organization.id === orgId)?.name
-  : organizationData[0]?.name;
+  // const org_name = orgId
+  // ? organizationData.find((organization) => organization.id === orgId)?.name
+  // : organizationData[0]?.name;
 
   return  loadingTeams ? 
   <LoadingModal />

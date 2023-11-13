@@ -52,7 +52,7 @@ export const join_organization_url = `${base_url}/invites/join/${user_id}`
 
 // audit trail
 export const get_all_audits_url = `${base_url}/orgs/:${orgs_id}/audit`
-export const get_org_audits_url = `${base_url}//orgs/:${orgs_id}/orgaudit`
+export const get_org_audits_url = `${base_url}/orgs/`
 export const get_audit_url = `${base_url}/orgs/:${orgs_id}/audit/:${audit_id}`
 export const delete_audit_url = `${base_url}/orgs/:${orgs_id}/audit/delete/`
 export const delete_org_audit_url = `${base_url}/orgs/:${orgs_id}/orgaudit/delete/:${audit_id}`

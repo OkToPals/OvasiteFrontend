@@ -1,14 +1,26 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EditOrganizationModal } from "./EditOrganizationModal";
 import { ConfirmActionModal } from "./ConfirmActionModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { get_cookie, set_cookie } from "./helperFunctions/Cookies";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "@/store/AuthSlice";
+import { fetchAllOrganizations, selectLoadingOrganizations, selectOrganizations } from "@/store/OrganizationSlice";
+import { LoadingModal } from "./LoadingModal";
 
 const DeleteOrganization = () => {};
 
 export const SidebarNav = ({ activeLink }) => {
+
+  const router = useRouter()
   const [togglemenu, setToggleMenu] = useState(false);
+  const [orgId, setOrgId] = useState("");
+  const dispatch = useDispatch();
+  const organizationData = useSelector(selectOrganizations);
+  const loadingOrganizations = useSelector(selectLoadingOrganizations);
 
   const th_style = "p-2 border-b text-[1.125rem] text-ova_dark_secondary";
   const td_style = "p-2 border-b text-[1rem] text-ova_black align-top";
@@ -19,7 +31,45 @@ export const SidebarNav = ({ activeLink }) => {
     // alert("menu clicked")
   };
 
-  return (
+  // handle select organization
+  const handleSelectOrganization = (evt) => {
+    const orgId = evt.target.value.trim();
+    setOrgId(orgId);
+
+    const org_name = orgId
+      ? organizationData.find((organization) => organization.id === orgId)?.name
+      : organizationData[0]?.name;
+
+    let no_of_hours = 720;  // 30 days
+    //15 mins => 15/60
+
+    // or save user data in cookie
+    const cookie_data = JSON.stringify({
+      name: org_name,
+      id: orgId,
+    });
+
+    set_cookie(no_of_hours, "ovasite_organization", cookie_data, "/");
+  };
+
+
+  useEffect(() => {
+    let user_login_details  = get_cookie('ovasite_user')
+    if (!user_login_details) {
+      router.replace('/')
+    } 
+
+    if (user_login_details) {
+      user_login_details = JSON.parse(user_login_details) ;
+      const jwt = user_login_details.jwt
+      console.log(jwt);
+      dispatch(fetchAllOrganizations(jwt));
+    }
+
+  }, [])
+
+
+  return loadingOrganizations ? <LoadingModal/> :
     <>
       <nav className="fixed md:w-[25vw] h-screen md:bg-navy_blue z-50 ">
         {/* nav header */}
@@ -141,8 +191,8 @@ export const SidebarNav = ({ activeLink }) => {
           >
             <Link href="/employees" className="flex flex-row items-center">
               <svg
-                width="64" 
-                height="48" 
+                width="64"
+                height="48"
                 viewBox="0 0 64 48"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -197,7 +247,7 @@ export const SidebarNav = ({ activeLink }) => {
                     : "text-ova_white"
                 } ml-[1rem] font-normal  text-[1.25em] `}
               >
-                Employees
+                Organizations
               </h4>
             </Link>
           </li>
@@ -248,9 +298,7 @@ export const SidebarNav = ({ activeLink }) => {
               >
                 <path
                   d="M18 34V14M18 34C18 35.0609 17.5786 36.0783 16.8284 36.8284C16.0783 37.5786 15.0609 38 14 38H10C8.93913 38 7.92172 37.5786 7.17157 36.8284C6.42143 36.0783 6 35.0609 6 34V14C6 12.9391 6.42143 11.9217 7.17157 11.1716C7.92172 10.4214 8.93913 10 10 10H14C15.0609 10 16.0783 10.4214 16.8284 11.1716C17.5786 11.9217 18 12.9391 18 14M18 34C18 35.0609 18.4214 36.0783 19.1716 36.8284C19.9217 37.5786 20.9391 38 22 38H26C27.0609 38 28.0783 37.5786 28.8284 36.8284C29.5786 36.0783 30 35.0609 30 34M18 14C18 12.9391 18.4214 11.9217 19.1716 11.1716C19.9217 10.4214 20.9391 10 22 10H26C27.0609 10 28.0783 10.4214 28.8284 11.1716C29.5786 11.9217 30 12.9391 30 14M30 34V14M30 34C30 35.0609 30.4214 36.0783 31.1716 36.8284C31.9217 37.5786 32.9391 38 34 38H38C39.0609 38 40.0783 37.5786 40.8284 36.8284C41.5786 36.0783 42 35.0609 42 34V14C42 12.9391 41.5786 11.9217 40.8284 11.1716C40.0783 10.4214 39.0609 10 38 10H34C32.9391 10 31.9217 10.4214 31.1716 11.1716C30.4214 11.9217 30 12.9391 30 14"
-                  stroke={`${
-                    activeLink == "reports" ? "#FF595A" : "white"
-                  }`}
+                  stroke={`${activeLink == "reports" ? "#FF595A" : "white"}`}
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -296,10 +344,30 @@ export const SidebarNav = ({ activeLink }) => {
               </h4>
             </Link>
           </li>
+          {/* select organization from a list of organization */}
+          <li className={"px-[1.2rem] py-[0.8rem] mt-[10rem]"}>
+            <select
+              name="select_orgs"
+              id="select_orgs"
+              className="w-full bg-mobile-bg py-[0.6rem] px-[1rem]  md:py-[0.9rem] md:px-[1.25rem] border-[0.0625rem] border-ova_grey_border rounded-[0.5rem]"
+              onChange={handleSelectOrganization}
+            >
+              <option value="">Select Organization</option>
+              {organizationData && organizationData.length > 0 ? (
+                organizationData.map((item, index) => (
+                  <option key={item.id} value={`${item.id}`}>
+                    {item.name}
+                  </option>
+                ))
+              ) : (
+                <option value="">No registered organization</option>
+              )}
+            </select>
+          </li>
           <li
             className={`${
               activeLink == "support" ? activeLinkStyle : null
-            } px-[1.2rem] py-[0.8rem] mt-[10rem]`}
+            } px-[1.2rem] py-[0.8rem]`}
           >
             <Link href="/support" className="flex flex-row items-center">
               <svg
@@ -396,16 +464,16 @@ export const SidebarNav = ({ activeLink }) => {
             } px-[1.2rem] py-[0.8rem] mt-[2rem]"`}
           >
             <Link href="/employees" className="flex flex-row items-center">
-            <svg
-                width="48" 
-                height="48" 
+              <svg
+                width="48"
+                height="48"
                 viewBox="0 0 64 48"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M62.7304 16.7825C62.0114 15.5645 61.0407 14.6348 59.9237 14.0955L57.438 12.8957C58.0093 11.5737 58.3438 9.97974 58.3438 8.26444C58.3438 3.70705 55.9844 0 53.0835 0C50.1827 0 47.8233 3.70796 47.8233 8.26444C47.8233 9.97974 48.1578 11.5737 48.7291 12.8957L46.2434 14.0955C45.1264 14.6348 44.1557 15.5645 43.436 16.7825C42.6143 18.1748 42.1621 19.902 42.1621 21.6456V24.3627C41.6243 23.87 41.0416 23.4567 40.4154 23.1547L37.1529 21.5799C37.9047 19.9321 38.3533 17.9175 38.3533 15.7369C38.3533 10.2078 35.5046 5.71066 32.0025 5.71066C28.5004 5.71066 25.6509 10.2087 25.6509 15.7369C25.6509 17.9185 26.0996 19.933 26.8513 21.5799L23.5889 23.1547C22.9626 23.4567 22.3799 23.8709 21.8421 24.3627V21.7459C21.8421 20.0014 21.3899 18.2743 20.5682 16.8829C19.8493 15.6639 18.8778 14.7342 17.7616 14.1959L15.2759 12.9961C15.8472 11.674 16.1817 10.0792 16.1817 8.3648C16.1817 3.80741 13.8222 0.100364 10.9214 0.100364C8.02059 0.100364 5.66113 3.80741 5.66113 8.3648C5.66113 10.0801 5.99565 11.674 6.56697 12.9961L4.08126 14.1959C2.9643 14.7342 1.99356 15.6639 1.27388 16.8829C0.452206 18.2752 0 20.0024 0 21.7459V29.4292C0 29.9137 0.307414 30.3069 0.686154 30.3069C1.06489 30.3069 1.37231 29.9137 1.37231 29.4292V21.7459C1.37231 20.381 1.72609 19.0297 2.36873 17.9404C2.9322 16.986 3.69111 16.2597 4.56485 15.8382L7.39007 14.4742C8.32444 15.8081 9.56052 16.6292 10.92 16.6292C12.2795 16.6292 13.5155 15.8081 14.4499 14.4742L17.2751 15.8382C18.1489 16.2597 18.9085 16.9869 19.4712 17.9404C20.1139 19.0297 20.4677 20.381 20.4677 21.7459V25.994C20.3742 26.1355 20.2701 26.2632 20.1831 26.4119C19.1867 28.0989 18.6382 30.1929 18.6382 32.3078V41.8231C18.6382 42.3076 18.9456 42.7008 19.3243 42.7008C19.703 42.7008 20.0105 42.3076 20.0105 41.8231V32.3078C20.0105 30.5724 20.4605 28.8544 21.2779 27.4694C21.9933 26.2568 22.9598 25.3326 24.071 24.7952L27.6737 23.0552C28.8092 24.7285 30.3277 25.7614 31.9996 25.7614C33.6715 25.7614 35.19 24.7285 36.3255 23.0552L39.9289 24.7952C41.0402 25.3316 42.0059 26.2568 42.722 27.4694C43.5394 28.8544 43.9895 30.5724 43.9895 32.3078V41.8231C43.9895 42.3076 44.2969 42.7008 44.6757 42.7008C45.0544 42.7008 45.3618 42.3076 45.3618 41.8231V32.3078C45.3618 30.1929 44.8133 28.0989 43.8169 26.4119C43.7292 26.2632 43.6257 26.1355 43.5323 25.994V21.6447C43.5323 20.2797 43.8861 18.9285 44.5287 17.8391C45.0915 16.8856 45.8511 16.1585 46.7248 15.7369L49.5501 14.3729C50.4844 15.7068 51.7212 16.528 53.08 16.528C54.4394 16.528 55.6755 15.7068 56.6099 14.3729L59.4351 15.7369C60.3089 16.1594 61.0685 16.8856 61.6312 17.8391C62.2739 18.9285 62.6277 20.2797 62.6277 21.6447V29.3279C62.6277 29.8124 62.9351 30.2056 63.3138 30.2056C63.6926 30.2056 64 29.8124 64 29.3279V21.6447C64.005 19.9011 63.5528 18.1739 62.7304 16.7825ZM10.9228 14.8738C8.77878 14.8738 7.03487 11.9532 7.03487 8.36389C7.03487 4.77454 8.77878 1.85489 10.9228 1.85489C13.0669 1.85489 14.8108 4.77546 14.8108 8.36389C14.8108 11.9532 13.0662 14.8738 10.9228 14.8738ZM32.0032 24.0068C29.2579 24.0068 27.0239 20.2961 27.0239 15.736C27.0239 11.175 29.2579 7.46519 32.0032 7.46519C34.7485 7.46519 36.9817 11.1759 36.9817 15.736C36.9824 20.2961 34.7485 24.0068 32.0032 24.0068ZM53.0835 14.7734C50.9395 14.7734 49.1956 11.8529 49.1956 8.26444C49.1956 4.6751 50.9395 1.75544 53.0835 1.75544C55.2276 1.75544 56.9715 4.67601 56.9715 8.26444C56.9715 11.8529 55.2276 14.7734 53.0835 14.7734Z"
-                //   fill="white"
+                  //   fill="white"
                   stroke={`${activeLink == "employees" ? "#FF595A" : "white"}`}
                   strokeWidth="2"
                   strokeLinecap="round"
@@ -441,7 +509,9 @@ export const SidebarNav = ({ activeLink }) => {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  stroke={`${activeLink == "organizations" ? "#FF595A" : "white"}`}
+                  stroke={`${
+                    activeLink == "organizations" ? "#FF595A" : "white"
+                  }`}
                 />
               </svg>
 
@@ -503,9 +573,7 @@ export const SidebarNav = ({ activeLink }) => {
               >
                 <path
                   d="M18 34V14M18 34C18 35.0609 17.5786 36.0783 16.8284 36.8284C16.0783 37.5786 15.0609 38 14 38H10C8.93913 38 7.92172 37.5786 7.17157 36.8284C6.42143 36.0783 6 35.0609 6 34V14C6 12.9391 6.42143 11.9217 7.17157 11.1716C7.92172 10.4214 8.93913 10 10 10H14C15.0609 10 16.0783 10.4214 16.8284 11.1716C17.5786 11.9217 18 12.9391 18 14M18 34C18 35.0609 18.4214 36.0783 19.1716 36.8284C19.9217 37.5786 20.9391 38 22 38H26C27.0609 38 28.0783 37.5786 28.8284 36.8284C29.5786 36.0783 30 35.0609 30 34M18 14C18 12.9391 18.4214 11.9217 19.1716 11.1716C19.9217 10.4214 20.9391 10 22 10H26C27.0609 10 28.0783 10.4214 28.8284 11.1716C29.5786 11.9217 30 12.9391 30 14M30 34V14M30 34C30 35.0609 30.4214 36.0783 31.1716 36.8284C31.9217 37.5786 32.9391 38 34 38H38C39.0609 38 40.0783 37.5786 40.8284 36.8284C41.5786 36.0783 42 35.0609 42 34V14C42 12.9391 41.5786 11.9217 40.8284 11.1716C40.0783 10.4214 39.0609 10 38 10H34C32.9391 10 31.9217 10.4214 31.1716 11.1716C30.4214 11.9217 30 12.9391 30 14"
-                  stroke={`${
-                    activeLink == "reports" ? "#FF595A" : "white"
-                  }`}
+                  stroke={`${activeLink == "reports" ? "#FF595A" : "white"}`}
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -540,7 +608,7 @@ export const SidebarNav = ({ activeLink }) => {
                   fill={`${activeLink == "audit" ? "#FF595A" : "white"}`}
                 />
               </svg>
-              
+
               <h4
                 className={`${
                   activeLink == "audit"
@@ -552,10 +620,30 @@ export const SidebarNav = ({ activeLink }) => {
               </h4>
             </Link>
           </li>
+          {/* select organization from a list of organization */}
+          <li className={"px-[1.2rem] py-[0.8rem] mt-[10rem] w-full"}>
+            <select
+              name="select_orgs"
+              id="select_orgs"
+              className=" bg-mobile-bg w-[80%] py-[0.6rem] px-[1rem]  md:py-[0.9rem] md:px-[1.25rem] border-[0.0625rem] border-ova_grey_border rounded-[0.5rem]"
+              onChange={handleSelectOrganization}
+            >
+              <option value="">Select Organization</option>
+              {organizationData && organizationData.length > 0 ? (
+                organizationData.map((item, index) => (
+                  <option key={item.id} value={`${item.id}`}>
+                    {item.name}
+                  </option>
+                ))
+              ) : (
+                <option value="">No registered organization</option>
+              )}
+            </select>
+          </li>
           <li
             className={`${
               activeLink == "support" ? activeLinkStyle : null
-            }  px-[1.2rem] py-[0.8rem] mt-[10rem]`}
+            }  px-[1.2rem] py-[0.8rem]`}
           >
             <Link href="/support" className="flex flex-row items-center">
               <svg
@@ -609,5 +697,5 @@ export const SidebarNav = ({ activeLink }) => {
         </ul>
       </nav>
     </>
-  );
+  
 };

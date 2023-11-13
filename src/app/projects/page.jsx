@@ -31,6 +31,8 @@ const ProjectsDashboard = ({ params }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const organizationData = useSelector(selectOrganizations);
+
 
   // pagination variables
   const [data, setData] = useState([]);
@@ -53,7 +55,6 @@ const ProjectsDashboard = ({ params }) => {
   const [togglemenu, setToggleMenu] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
-  const [organizationData, setOrganizationData] = useState([]);
   const [loadingProjects, setLoadingProjects] = useState(true);
   const [orgId, setOrgId] = useState("");
   const [toggleAttachEmployee, setToggleAttachEmployee] = useState(false);
@@ -98,7 +99,7 @@ const ProjectsDashboard = ({ params }) => {
   // get all projects in a particular organization using the organization id
   const get_org_projects = async (jwt) => {
 
-    // if (organizationData.length > 0 && orgId) {
+    if (organizationData.length > 0 && orgId) {
       setLoadingProjects(true);
       try {
 
@@ -118,7 +119,7 @@ const ProjectsDashboard = ({ params }) => {
         console.log(error);
         setLoadingProjects(false);
       }
-    // }
+    }
   };
 
   useEffect(() => {
@@ -135,8 +136,7 @@ const ProjectsDashboard = ({ params }) => {
       user_login_details = JSON.parse(user_login_details);
       const jwt = user_login_details.jwt;
       console.log(jwt);
-      // get_all_organizations(jwt);
-
+      get_all_organizations(jwt);
       get_org_projects(jwt);
     }
   }, [orgId]);
