@@ -32,6 +32,7 @@ export const CreateProject = ({
 
   const base_url = "https://ovasite.onrender.com/api/v1";
   const CreateProject = () => {
+    console.log(id);
     if (!projectName) {
       setProjectNameError(true);
       setErrorMessage("Input project name");

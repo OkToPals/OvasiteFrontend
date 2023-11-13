@@ -20,7 +20,7 @@ export const delete_user_url = `${base_url}/users/${user_id}`
 
 // project
 export const create_project_url = `${base_url}/orgs/`
-export const attach_employee_url = `${base_url}/orgs/${orgs_id}/adduser/:projectId`
+export const attach_employee_url = `${base_url}/orgs/`
 export const get_project_url = `${base_url}/orgs/${orgs_id}/project/:projectId`
 export const get_all_org_projects_url = `${base_url}/orgs/`
 export const get_employee_projects_url =`${base_url}/orgs/${orgs_id}/userprojects/:empId`
@@ -39,7 +39,7 @@ export const delete_organization_url =`${base_url}/orgs/`
 export const get_all_employees_url  =  `${base_url}/orgs/`
 export const get_employee_url =  `${base_url}/orgs/${orgs_id}/employees/${employee_id}`
 export const update_employee_url  =  `${base_url}/orgs/${orgs_id}/employees/`
-export const delete_employee_url =  `${base_url}/orgs/${orgs_id}/employees/`
+export const delete_employee_url =  `${base_url}/orgs/`
 export const update_employee_role_in_org_url =  `${base_url}/orgs/${orgs_id}/employees/${employee_id}/change-role`
 export const search_for_an_employer_url =  `${base_url}/orgs/${orgs_id}/employees/search?query=dan@123.com`
 export const get_employee_by_mail_url =  `${base_url}/orgs/${orgs_id}/employees?query=dan@123.com`

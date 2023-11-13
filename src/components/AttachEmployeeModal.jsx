@@ -1,7 +1,12 @@
-import { update_employee_url } from "@/api_utils"
+import { attach_employee_url, update_employee_url } from "@/api_utils"
 import { useState } from "react"
+import { get_cookie } from "./helperFunctions/Cookies"
+import axios_instance from "@/axiosInstance"
+import { LoadingModal } from "./LoadingModal"
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-export const AttachEmployeeModal = ({handleCancelBtn, isAttachEmployeeModalActive, id, title}) => {
+export const AttachEmployeeModal = ({handleCancelBtn, isAttachEmployeeModalActive, id, title, org_id}) => {
 
     const [role, setRole] = useState('')    
     const [employees, setEmployees] = useState([])
@@ -19,27 +24,55 @@ export const AttachEmployeeModal = ({handleCancelBtn, isAttachEmployeeModalActiv
         }).then(prom => prom.json()).then(res => {
             console.log(res)
             setLoading(false)
+            toast.success("Employee deleted successfully!");
+            setTimeout(() => {
+                window.location.reload();
+            }, 5000);
         }).catch(err => {
             console.log(err)
             setLoading(false)
+            toast.error(`${err.response.data.error}`);
         })
     }
 
-    const handleAttachEmployeeButton = () => {
+    const handleAttachEmployee = async () => {    
+        let user_login_details = get_cookie("ovasite_user");
+        if (user_login_details) {
+          setLoading(true);
+          user_login_details = JSON.parse(user_login_details);
 
-        if (!selectedEmployee) {
-            
-            
-        } else if (!role) {
-           
-        } else {
-            
-            // orgs/:orgId/projectusers/:projectId
-            
-            setLoading(false)
+          let data = JSON.stringify({
+            role: role
+          });
+      
+          let config = {
+            method: "delete",
+            url: attach_employee_url + `${org_id}/project/adduser/${id}`,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user_login_details.jwt}`,
+            },
+            data:data
+          };
+    
+          axios_instance
+            .request(config)
+            .then((response) => {
+              console.log(JSON.stringify(response.data));
+              setLoading(false);
+              toast.success("Employee attached successfully!");
+              setTimeout(() => {
+                window.location.reload();
+              }, 5000);
+            })
+            .catch((error) => {
+              console.log(error);
+              setLoading(false);
+              toast.error(`${"Error attaching employee"}`);
+              // setToggleDelete(!toggleDelete)
+            });
         }
-
-    }
+      }
     
 
     return (
@@ -62,7 +95,7 @@ export const AttachEmployeeModal = ({handleCancelBtn, isAttachEmployeeModalActiv
             <div className="flex flex-col px-[1rem] mt-20">
 
                 {/* select employee */}
-                <div className="flex flex-col">
+                {/* <div className="flex flex-col">
                     <label htmlFor="select_employee" className="text-[1.25rem]">Select Employee <span className="text-red-500">*</span></label>
                     <select name="select_employee" id="select_employee" 
                         className="border-[1px] border-ova_grey_border p-[1rem] rounded-md"
@@ -79,7 +112,7 @@ export const AttachEmployeeModal = ({handleCancelBtn, isAttachEmployeeModalActiv
                         }
                     </select>
                         
-                </div>
+                </div> */}
 
                 {/* invitee role */}
                 <div className="flex flex-col mt-[1rem]">
@@ -89,21 +122,30 @@ export const AttachEmployeeModal = ({handleCancelBtn, isAttachEmployeeModalActiv
                         onChange={(e) => setRole(e.target.value)}
                         >
                         <option value="">-Select Role-</option>
-                        <option value="admin">ADMIN</option>
-                        <option value="guest">GUEST</option>
+                        <option value="ADMIN">ADMIN</option>
+                        <option value="FIELD_AGENT">FIELD AGENT</option>
+                        <option value="GUEST">GUEST</option>
                     </select>
                 </div>
                 {/* send invite button */}
                 <div className="flex flex-row justify-end">
                     <button 
                         className="w-[96%] md:w-[30%] px-4 py-2 my-8 bg-peach_primary rounded-md text-white" 
-                        onClick={handleAttachEmployeeButton}>{loading ? "Loading..." : "Update"}
+                        onClick={handleAttachEmployee}>Attach Employee
                     </button>
                 </div>
 
             </div>
         </div>
+
+        {loading ? (
+        <LoadingModal
+          title={"Attach an Employee"}
+          description={"Please wait while employee is being added to your project"}
+        />
+      ) : null}
   
+        <ToastContainer/>
       </div>
   
     )

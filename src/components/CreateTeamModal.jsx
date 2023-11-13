@@ -15,6 +15,8 @@ export const CreateTeamModal = ({handleCancelBtn, handleCreateBtn, isCreateTeamA
 
     const CreateTeam = () => {
 
+        console.log(orgId);
+
         if (!name) {
             setNameError(true)
             setErrorMessage("Insert team name")

@@ -43,7 +43,7 @@ const TeamsDashboard = () => {
   const [showEditModal, setShowEditModal] = useState(false)
   const [showTeamModal, setShowTeamModal] = useState(false)
   const [organizationDetails, setOrganizationDetails] = useState({});
-  const [orgId, setOrgId] = useState("");
+  const [orgId, setOrgId] = useState( organizationData.length > 0 ? organizationData[0].id : "");
   const [loadingTeams, setLoadingTeams] = useState(true);
 
   const array_of_pages = data.length > 0 ? [...Array(total_page_no).keys()].map((i) => i + 1) : [];
@@ -70,33 +70,7 @@ const TeamsDashboard = () => {
     setShowTeamModal(!showTeamModal)
   }
    
-   // handle select organization
-   const handleSelectOrganization = (evt) => {
-    const orgId = evt.target.value.trim();
-    setOrgId(orgId);
-  };
 
- 
-
-  
-   // get all organizations
-  //  const get_all_organizations = async (jwt) => {
-  //   try {
-  //     const response = await axios_instance.get(get_all_organizations_url, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${jwt}`,
-  //       },
-  //     });
-  //     console.log("all organizations => ", response);
-  //     setOrganizationData(response.data);
-  //     if (!orgId) {
-  //       setOrgId(response.data[0].id);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   // function to get all audits specific to an organization
   const get_all_teams = async(jwt) => {
@@ -135,8 +109,16 @@ const TeamsDashboard = () => {
         console.log(jwt);
         get_all_teams(jwt)
         dispatch(fetchAllOrganizations(jwt));
-        ovasite_organization = get_cookie("ovasite_organization")
-        setOrganizationDetails(ovasite_organization)
+        const ovasite_organization = get_cookie("ovasite_organization")
+        console.log("ovasite_organization => ", ovasite_organization);
+      if (ovasite_organization) {
+        const org_details = JSON.parse(ovasite_organization);
+        setOrganizationDetails(org_details);
+      }
+      /* set default orgid to the id of the first organization if the user
+       has not previously selected an organization
+      */
+      // setOrgId(!orgId && organizationData ? organizationData[0].id : organizationDetails.id)
 
       }
   },[router, pathname])
@@ -182,7 +164,7 @@ const TeamsDashboard = () => {
 
         {/* main header - header I */}
         <header className="h-[6rem] hidden flex-row items-center justify-between py-[1.6rem] border-b border-ova_grey_border bg-ova_white md:fixed md:flex md:w-[75vw]">
-          <h1 className="text-[1em] font-bold pl-[1.2rem]">{org_name} Teams</h1>
+          <h1 className="text-[1em] font-bold pl-[1.2rem]">{organizationDetails ? organizationDetails.name + " " + organizationDetails.id : ""} Teams</h1>
           <div className="flex flex-row items-center justify-between pr-[1.2rem]">
             {/* search and input text field */}
             <div className="border rounded-md p-[0.75rem] md:w-[31rem] mr-[1rem]">
@@ -257,7 +239,7 @@ const TeamsDashboard = () => {
               name="select_orgs"
               id="select_orgs"
               className="bg-mobile-bg py-[0.6rem] px-[1rem]  md:py-[0.9rem] md:px-[1.25rem] border-[0.0625rem] border-ova_grey_border rounded-[0.5rem]"
-              onChange={handleSelectOrganization}
+              // onChange={handleSelectOrganization}
             >
               <option value="">Select Organization</option>
               {organizationData && organizationData.length > 0 ? (
@@ -442,7 +424,7 @@ const TeamsDashboard = () => {
         showTeamModal ? <CreateTeamModal 
         handleCancelBtn={ToggleTeamModal} 
         isCreateTeamActive={true}
-        orgId={orgId}
+        orgId={!orgId && organizationData ? organizationData[0].id : organizationDetails.id}
         /> : null
       }
 

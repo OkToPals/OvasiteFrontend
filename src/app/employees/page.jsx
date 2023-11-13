@@ -11,12 +11,22 @@ import { SidebarNav } from "@/components/SidebarNav";
 import { get_cookie } from "@/components/helperFunctions/Cookies";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import {
+  fetchAllOrganizations,
+  selectLoadingOrganizations,
+  selectOrganizations,
+} from "@/store/OrganizationSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const EmployeesDashboard = () => {
 
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+
+  const dispatch = useDispatch();
+  const organizationData = useSelector(selectOrganizations);
+  const loadingOrganizations = useSelector(selectLoadingOrganizations);
 
   // pagination variables
   const [data, setData] = useState([]);
@@ -36,9 +46,9 @@ const EmployeesDashboard = () => {
   const [togglemenu, setToggleMenu] = useState(false)
   const [showInviteModal, setShowInviteModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
-  const [organizationData, setOrganizationData] = useState([]);
   const [orgId, setOrgId] = useState("");
-  const [loadingProjects, setLoadingProjects] = useState(true);
+  const [loadingEmployees, setLoadingEmpoyees] = useState(true);
+  const [organizationDetails, setOrganizationDetails] = useState({});
 
   
   const array_of_pages =
@@ -95,10 +105,11 @@ const EmployeesDashboard = () => {
 
   // get all employees
   const get_all_employees = async(jwt) => {
-    setLoadingProjects(true);
-    if (organizationData.length > 0 && orgId) {
+    setLoadingEmpoyees(true);
+    const org_Id = orgId ? orgId 
+    : !organizationDetails && organizationData ? organizationData[0].id : "";
       try {
-          const response = await axios_instance.get(get_all_employees_url + `${orgId}/employees/`, {
+          const response = await axios_instance.get(get_all_employees_url + `${org_Id}/employees/`, {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${jwt}`
@@ -106,13 +117,12 @@ const EmployeesDashboard = () => {
           })
           console.log(response);
           setData(response)
-          setLoadingProjects(false)
+          setLoadingEmpoyees(false)
           
       } catch (error) {
           console.log(error);
-          setLoadingProjects(false)       
+          setLoadingEmpoyees(false)       
       }
-    }
   }
 
   useEffect(() => {
@@ -127,9 +137,16 @@ const EmployeesDashboard = () => {
       if (user_login_details) {
         user_login_details = JSON.parse(user_login_details) ;
         const jwt = user_login_details.jwt
-        console.log(jwt);
-        get_all_organizations(jwt)
-        get_all_employees(jwt)
+        dispatch(fetchAllOrganizations(jwt));
+        // get_all_organizations(jwt);
+        let ovasite_organization = get_cookie("ovasite_organization");
+        console.log("ovasite_organization => ", ovasite_organization);
+        if (ovasite_organization) {
+          ovasite_organization = JSON.parse(ovasite_organization);
+          setOrganizationDetails(ovasite_organization);
+        }
+      
+        get_all_employees(ovasite_organization.id, jwt)
       }
   },[router,  pathname, searchParams])
 
@@ -158,7 +175,7 @@ const EmployeesDashboard = () => {
     }
   };
 
-  return  loadingProjects ? 
+  return  loadingEmployees ? 
     <LoadingModal />
    : 
     <main className="flex flex-col md:flex-row">
@@ -168,7 +185,9 @@ const EmployeesDashboard = () => {
 
         {/* main header - header I */}
         <header className="h-[6rem] hidden flex-row items-center justify-between py-[1.6rem] border-b border-ova_grey_border bg-ova_white md:fixed md:flex md:w-[75vw]">
-          <h1 className="text-[2em] font-bold pl-[1.2rem]">Employees</h1>
+          <h1 className="text-[1.2em] font-bold pl-[1.2rem]">{organizationDetails
+              ? organizationDetails.name + " " + organizationDetails.id
+              : ""}{" "}Employees</h1>
           <div className="flex flex-row items-center justify-between pr-[1.2rem]">
             {/* search and input text field */}
             <div className="border rounded-md p-[0.75rem] md:w-[31rem] mr-[1rem]">
@@ -237,7 +256,10 @@ const EmployeesDashboard = () => {
         </header>
 
          {/* header II */}
-         <div className="max-w-full flex-col gap-2 flex mini:flex-row justify-between md:justify-end items-start mini:items-center px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">            <h1 className="md:hidden text-[1em] font-extrabold ">Employees</h1>
+         <div className="max-w-full flex-col gap-2 flex mini:flex-row justify-between md:justify-end items-start mini:items-center px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">            
+         <h1 className="md:hidden text-[1em] font-extrabold ">{organizationDetails
+              ? organizationDetails.name + " " + organizationDetails.id
+              : ""}{" "}Employees</h1>
             <div className="flex flex-col mini:flex-row justify-center items-start mini:items-center gap-2">
                {/* select organization from a list of organization */}
             <select
@@ -285,10 +307,8 @@ const EmployeesDashboard = () => {
         {/* <div className="max-w-full flex flex-row px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">
             <h1 className="md:hidden text-[1.25em] font-extrabold text-center w-full mx-auto ">Teams</h1>
         </div> */}
-
-        { data && data.length > 0 ?
         
-        //{/* project content desktop view*/}
+        {/* project content desktop view*/}
         <div className="px-[1.2rem] ">
           {/* <div className=" flex flex-col md:flex-row flex-wrap gap-4 justify-center lg:justify-start"> */}
           <div className="flex flex-row flex-wrap gap-4 justify-center lg:justify-start">
@@ -333,20 +353,24 @@ const EmployeesDashboard = () => {
                         </span>
                     </button>
             </article>
-            {
+            { data && data.length > 0 ?
                 current_data.map((item, index) => 
                 <EmployeeCard key={index}
                     profileImage={item.picture.thumbnail} 
                     name={item.name} 
                     phone={item.phone} 
                     email={item.email}
-                    id={item.id ? item.id : index}
+                    id={item.id}
                     toggleEditModal={ToggleEditModal}
-                />)
+                    orgId={organizationDetails ? organizationDetails.id 
+                      : ! organizationDetails && organizationData ? organizationData[0].id : ""}
+                />):
+                <NoDataCard title={"No employees data"} description={"Add employee to your projects"} />
             }
           </div>
 
            {/* pagination */}
+           {data && data.length > 0 ?
       <div className="w-full flex md:flex-row justify-between items-center my-4" aria-label="Pagination navigation">
 
             {/* 1/3 */}
@@ -403,12 +427,10 @@ const EmployeesDashboard = () => {
             </div>
 
          </div>
-        </div>
-        : 
-        <div className="flex flex-col justify-center items-center my-8">
-           <NoDataCard title={"No Employee Data"} description={"Add an employee to continue"}/>
-        </div>
+       
+        : null
       }
+      </div>
       </section>
 
       {

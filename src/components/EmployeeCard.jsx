@@ -5,7 +5,7 @@ import { EditEmployeeModal } from "./EditEmployeeModal"
 import { useState } from "react"
 import { ConfirmActionModal } from "./ConfirmActionModal"
 
-const EmployeeCard = ({profileImage, name, phone, email, id, toggleEditModal }) => { 
+const EmployeeCard = ({profileImage, name, phone, email, id, toggleEditModal, orgId }) => { 
 
     const [loading, setLoading] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -16,17 +16,23 @@ const EmployeeCard = ({profileImage, name, phone, email, id, toggleEditModal }) 
 
     const handleDeleteEmployee = () => {
         setLoading(true)
-        fetch(delete_employee_url + id, {
+        fetch(delete_employee_url + `${orgId}/employees/${id}`, {
             method: "DELETE",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user_login_details.jwt}`
             }
         }).then(prom => prom.json()).then(res => {
             console.log(res)
             setLoading(false)
+            toast.success("Employee deleted successfully!");
+            setTimeout(() => {
+                window.location.reload();
+            }, 5000);
         }).catch(err => {
             console.log(err)
-            setLoading(true)
+            setLoading(false)
+            toast.error(`${err.response.data.error}`);
         })
     }
 
@@ -131,6 +137,7 @@ const EmployeeCard = ({profileImage, name, phone, email, id, toggleEditModal }) 
         /> 
         : null
     }
+    
       </>
   )
 }

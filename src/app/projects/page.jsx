@@ -1,6 +1,7 @@
 "use client";
 import {
   base_url,
+  delete_project_url,
   get_all_org_projects_url,
   get_all_organizations_url,
   get_employee_projects_url,
@@ -25,14 +26,21 @@ import {
   useSearchParams,
 } from "next/navigation";
 import { useEffect, useState } from "react";
+import {
+  fetchAllOrganizations,
+  selectLoadingOrganizations,
+  selectOrganizations,
+} from "@/store/OrganizationSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProjectsDashboard = ({ params }) => {
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
+  const dispatch = useDispatch();
   const organizationData = useSelector(selectOrganizations);
-
+  const loadingOrganizations = useSelector(selectLoadingOrganizations);
 
   // pagination variables
   const [data, setData] = useState([]);
@@ -56,13 +64,16 @@ const ProjectsDashboard = ({ params }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
   const [loadingProjects, setLoadingProjects] = useState(true);
-  const [orgId, setOrgId] = useState("");
+  const [orgId, setOrgId] = useState(
+    organizationData.length > 0 ? organizationData[0].id : ""
+  );
   const [toggleAttachEmployee, setToggleAttachEmployee] = useState(false);
   const [toggleDeleteProject, setToggleDeleteProject] = useState(false);
   const [toggleEditProject, setToggleEditProject] = useState(false);
   const [toggleExportProject, setToggleExportProject] = useState(false);
   const [loadingAttachEmployee, setLoadingAttach] = useState(false);
   const [loadingDeleteProject, setLoadingDeleteProject] = useState(false);
+  const [organizationDetails, setOrganizationDetails] = useState({});
 
   const array_of_pages =
     data && data.length > 0
@@ -78,49 +89,23 @@ const ProjectsDashboard = ({ params }) => {
   };
 
   // get all organizations
-  const get_all_organizations = async (jwt) => {
-    try {
-      const response = await axios_instance.get(get_all_organizations_url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-      console.log("all organizations => ", response);
-      setOrganizationData(response.data);
-      if (!orgId) {
-        setOrgId(response.data[0].id);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // get all projects in a particular organization using the organization id
-  const get_org_projects = async (jwt) => {
-
-    if (organizationData.length > 0 && orgId) {
-      setLoadingProjects(true);
-      try {
-
-        const response = await axios_instance.get(
-          get_all_org_projects_url + `${orgId}/projects`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${jwt}`,
-            },
-          }
-        );
-        console.log("all projects data =>", response.data);
-        setData(response.data);
-        setLoadingProjects(false);
-      } catch (error) {
-        console.log(error);
-        setLoadingProjects(false);
-      }
-    }
-  };
+  // const get_all_organizations = async (jwt) => {
+    // try {
+    //   const response = await axios_instance.get(get_all_organizations_url, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${jwt}`,
+    //     },
+    //   });
+    //   console.log("all organizations => ", response);
+    //   setOrganizationData(response.data);
+    //   if (!orgId) {
+    //     setOrgId(response.data[0].id);
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  // };
 
   useEffect(() => {
     // const url = `${pathname}?${searchParams}`
@@ -136,10 +121,47 @@ const ProjectsDashboard = ({ params }) => {
       user_login_details = JSON.parse(user_login_details);
       const jwt = user_login_details.jwt;
       console.log(jwt);
-      get_all_organizations(jwt);
-      get_org_projects(jwt);
+      dispatch(fetchAllOrganizations(jwt));
+      // get_all_organizations(jwt);
+      let ovasite_organization = get_cookie("ovasite_organization");
+      console.log("ovasite_organization => ", ovasite_organization);
+      if (ovasite_organization) {
+        ovasite_organization = JSON.parse(ovasite_organization);
+        setOrganizationDetails(ovasite_organization);
+      }
+      get_org_projects(ovasite_organization.id, jwt);
     }
-  }, [orgId]);
+  }, [dispatch]);
+
+   // get all projects in a particular organization using the organization id
+   const get_org_projects = async (orgId, jwt) => {
+    setLoadingProjects(true);
+      const org_Id = orgId ? orgId 
+        : !organizationDetails && organizationData ? organizationData[0].id : "";
+       
+      try {
+        const response = await axios_instance.get(
+          get_all_org_projects_url + `${org_Id}/projects`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
+        console.log("all projects data =>", response.data);
+        setData(response.data);
+        setLoadingProjects(false);
+      } catch (error) {
+        console.log(error);
+        setLoadingProjects(false);
+      }
+    // } else {
+    //   // toast.warn("You're not a part of any organization")
+    //   setLoadingProjects(false);
+    // }
+  };
+
 
   // handle attach employee
   const AttachAnEmployee = async () => {
@@ -166,10 +188,10 @@ const ProjectsDashboard = ({ params }) => {
   };
 
   // handle select organization
-  const handleSelectOrganization = (evt) => {
-    const orgId = evt.target.value.trim();
-    setOrgId(orgId);
-  };
+  // const handleSelectOrganization = (evt) => {
+  //   const orgId = evt.target.value.trim();
+  //   setOrgId(orgId);
+  // };
 
   const ToggleAttachEmployee = () => {
     setToggleAttachEmployee(!toggleAttachEmployee);
@@ -185,6 +207,43 @@ const ProjectsDashboard = ({ params }) => {
   const ToggleExportProject = () => {
     setToggleExportProject(!toggleExportProject);
   };
+
+  const handleDeleteProject = async (id) => {
+    const org_id = organizationDetails ? organizationDetails.id 
+    : ! organizationDetails && organizationData ? organizationData[0].id : "";
+
+    let user_login_details = get_cookie("ovasite_user");
+    if (user_login_details) {
+      setLoadingDeleteProject(true);
+      user_login_details = JSON.parse(user_login_details);
+  
+      let config = {
+        method: "delete",
+        url: delete_project_url + `${org_id}/project/delete/${id}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user_login_details.jwt}`,
+        },
+      };
+
+      axios_instance
+        .request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+          setLoadingDeleteProject(false);
+          toast.success("Project deleted successfully!");
+          setTimeout(() => {
+            window.location.reload();
+          }, 5000);
+        })
+        .catch((error) => {
+          console.log(error);
+          setLoadingDeleteProject(false);
+          toast.error(`${error.response.data.error}`);
+          // setToggleDelete(!toggleDelete)
+        });
+    }
+  }
 
   // handle next button
   const nextButton = () => {
@@ -211,9 +270,8 @@ const ProjectsDashboard = ({ params }) => {
   };
 
   const org_name = orgId
-  ? organizationData.find((organization) => organization.id === orgId)?.name
-  : organizationData[0]?.name;
-
+    ? organizationData.find((organization) => organization.id === orgId)?.name
+    : organizationData[0]?.name;
 
   return loadingProjects ? (
     <LoadingModal />
@@ -225,6 +283,9 @@ const ProjectsDashboard = ({ params }) => {
         {/* main header - header I */}
         <header className="h-[6rem] hidden flex-row items-center justify-between py-[1.6rem] border-b border-ova_grey_border bg-ova_white md:fixed md:flex md:w-[75vw]">
           <h1 className="text-[1em] md:text-[1.2em] font-bold pl-[1.2rem]">
+            {organizationDetails
+              ? organizationDetails.name + " " + organizationDetails.id
+              : ""}{" "}
             Projects
           </h1>
           <div className="flex flex-row items-center justify-between pr-[1.2rem]">
@@ -296,7 +357,10 @@ const ProjectsDashboard = ({ params }) => {
         {/* header II */}
         <div className="max-w-full flex-col gap-2 flex mini:flex-row justify-between md:justify-end items-start mini:items-center px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">
           <h1 className="md:hidden text-[1em] md:text-[1.25em] font-extrabold">
-            {org_name} Projects
+            {organizationDetails
+              ? organizationDetails.name + " " + organizationDetails.id
+              : ""}{" "}
+            Projects
           </h1>
           <div className="flex flex-col mini:flex-row justify-center items-start mini:items-center gap-2">
             <button
@@ -325,7 +389,7 @@ const ProjectsDashboard = ({ params }) => {
               name="select_orgs"
               id="select_orgs"
               className="bg-mobile-bg py-[0.6rem] px-[1rem]  md:py-[0.9rem] md:px-[1.25rem] border-[0.0625rem] border-ova_grey_border rounded-[0.5rem]"
-              onChange={handleSelectOrganization}
+              // onChange={handleSelectOrganization}
             >
               <option value="">Select Organization</option>
               {organizationData && organizationData.length > 0 ? (
@@ -381,7 +445,7 @@ const ProjectsDashboard = ({ params }) => {
               </thead>
               <tbody>
                 {current_data.map((item, index) => (
-                  <tr key={index} onClick={() => goToProject(`${item.id}`)}>
+                  <tr key={index} >
                     <td className={`${td_style}`}>{index + 1}</td>
                     <td className={`${td_style}`}>{item.name}</td>
                     <td className={`${td_style}`}>
@@ -512,6 +576,8 @@ const ProjectsDashboard = ({ params }) => {
                         isAttachEmployeeModalActive={true}
                         id={item.id}
                         title={"Attach Employee"}
+                        org_id={organizationDetails ? organizationDetails.id 
+                          : ! organizationDetails && organizationData ? organizationData[0].id : ""}
                       />
                     ) : null}
                     {toggleDeleteProject ? (
@@ -533,7 +599,9 @@ const ProjectsDashboard = ({ params }) => {
                         handleCancelBtn={ToggleEditProject}
                         isEditProjectModalActive={true}
                         id={item.id}
-                        org_id={orgId}
+                        org_id={organizationDetails ? organizationDetails.id 
+                          : ! organizationDetails && organizationData ? organizationData[0].id : ""}
+                        data={item}
                       />
                     ) : null}
 
@@ -558,7 +626,6 @@ const ProjectsDashboard = ({ params }) => {
                   title={item.name}
                   description={item.description}
                   AttachAnEmployee={() => AttachAnEmployee(`${item.id}`)}
-                  onClick={() => goToProject(`${item.id}`)}
                   startDate={new Date(item.startDate).toLocaleString()}
                   endDate={new Date(item.endDate).toLocaleString()}
                   status={item.status}
@@ -692,7 +759,7 @@ const ProjectsDashboard = ({ params }) => {
         <CreateProject
           handleCancelBtn={ToggleCreateProjectModal}
           isCreateProjectActive={true}
-          id={orgId}
+          id={!organizationDetails ? organizationData[0].id : organizationDetails.id}
         />
       ) : null}
 
