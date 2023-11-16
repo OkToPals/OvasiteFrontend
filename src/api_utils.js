@@ -47,7 +47,7 @@ export const get_employee_count_url =  `${base_url}/orgs/${orgs_id}/employees/co
 // export const  =  `${base_url}/orgs/${orgs_id}/employees/count`
 
 // invitation
-export const generate_invite_link_url = `${base_url}/invites/${user_id}/generate-invite-link`
+export const generate_invite_link_url = `${base_url}/invites/`
 export const join_organization_url = `${base_url}/invites/join/${user_id}`
 
 // audit trail

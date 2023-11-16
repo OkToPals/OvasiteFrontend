@@ -42,7 +42,8 @@ const TestSignin = () => {
         // or save user data in cookie
         const cookie_data = JSON.stringify({
           login: true,
-          jwt: response.data.access_token
+          jwt: response.data.access_token,
+          userInfo: response.data.userInfo
         });
        
         // cookies().set("ovasite_user", cookie_data)
@@ -50,6 +51,8 @@ const TestSignin = () => {
         set_cookie(no_of_hours, "ovasite_user", cookie_data, '/')
 
         dispatch(setUser(response.data))
+
+        console.log(response);
 
 
 

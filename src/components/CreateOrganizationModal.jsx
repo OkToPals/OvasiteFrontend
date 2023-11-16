@@ -63,7 +63,6 @@ export const CreateOrganizationModal = ({handleCancelBtn, isCreateOrganizationAc
                 },
                 data: data,
                 };
-        
                 axios_instance
                 .request(config)
                 .then((response) => {
@@ -76,7 +75,7 @@ export const CreateOrganizationModal = ({handleCancelBtn, isCreateOrganizationAc
 
                 })
                 .catch((error) => {
-                    console.log(error.response.data);
+                    console.log(error.response);
                     setLoading(false)
                     toast.error(`${error.response.data.error}`)
                 });

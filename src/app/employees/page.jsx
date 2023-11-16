@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { get_all_employees_url, get_all_organizations_url } from "@/api_utils";
 import axios_instance from "@/axiosInstance";
@@ -17,12 +17,13 @@ import {
   selectOrganizations,
 } from "@/store/OrganizationSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const EmployeesDashboard = () => {
-
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const dispatch = useDispatch();
   const organizationData = useSelector(selectOrganizations);
@@ -34,7 +35,10 @@ const EmployeesDashboard = () => {
   const [items_per_page, set_items_per_page] = useState(10);
   const index_of_last_item = current_page * items_per_page;
   const index_of_first_item = index_of_last_item - items_per_page;
-  const current_data = data && data.length > 0 ? data.slice(index_of_first_item, index_of_last_item) : [];
+  const current_data =
+    data && data.length > 0
+      ? data.slice(index_of_first_item, index_of_last_item)
+      : [];
   const total_page_no = Math.ceil(
     data && data.length > 0 ? data.length / items_per_page : 0
   );
@@ -43,14 +47,13 @@ const EmployeesDashboard = () => {
   const [max_page_no_limit, set_max_page_no_limit] = useState(3);
   const [min_page_no_limit, set_min_page_no_limit] = useState(0);
 
-  const [togglemenu, setToggleMenu] = useState(false)
-  const [showInviteModal, setShowInviteModal] = useState(false)
-  const [showEditModal, setShowEditModal] = useState(false)
+  const [togglemenu, setToggleMenu] = useState(false);
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [orgId, setOrgId] = useState("");
   const [loadingEmployees, setLoadingEmpoyees] = useState(true);
   const [organizationDetails, setOrganizationDetails] = useState({});
 
-  
   const array_of_pages =
     data && data.length > 0
       ? [...Array(total_page_no).keys()].map((i) => i + 1)
@@ -59,33 +62,33 @@ const EmployeesDashboard = () => {
   const th_style = "p-2 border-b text-[1.125rem] text-ova_dark_secondary";
   const td_style = "p-2 border-b text-[1rem] text-ova_black align-top";
 
-  let user_login_details  = get_cookie('ovasite_user')
-    if (user_login_details) {
-      user_login_details = JSON.parse(user_login_details) ;
-    }
+  let user_login_details = get_cookie("ovasite_user");
+  if (user_login_details) {
+    user_login_details = JSON.parse(user_login_details);
+  }
 
   const ToggleMenu = () => {
-    setToggleMenu(!togglemenu)
+    setToggleMenu(!togglemenu);
     // alert("menu clicked")
-  }
+  };
   const ToggleInviteModal = () => {
-    setShowInviteModal(!showInviteModal)
+    setShowInviteModal(!showInviteModal);
     // alert("menu clicked")
-  }
+  };
 
   const ToggleEditModal = () => {
     // alert("edit modal")
-    setShowEditModal(!showEditModal)
-  }
+    setShowEditModal(!showEditModal);
+  };
 
-    // handle select organization
-    const handleSelectOrganization = (evt) => {
-      const orgId = evt.target.value.trim();
-      setOrgId(orgId);
-    };
+  // handle select organization
+  const handleSelectOrganization = (evt) => {
+    const orgId = evt.target.value.trim();
+    setOrgId(orgId);
+  };
 
-   // get all organizations
-   const get_all_organizations = async (jwt) => {
+  // get all organizations
+  const get_all_organizations = async (jwt) => {
     try {
       const response = await axios_instance.get(get_all_organizations_url, {
         headers: {
@@ -104,53 +107,91 @@ const EmployeesDashboard = () => {
   };
 
   // get all employees
-  const get_all_employees = async(jwt) => {
-    setLoadingEmpoyees(true);
-    const org_Id = orgId ? orgId 
-    : !organizationDetails && organizationData ? organizationData[0].id : "";
-      try {
-          const response = await axios_instance.get(get_all_employees_url + `${org_Id}/employees/`, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${jwt}`
-            }
-          })
-          console.log(response);
-          setData(response)
-          setLoadingEmpoyees(false)
-          
-      } catch (error) {
-          console.log(error);
-          setLoadingEmpoyees(false)       
-      }
-  }
+  const get_all_employees = async (orgId, jwt) => {
+    const org_Id = orgId
+      ? orgId
+      : !organizationDetails && organizationData
+      ? organizationData[0].id
+      : "";
+    if (!organizationData) {
+    }
+    try {
+      setLoadingEmpoyees(true);
+      const response = await axios_instance.get(
+        get_all_employees_url + `${org_Id}/employees/`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      console.log(response);
+      setData(response);
+      setLoadingEmpoyees(false);
+    } catch (error) {
+      console.log(error);
+      setLoadingEmpoyees(false);
+    }
+  };
 
   useEffect(() => {
-    const url = pathname
-      console.log(url)
+    const url = pathname;
+    console.log(url);
 
-      let user_login_details  = get_cookie('ovasite_user')
-      if (!user_login_details && url =='/employees') {
-        router.replace('/')
-      } 
+    /*
+      use cookies to store and retrieve user details. This confirms if the user is logged in
 
-      if (user_login_details) {
-        user_login_details = JSON.parse(user_login_details) ;
-        const jwt = user_login_details.jwt
-        dispatch(fetchAllOrganizations(jwt));
-        // get_all_organizations(jwt);
-        let ovasite_organization = get_cookie("ovasite_organization");
-        console.log("ovasite_organization => ", ovasite_organization);
-        if (ovasite_organization) {
-          ovasite_organization = JSON.parse(ovasite_organization);
+    */
+    let user_login_details = get_cookie("ovasite_user");
+    if (!user_login_details && url == "/employees") {
+      router.replace("/");
+    }
+
+    if (user_login_details) {
+      user_login_details = JSON.parse(user_login_details);
+      console.log(user_login_details);
+      const jwt = user_login_details.jwt;
+      dispatch(fetchAllOrganizations(jwt));
+
+      /* 
+        ovasite_organization saves the user current selected organization
+        namely the organization id and name
+      */
+      let ovasite_organization = get_cookie("ovasite_organization");
+      console.log("ovasite_organization => ", ovasite_organization);
+      if (ovasite_organization) {
+        ovasite_organization = JSON.parse(ovasite_organization);
+
+        /* check if saved "current slected organization" exists in the list of user organization
+        this is to check returning users. user cookie should be wiped when a user logsout or deletes his account
+        */
+        if (
+          user_login_details.userInfo.organizations.some(
+            (organization) => organization.id === ovasite_organization.id
+          )
+        ) {
           setOrganizationDetails(ovasite_organization);
         }
-      
-        get_all_employees(ovasite_organization.id, jwt)
       }
-  },[router,  pathname, searchParams])
 
-  
+      get_all_employees(
+        ovasite_organization.id || user_login_details.userInfo[0].id,
+        jwt
+      );
+    }
+  }, [router, pathname, searchParams]);
+
+  const organizationName =
+    organizationDetails && organizationDetails.name && organizationDetails.id
+      ? organizationDetails.name + " " + organizationDetails.id
+      : "";
+  const org_Id = organizationDetails
+    ? organizationDetails.id
+    : !organizationDetails && organizationData
+    ? organizationData[0].id
+    : "";
+
   // handle next button
   const nextButton = () => {
     if (current_page + 1 <= total_page_no) {
@@ -175,19 +216,19 @@ const EmployeesDashboard = () => {
     }
   };
 
-  return  loadingEmployees ? 
+  return loadingEmployees ? (
     <LoadingModal />
-   : 
+  ) : (
     <main className="flex flex-col md:flex-row">
-      <SidebarNav activeLink={"employees"} pagetitle={'Employees'} />
+      <SidebarNav activeLink={"employees"} pagetitle={"Employees"} />
 
       <section className=" bg-mobile-bg md:ml-[25vw]  md:w-[75vw]">
-
         {/* main header - header I */}
         <header className="h-[6rem] hidden flex-row items-center justify-between py-[1.6rem] border-b border-ova_grey_border bg-ova_white md:fixed md:flex md:w-[75vw]">
-          <h1 className="text-[1.2em] font-bold pl-[1.2rem]">{organizationDetails
-              ? organizationDetails.name + " " + organizationDetails.id
-              : ""}{" "}Employees</h1>
+          <h1 className="text-[1.2em] font-bold pl-[1.2rem]">
+            {organizationName}
+            Employees
+          </h1>
           <div className="flex flex-row items-center justify-between pr-[1.2rem]">
             {/* search and input text field */}
             <div className="border rounded-md p-[0.75rem] md:w-[31rem] mr-[1rem]">
@@ -255,13 +296,14 @@ const EmployeesDashboard = () => {
           </div>
         </header>
 
-         {/* header II */}
-         <div className="max-w-full flex-col gap-2 flex mini:flex-row justify-between md:justify-end items-start mini:items-center px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">            
-         <h1 className="md:hidden text-[1em] font-extrabold ">{organizationDetails
-              ? organizationDetails.name + " " + organizationDetails.id
-              : ""}{" "}Employees</h1>
-            <div className="flex flex-col mini:flex-row justify-center items-start mini:items-center gap-2">
-               {/* select organization from a list of organization */}
+        {/* header II */}
+        <div className="max-w-full flex-col gap-2 flex mini:flex-row justify-between md:justify-end items-start mini:items-center px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">
+          <h1 className="md:hidden text-[1em] font-extrabold ">
+            {organizationName}
+            Employees
+          </h1>
+          <div className="flex flex-col mini:flex-row justify-center items-start mini:items-center gap-2">
+            {/* select organization from a list of organization */}
             <select
               name="select_orgs"
               id="select_orgs"
@@ -279,176 +321,241 @@ const EmployeesDashboard = () => {
                 <option value="">No registered organization</option>
               )}
             </select>
-                <button
-                    aria-label="Create Project"
-                    className="flex flex-row items-center bg-peach_primary py-[1rem] px-[1.25rem] rounded-[0.5rem]"
-                    onClick={ToggleInviteModal}
+            <button
+              aria-label="Create Project"
+              className="flex flex-row items-center bg-peach_primary py-[1rem] px-[1.25rem] rounded-[0.5rem]"
+              onClick={ToggleInviteModal}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+              >
+                <path
+                  d="M12.6666 8.66668H8.66659V12.6667H7.33325V8.66668H3.33325V7.33334H7.33325V3.33334H8.66659V7.33334H12.6666V8.66668Z"
+                  fill="white"
+                />
+              </svg>
+              <span className="text-ova_white hidden md:block ml-2">
+                Add New Employee
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* header II */}
+        {/* <div className="max-w-full flex flex-row px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">
+            <h1 className="md:hidden text-[1.25em] font-extrabold text-center w-full mx-auto ">Teams</h1>
+        </div> */}
+
+        {/* project content desktop view*/}
+        <div className="px-[1.2rem] mb-8">
+          {/* <div className=" flex flex-col md:flex-row flex-wrap gap-4 justify-center lg:justify-start"> */}
+          <div className="flex flex-row flex-wrap gap-4 justify-center lg:justify-start">
+            {/* invite members card */}
+            <article className="w-[100%] mini:w-[48%] md:w-[48%] lg:w-[32%] md:h-[25.7rem] h-[18rem] shadow-sm p-4 border-[#ddd] md:bg-mobile-bg bg-white border rounded-lg">
+              {/* profile pics */}
+              <div
+                role="img"
+                aria-label="Profile picture of Jane Doe"
+                className="mx-auto md:w-[10rem] md:h-[10rem] w-[6.25rem] h-[6.25rem] flex flex--row justify-center items-center 
+                    rounded-full border-2 border-dashed"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="80"
+                  height="80"
+                  viewBox="0 0 80 80"
+                  fill="none"
                 >
-                    <svg
+                  <path
+                    d="M60 30V40M60 40V50M60 40H70M60 40H50M43.3333 23.3333C43.3333 26.8696 41.9286 30.2609 39.4281 32.7614C36.9276 35.2619 33.5362 36.6667 30 36.6667C26.4638 36.6667 23.0724 35.2619 20.5719 32.7614C18.0714 30.2609 16.6667 26.8696 16.6667 23.3333C16.6667 19.7971 18.0714 16.4057 20.5719 13.9052C23.0724 11.4048 26.4638 10 30 10C33.5362 10 36.9276 11.4048 39.4281 13.9052C41.9286 16.4057 43.3333 19.7971 43.3333 23.3333ZM10 66.6667C10 61.3623 12.1071 56.2753 15.8579 52.5245C19.6086 48.7738 24.6957 46.6667 30 46.6667C35.3043 46.6667 40.3914 48.7738 44.1421 52.5245C47.8929 56.2753 50 61.3623 50 66.6667V70H10V66.6667Z"
+                    stroke="#C3C3C3"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+              <h2
+                className="max-w-[80%] mx-auto mt-[0.75rem] overflow-hidden 
+                    whitespace-nowrap text-ellipsis font-bold text-[1em] md:text-[1.5em] text-center"
+              >
+                INVITE USERS
+              </h2>
+              <h2 className="text-[0.8em] md:text-[1em] text-center overflow-wrap break-words mt-[0.75rem]">
+                Invite to your organisation your members by email
+              </h2>
+              <button
+                onClick={ToggleInviteModal}
+                aria-label="Create Project"
+                className=" w-[90%] mx-auto h-12 mt-[0.75rem] flex flex-row gap-2 justify-center items-center bg-peach_primary py-[0.5rem] md:py-[1rem] px-[1rem] md:px-[1.25rem]  text-[1em] rounded-[0.5rem]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                >
+                  <path
+                    d="M12.6666 8.66668H8.66659V12.6667H7.33325V8.66668H3.33325V7.33334H7.33325V3.33334H8.66659V7.33334H12.6666V8.66668Z"
+                    fill="white"
+                  />
+                </svg>
+                <span className="text-ova_white leading-4 text-[1em]">
+                  Invite New Users
+                </span>
+              </button>
+            </article>
+            {data && data.length > 0 ? (
+              current_data.map((item, index) => (
+                <EmployeeCard
+                  key={index}
+                  profileImage={item.picture.thumbnail}
+                  name={item.name}
+                  phone={item.phone}
+                  email={item.email}
+                  id={item.id}
+                  toggleEditModal={ToggleEditModal}
+                  orgId={org_Id}
+                />
+              ))
+            ) : (
+              <NoDataCard
+                title={"No employees data"}
+                description={"Add employee to your projects"}
+              />
+            )}
+          </div>
+
+          {/* pagination */}
+          {data && data.length > 0 ? (
+            <div
+              className="w-full flex md:flex-row justify-between items-center my-4"
+              aria-label="Pagination navigation"
+            >
+              {/* 1/3 */}
+              {/* <p className="mb-2 w-12 h-12 rounded-full bg-[#001233] text-white flex flex-row items-center justify-center font-bold text-[12px]"
+            role="status" aria-label={`Page ${current_page} of ${total_page_no}`}>
+            <span className="text-[#FF595A]">{current_page}&nbsp;</span>/&nbsp;{total_page_no}
+            </p> */}
+
+              <div className="w-full mx-auto mb-2 flex flex-row gap-2 justify-center md:justify-end items-center px-2">
+                <button
+                  className="w-[2rem] h-[2rem] border-[0.00625rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex justify-center items-center"
+                  onClick={previousButton}
+                  disabled={current_page == 1 ? true : false}
+                >
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
                     height="16"
                     viewBox="0 0 16 16"
                     fill="none"
-                    >
+                  >
                     <path
-                        d="M12.6666 8.66668H8.66659V12.6667H7.33325V8.66668H3.33325V7.33334H7.33325V3.33334H8.66659V7.33334H12.6666V8.66668Z"
-                        fill="white"
+                      d="M11.7267 12L12.6667 11.06L9.61341 8L12.6667 4.94L11.7267 4L7.72675 8L11.7267 12Z"
+                      fill="#333333"
                     />
-                    </svg>
-                    <span className="text-ova_white hidden md:block ml-2">
-                    Add New Employee
-                    </span>
-                </button>
-            </div>
-        </div>
-
-         {/* header II */}
-        {/* <div className="max-w-full flex flex-row px-[1.2rem] pb-4 md:py-[1.5rem] mt-[6.5rem]">
-            <h1 className="md:hidden text-[1.25em] font-extrabold text-center w-full mx-auto ">Teams</h1>
-        </div> */}
-        
-        {/* project content desktop view*/}
-        <div className="px-[1.2rem] ">
-          {/* <div className=" flex flex-col md:flex-row flex-wrap gap-4 justify-center lg:justify-start"> */}
-          <div className="flex flex-row flex-wrap gap-4 justify-center lg:justify-start">
-         
-            {/* invite members card */}
-            <article className="w-[100%] mini:w-[48%] md:w-[48%] lg:w-[32%] md:h-[25.7rem] h-[18rem] shadow-sm p-4 border-[#ddd] md:bg-mobile-bg bg-white border rounded-lg">
-                {/* profile pics */}
-                <div role="img" aria-label="Profile picture of Jane Doe" 
-                    className='mx-auto md:w-[10rem] md:h-[10rem] w-[6.25rem] h-[6.25rem] flex flex--row justify-center items-center 
-                    rounded-full border-2 border-dashed'
-                    >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" fill="none">
-                        <path d="M60 30V40M60 40V50M60 40H70M60 40H50M43.3333 23.3333C43.3333 26.8696 41.9286 30.2609 39.4281 32.7614C36.9276 35.2619 33.5362 36.6667 30 36.6667C26.4638 36.6667 23.0724 35.2619 20.5719 32.7614C18.0714 30.2609 16.6667 26.8696 16.6667 23.3333C16.6667 19.7971 18.0714 16.4057 20.5719 13.9052C23.0724 11.4048 26.4638 10 30 10C33.5362 10 36.9276 11.4048 39.4281 13.9052C41.9286 16.4057 43.3333 19.7971 43.3333 23.3333ZM10 66.6667C10 61.3623 12.1071 56.2753 15.8579 52.5245C19.6086 48.7738 24.6957 46.6667 30 46.6667C35.3043 46.6667 40.3914 48.7738 44.1421 52.5245C47.8929 56.2753 50 61.3623 50 66.6667V70H10V66.6667Z" stroke="#C3C3C3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                </div>
-                <h2 className="max-w-[80%] mx-auto mt-[0.75rem] overflow-hidden 
-                    whitespace-nowrap text-ellipsis font-bold text-[1em] md:text-[1.5em] text-center">
-                        INVITE USERS
-                </h2>
-                <h2 className="text-[0.8em] md:text-[1.25em] text-center overflow-wrap break-words mt-[0.75rem]">
-                    Invite to your organisation your members by email
-                </h2>
-                <button
-                    onClick={ToggleInviteModal }
-                        aria-label="Create Project"
-                        className=" w-[80%] mx-auto mt-[0.75rem] flex flex-row justify-center items-center gap-2 bg-peach_primary py-[0.5rem] md:py-[1rem] px-1[rem] md:px-[1.25rem]  text-[1em] rounded-[0.5rem]"
-                    >
-                        <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        >
-                        <path
-                            d="M12.6666 8.66668H8.66659V12.6667H7.33325V8.66668H3.33325V7.33334H7.33325V3.33334H8.66659V7.33334H12.6666V8.66668Z"
-                            fill="white"
-                        />
-                        </svg>
-                        <span className="text-ova_white ml-2">
-                        Invite New Users
-                        </span>
-                    </button>
-            </article>
-            { data && data.length > 0 ?
-                current_data.map((item, index) => 
-                <EmployeeCard key={index}
-                    profileImage={item.picture.thumbnail} 
-                    name={item.name} 
-                    phone={item.phone} 
-                    email={item.email}
-                    id={item.id}
-                    toggleEditModal={ToggleEditModal}
-                    orgId={organizationDetails ? organizationDetails.id 
-                      : ! organizationDetails && organizationData ? organizationData[0].id : ""}
-                />):
-                <NoDataCard title={"No employees data"} description={"Add employee to your projects"} />
-            }
-          </div>
-
-           {/* pagination */}
-           {data && data.length > 0 ?
-      <div className="w-full flex md:flex-row justify-between items-center my-4" aria-label="Pagination navigation">
-
-            {/* 1/3 */}
-            {/* <p className="mb-2 w-12 h-12 rounded-full bg-[#001233] text-white flex flex-row items-center justify-center font-bold text-[12px]"
-            role="status" aria-label={`Page ${current_page} of ${total_page_no}`}>
-            <span className="text-[#FF595A]">{current_page}&nbsp;</span>/&nbsp;{total_page_no}
-            </p> */}
-
-            <div className="w-full mx-auto mb-2 flex flex-row gap-2 justify-center md:justify-end items-center px-2">
-                <button className="w-[2rem] h-[2rem] border-[0.00625rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex justify-center items-center"
-                    onClick={previousButton} disabled={current_page == 1 ? true : false}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M11.7267 12L12.6667 11.06L9.61341 8L12.6667 4.94L11.7267 4L7.72675 8L11.7267 12Z" fill="#333333"/>
-                        <path d="M7.33344 12L8.27344 11.06L5.2201 8L8.27344 4.94L7.33344 4L3.33344 8L7.33344 12Z" fill="#333333"/>
-                    </svg>
+                    <path
+                      d="M7.33344 12L8.27344 11.06L5.2201 8L8.27344 4.94L7.33344 4L3.33344 8L7.33344 12Z"
+                      fill="#333333"
+                    />
+                  </svg>
                 </button>
 
                 {/* left ellipses */}
-                { min_page_no_limit >= 1  ? 
-                    <button className="w-[2rem] h-[2rem] flex flex-row items-center justify-center p-[0.625rem]  border-ova_grey_order font-bold text-ova_dark_primary"
-                    onClick={previousButton}>...</button>
-                : ""
-                }
+                {min_page_no_limit >= 1 ? (
+                  <button
+                    className="w-[2rem] h-[2rem] flex flex-row items-center justify-center p-[0.625rem]  border-ova_grey_order font-bold text-ova_dark_primary"
+                    onClick={previousButton}
+                  >
+                    ...
+                  </button>
+                ) : (
+                  ""
+                )}
 
-                {          
-                    array_of_pages.map((item, index) => (
-                    item < max_page_no_limit + 1 && item > min_page_no_limit ? (
-                    <button key={index} aria-label={`Go to page ${item}`}
-                        onClick={() => set_current_page(item)} aria-pressed={current_page == item ? 'true' : 'false'}
-                        className={`w-[2rem] h-[2rem]  border-[0.0625rem] rounded-[0.5rem] border-ova_grey_order text-center
+                {array_of_pages.map((item, index) =>
+                  item < max_page_no_limit + 1 && item > min_page_no_limit ? (
+                    <button
+                      key={index}
+                      aria-label={`Go to page ${item}`}
+                      onClick={() => set_current_page(item)}
+                      aria-pressed={current_page == item ? "true" : "false"}
+                      className={`w-[2rem] h-[2rem]  border-[0.0625rem] rounded-[0.5rem] border-ova_grey_order text-center
                         flex flex-row items-center justify-center font-bold text-[0.8125em] 
-                        ${current_page === item ? 'text-ova_white bg-navy_blue' : ' text-ova_dark_primary'}
-                        `}   
-                        >{item}</button>  ) 
-                    : ""
-                    )
-                    )                 
-                }
+                        ${
+                          current_page === item
+                            ? "text-ova_white bg-navy_blue"
+                            : " text-ova_dark_primary"
+                        }
+                        `}
+                    >
+                      {item}
+                    </button>
+                  ) : (
+                    ""
+                  )
+                )}
 
-            {/* right ellipse */}
-                { array_of_pages.length > max_page_no_limit ?
-                    <button 
+                {/* right ellipse */}
+                {array_of_pages.length > max_page_no_limit ? (
+                  <button
                     className="w-[2rem] h-[2rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex flex-row items-center justify-center font-bold text-ova_dark_primary"
-                    onClick={nextButton}>...</button>
-                : null
-                }
-                <button className="w-[2rem] h-[2rem] border-[0.00625rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex justify-center items-center"
-                    onClick={nextButton} disabled={current_page == total_page_no ? true : false} >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M4.27325 4L3.33325 4.94L6.38659 8L3.33325 11.06L4.27325 12L8.27325 8L4.27325 4Z" fill="black"/>
-                        <path d="M8.66656 4L7.72656 4.94L10.7799 8L7.72656 11.06L8.66656 12L12.6666 8L8.66656 4Z" fill="black"/>
-                    </svg>
+                    onClick={nextButton}
+                  >
+                    ...
+                  </button>
+                ) : null}
+                <button
+                  className="w-[2rem] h-[2rem] border-[0.00625rem] rounded-[0.5rem] border-ova_grey_border p-[0.625rem] flex justify-center items-center"
+                  onClick={nextButton}
+                  disabled={current_page == total_page_no ? true : false}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                  >
+                    <path
+                      d="M4.27325 4L3.33325 4.94L6.38659 8L3.33325 11.06L4.27325 12L8.27325 8L4.27325 4Z"
+                      fill="black"
+                    />
+                    <path
+                      d="M8.66656 4L7.72656 4.94L10.7799 8L7.72656 11.06L8.66656 12L12.6666 8L8.66656 4Z"
+                      fill="black"
+                    />
+                  </svg>
                 </button>
+              </div>
             </div>
-
-         </div>
-       
-        : null
-      }
-      </div>
+          ) : null}
+        </div>
       </section>
 
-      {
-        showInviteModal ? <SendInviteModal 
-        handleCancelBtn={ToggleInviteModal} isInviteModalActive={true} 
-        handleCreateBtn={() => null} 
-        /> : null
-      }
+      {showInviteModal ? (
+        <SendInviteModal
+          handleCancelBtn={ToggleInviteModal}
+          isInviteModalActive={true}
+          handleCreateBtn={() => null}
+          orgId={org_Id}
+        />
+      ) : null}
 
-      {
-        showEditModal ? <EditEmployeeModal 
-        handleCancelBtn={ToggleEditModal} 
-        isEditEmployeeModalActive={true} 
-        /> : null
-      }
-
-     
+      {showEditModal ? (
+        <EditEmployeeModal
+          handleCancelBtn={ToggleEditModal}
+          isEditEmployeeModalActive={true}
+        />
+      ) : null}
     </main>
+  );
 };
 
 export default EmployeesDashboard;

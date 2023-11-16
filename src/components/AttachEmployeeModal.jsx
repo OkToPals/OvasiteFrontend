@@ -46,7 +46,7 @@ export const AttachEmployeeModal = ({handleCancelBtn, isAttachEmployeeModalActiv
           });
       
           let config = {
-            method: "delete",
+            method: "post",
             url: attach_employee_url + `${org_id}/project/adduser/${id}`,
             headers: {
               "Content-Type": "application/json",
