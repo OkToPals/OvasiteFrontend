@@ -38,7 +38,7 @@ export default function ResetPassword() {
         <img
           src="Logo.jpg"
           width={70}
-          style={{ marginLeft: "10%", marginTop: "10px", paddingRight: "10px" }}
+          style={{ marginLeft: "10%", marginTop: "20px", paddingRight: "10px" }}
         />
         </Link>
         {/* <div className="shadow-lg bg-white px-12 py-12 sm:rounded-lg sm:px-12"> */}
@@ -117,7 +117,7 @@ export default function ResetPassword() {
                     type="submit"
                     className="flex w-full justify-center rounded-md bg-[#FF595A] px-3 py-1.5 text-sm font-bold leading-6 text-[white] shadow-sm hover:bg-[#fe5000] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#001233]"
                   >
-                    Reset Password
+                    Create Password
                   </button>
                 </div>
               </form>
